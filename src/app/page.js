@@ -23,27 +23,18 @@ const Home = async () => {
     const advantageousType = Object.keys(typesEffectiveness).find(type => findAdvantageousType(opponentTypes, type) > 1);
     const advantageousPokemons = advantageousType ? await fetchAdvantageousPokemons(advantageousType) : [];
 
-    const advantageousType1 = Object.keys(typesEffectiveness).find(type1 => findAdvantageousType1(opponentTypes1, type1) > 1);
-    const advantageousPokemons1 = advantageousType1 ? await fetchAdvantageousPokemons1(advantageousType1) : [];
 
     return (
         <div>
             <h1>{opponentPokemon}に対する有利なタイプ:</h1>
-            <h1>{opponentPokemon1}に対する有利なタイプ:</h1>
-            <h1>{opponentPokemon2}に対する有利なタイプ:</h1>
-            <h1>{opponentPokemon3}に対する有利なタイプ:</h1>
-            <h1>{opponentPokemon4}に対する有利なタイプ:</h1>
+            {/*<h1>{opponentPokemon1}に対する有利なタイプ:</h1>*/}
+            {/*<h1>{opponentPokemon2}に対する有利なタイプ:</h1>*/}
+            {/*<h1>{opponentPokemon3}に対する有利なタイプ:</h1>*/}
+            {/*<h1>{opponentPokemon4}に対する有利なタイプ:</h1>*/}
             <p>効果: {effectiveness}</p>
             <h2>有利なポケモン:</h2>
             <ul>
                 {advantageousPokemons.map(pokemon => (
-                    <li key={pokemon}>{pokemon}</li>
-                ))}
-            </ul>
-
-            <h2>有利なポケモン1:</h2>
-            <ul>
-                {advantageousPokemons1.map(pokemon => (
                     <li key={pokemon}>{pokemon}</li>
                 ))}
             </ul>
