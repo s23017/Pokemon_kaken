@@ -42,7 +42,7 @@ const Home = () => {
                     onChange={(e) => setOpponentPokemon(e.target.value)}
                     placeholder="ポケモンの名前を入力"
                 />
-                <button type="submit">計算する</button>
+                <button type="submit">検索</button>
             </form>
             <h2>{opponentPokemon}に対する有利なポケモン:</h2>
             <ul>
