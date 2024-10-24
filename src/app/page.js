@@ -1,31 +1,50 @@
+"use client";
+
+import React, { useState } from 'react';
 import {
     fetchPokemonDetails,
     findAdvantageousType,
     fetchAdvantageousPokemons,
-} from './api/pokemon'; // 必要な関数のインポート
-import typesEffectiveness from './data/typeEffectiveness.json'; // タイプ相性データのインポート
+} from './api/pokemon';
+import typesEffectiveness from './data/typeEffectiveness.json';
 
-const Home = async () => {
-    // 相手のポケモンを選ぶ
-    const opponentPokemon = 'dragonite'; // 例: リザードン
-    const opponentDetails = await fetchPokemonDetails(opponentPokemon); // ポケモンの詳細取得
-    const opponentTypes = opponentDetails.types; // タイプの取得
+const Home = () => {
+    const [opponentPokemon, setOpponentPokemon] = useState('charizard'); // デフォルトのポケモン
+    const [advantageousPokemons, setAdvantageousPokemons] = useState([]);
 
-    // 一番効果的なタイプを計算する
-    const advantageousType = Object.keys(typesEffectiveness).reduce((bestType, currentType) => {
-        const effectiveness = findAdvantageousType(opponentTypes, currentType); // 相性を計算
-        const bestEffectiveness = bestType ? findAdvantageousType(opponentTypes, bestType) : 0;
-        return effectiveness > bestEffectiveness ? currentType : bestType; // 最も高い倍率のタイプを選ぶ
-    }, null);
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const opponentDetails = await fetchPokemonDetails(opponentPokemon);
+        const opponentTypes = opponentDetails.types;
 
-    // 有利なタイプに基づいてポケモンを取得
-    const advantageousPokemons = advantageousType ? await fetchAdvantageousPokemons(advantageousType) : [];
+        const effectivenessMap = Object.keys(typesEffectiveness).map(type => ({
+            type,
+            effectiveness: findAdvantageousType(opponentTypes, type)
+        }));
+
+        // 最大倍率のタイプを取得
+        const maxEffectiveness = Math.max(...effectivenessMap.map(e => e.effectiveness));
+        const advantageousType = effectivenessMap.find(e => e.effectiveness === maxEffectiveness);
+
+        // 有利なポケモンを取得
+        const advantageousPokemons = advantageousType ? await fetchAdvantageousPokemons(advantageousType.type) : [];
+
+        setAdvantageousPokemons(advantageousPokemons); // 状態を更新
+    };
 
     return (
         <div>
-            <h1>{opponentPokemon} に対する有利なタイプ: {advantageousType}</h1>
-            <p>効果が最も高いのは: {advantageousType}</p>
-            <h2>有利なポケモン:</h2>
+            <h1>ポケモンの有利なタイプを計算</h1>
+            <form onSubmit={handleSubmit}>
+                <input
+                    type="text"
+                    value={opponentPokemon}
+                    onChange={(e) => setOpponentPokemon(e.target.value)}
+                    placeholder="ポケモンの名前を入力"
+                />
+                <button type="submit">計算する</button>
+            </form>
+            <h2>{opponentPokemon}に対する有利なポケモン:</h2>
             <ul>
                 {advantageousPokemons.map(pokemon => (
                     <li key={pokemon}>{pokemon}</li>

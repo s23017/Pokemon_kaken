@@ -7,6 +7,7 @@
   "fighting": { "normal": 1.0, "rock": 2.0, "ghost": 0.5 },
   "ice": { "fire": 2.0, "water": 1.0, "grass": 1.0, "ice": 0.5 },
   "flying": {"rock":  2.0, "ice": 2.0},
-  "rock": { "fire": 0.5, "flying": 0.5},
-  "dragon": { "ice": 2.0, "fairy": 2.0}
+  "rock": { "fire": 0.5, "flying": 0.5, "grass": 2.0},
+  "dragon": { "ice": 2.0, "fairy": 2.0},
+  "ground": {"water":2.0, "ice": 2.0, "grass": 2.0}
 }
