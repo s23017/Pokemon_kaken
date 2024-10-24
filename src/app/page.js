@@ -8,13 +8,13 @@ import typesEffectiveness from './data/typeEffectiveness.json'; // ここでイ�
 
 const Home = async () => {
     const opponentPokemon = 'charizard';// 相手ポケモンの名前
-    const opponentPokemon1 = 'bulbasaur';// 相手ポケモンの名前
-    const opponentPokemon2 = 'ivysaur';// 相手ポケモンの名前
-    const opponentPokemon3 = 'pidgey';// 相手ポケモンの名前
-    const opponentPokemon4 = 'rattata';// 相手ポケモンの名前
+    // const opponentPokemon1 = 'bulbasaur';// 相手ポケモンの名前
+    // const opponentPokemon2 = 'ivysaur';// 相手ポケモンの名前
+    // const opponentPokemon3 = 'pidgey';// 相手ポケモンの名前
+    // const opponentPokemon4 = 'rattata';// 相手ポケモンの名前
     const opponentDetails = await fetchPokemonDetails(opponentPokemon);
     const opponentTypes = opponentDetails.types;
-    const opponentTypes1 = opponentDetails.types;
+    // const opponentTypes1 = opponentDetails.types;
 
     const myType = 'rock'; // 自分のポケモンのタイプ
     const effectiveness = findAdvantageousType(opponentTypes, myType);
