@@ -1,7 +1,7 @@
 "use client"; // クライアントコンポーネントとして宣言
 
 import { useState } from 'react';
-import { fetchPokemonDetails, findAdvantageousType } from './api/pokemon';
+import { fetchPokemonDetails, findAdvantageousType } from '../api/pokemon';
 
 const PokemonList = ({ pokemons }) => {
     const [effectivePokemon, setEffectivePokemon] = useState([]);
