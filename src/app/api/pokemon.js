@@ -1,4 +1,4 @@
-import typesEffectiveness from '../data/typeEffectiveness.json'; // 相性データをここでインポート
+import typesEffectiveness from '../party-builder/data/typeEffectiveness.json'; // 相性データをここでインポート
 
 // ポケモンの詳細を取得する関数
 export const fetchPokemonDetails = async (pokemonName) => {

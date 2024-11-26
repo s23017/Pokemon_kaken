@@ -5,7 +5,7 @@ import {
     fetchPokemonDetails,
     findAdvantageousType,
     fetchAdvantageousPokemons,
-} from './api/pokemon';
+} from '../api/pokemon';
 import typesEffectiveness from './data/typeEffectiveness.json';
 
 const Home = () => {

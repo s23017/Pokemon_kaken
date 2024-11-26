@@ -1,4 +1,4 @@
-import typeEffectiveness from '../data/typeEffectiveness.json';
+import typeEffectiveness from '../party-builder/data/typeEffectiveness.json';
 
 export const getEffectiveTypes = (opponentType) => {
     const effectiveTypes = [];
