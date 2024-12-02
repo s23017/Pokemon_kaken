@@ -11,18 +11,16 @@ import {
 import typesEffectiveness from './data/typeEffectiveness.json';
 
 const Home = () => {
-    const [opponentPokemon, setOpponentPokemon] = useState('charizard'); // デフォルトのポケモン
-    const [advantageousPokemons, setAdvantageousPokemons] = useState([]);
-    const [filteredPokemons, setFilteredPokemons] = useState([]);
+    const [searchBars, setSearchBars] = useState([{ id: 1, pokemonName: 'charizard', result: [] }]); // 初期の検索バーと結果
     const [loading, setLoading] = useState(false); // ローディング状態
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event, id, pokemonName) => {
         event.preventDefault();
-        setLoading(true); // ローディング開始
-        setFilteredPokemons([]); // フィルタリング結果をリセット
+        setLoading(true);
 
         try {
-            const opponentDetails = await fetchPokemonDetails(opponentPokemon);
+            // 相手のポケモンの詳細を取得
+            const opponentDetails = await fetchPokemonDetails(pokemonName);
             const opponentTypes = opponentDetails.types;
 
             const effectivenessMap = Object.keys(typesEffectiveness).map(type => ({
@@ -39,20 +37,20 @@ const Home = () => {
                 ? await fetchAdvantageousPokemons(advantageousType.type)
                 : [];
 
-            setAdvantageousPokemons(advantageousPokemons); // 有利なポケモンのリストを状態に保存
-
             // 470以上の種族値のポケモンをフィルタリング
             const filteredResults = await filterByStats(advantageousPokemons);
 
             // ランダムに5体選択
             const randomPokemons = getRandomElements(filteredResults, 5);
 
-            setFilteredPokemons(randomPokemons); // ランダムに選ばれたポケモンを更新
+            setSearchBars(prev => prev.map(bar =>
+                bar.id === id ? { ...bar, result: randomPokemons } : bar
+            ));
 
         } catch (error) {
             console.error("Error fetching Pokémon details:", error);
         } finally {
-            setLoading(false); // ローディング終了
+            setLoading(false);
         }
     };
 
@@ -62,31 +60,64 @@ const Home = () => {
         return shuffled.slice(0, n); // 最初のn個を返す
     };
 
+    // 検索バーを追加
+    const addSearchBar = () => {
+        setSearchBars(prev => [
+            ...prev,
+            { id: prev.length + 1, pokemonName: '', result: [] },
+        ]);
+    };
+
+    // 検索バーの入力が変更されたとき
+    const handleChange = (id, value) => {
+        setSearchBars(prev =>
+            prev.map(bar =>
+                bar.id === id ? { ...bar, pokemonName: value } : bar
+            )
+        );
+    };
+
     return (
         <div>
             <h1>ポケモンの有利なタイプを計算</h1>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    value={opponentPokemon}
-                    onChange={(e) => setOpponentPokemon(e.target.value)}
-                    placeholder="ポケモンの名前を入力"
-                />
-                <button type="submit">検索</button>
+
+            <form>
+                {searchBars.map((bar) => (
+                    <div key={bar.id}>
+                        <input
+                            type="text"
+                            value={bar.pokemonName}
+                            onChange={(e) => handleChange(bar.id, e.target.value)}
+                            placeholder="ポケモンの名前を入力"
+                        />
+                        <button
+                            type="button"
+                            onClick={(e) => handleSubmit(e, bar.id, bar.pokemonName)}
+                        >
+                            検索
+                        </button>
+                        <button type="button" onClick={() => removeSearchBar(bar.id)}>
+                            -
+                        </button>
+
+                        {/* 検索結果 */}
+                        {loading && <p>ロード中...</p>}
+                        {bar.result.length > 0 && (
+                            <div>
+                                <h2>{bar.pokemonName}に対する有利なポケモン</h2>
+                                <ul>
+                                    {bar.result.map(pokemon => (
+                                        <li key={pokemon}>{pokemon}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
+                ))}
+                <button type="button" onClick={addSearchBar}>
+                    +
+                </button>
             </form>
-
-            {loading && <p>ロード中...</p>} {/* ローディング中のメッセージ */}
-
-            <h2>{opponentPokemon}に対する有利なポケモン</h2>
-            <ul>
-                {filteredPokemons.length > 0 ? (
-                    filteredPokemons.map(pokemon => (
-                        <li key={pokemon}>{pokemon}</li>
-                    ))
-                ) : (
-                    <p>該当するポケモンは見つかりませんでした。</p>
-                )}
-            </ul>
         </div>
     );
 };
