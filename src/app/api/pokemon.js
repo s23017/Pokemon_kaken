@@ -36,16 +36,19 @@ export const calculateTotalStats = (stats) => {
 
 // 470以上の種族値のポケモンをフィルタリングする関数
 export const filterByStats = async (pokemons) => {
-    const filteredPokemons = [];
-    for (let pokemon of pokemons) {
-        const pokemonDetails = await fetchPokemonDetails(pokemon); // ポケモンの詳細情報を取得
-        const totalStats = calculateTotalStats(pokemonDetails.stats); // 種族値合計を計算
+    // ポケモンの詳細情報を並列に取得
+    const detailsPromises = pokemons.map(async (pokemon) => {
+        const pokemonDetails = await fetchPokemonDetails(pokemon);
+        const totalStats = calculateTotalStats(pokemonDetails.stats);
+        return { pokemon, totalStats };
+    });
 
-        console.log(`${pokemon} - Total Stats: ${totalStats}`); // デバッグ用
+    const allDetails = await Promise.all(detailsPromises);
 
-        if (totalStats >= 470) {
-            filteredPokemons.push(pokemon); // 種族値合計が470以上のポケモンを追加
-        }
-    }
+    // 種族値合計が470以上のポケモンを抽出
+    const filteredPokemons = allDetails
+        .filter(({ totalStats }) => totalStats >= 470)
+        .map(({ pokemon }) => pokemon);
+
     return filteredPokemons;
 };
