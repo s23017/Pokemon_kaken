@@ -44,13 +44,22 @@ const Home = () => {
             // 470以上の種族値のポケモンをフィルタリング
             const filteredResults = await filterByStats(advantageousPokemons);
 
-            setFilteredPokemons(filteredResults); // フィルタリング後のポケモンを更新
+            // ランダムに5体選択
+            const randomPokemons = getRandomElements(filteredResults, 5);
+
+            setFilteredPokemons(randomPokemons); // ランダムに選ばれたポケモンを更新
 
         } catch (error) {
             console.error("Error fetching Pokémon details:", error);
         } finally {
             setLoading(false); // ローディング終了
         }
+    };
+
+    // ランダムにn個の要素を配列から選ぶ関数
+    const getRandomElements = (arr, n) => {
+        const shuffled = [...arr].sort(() => 0.5 - Math.random()); // 配列をシャッフル
+        return shuffled.slice(0, n); // 最初のn個を返す
     };
 
     return (
@@ -68,7 +77,7 @@ const Home = () => {
 
             {loading && <p>ロード中...</p>} {/* ローディング中のメッセージ */}
 
-            <h2>{opponentPokemon}に対する有利なポケモン（種族値470以上）:</h2>
+            <h2>{opponentPokemon}に対する有利なポケモン</h2>
             <ul>
                 {filteredPokemons.length > 0 ? (
                     filteredPokemons.map(pokemon => (
