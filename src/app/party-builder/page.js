@@ -77,9 +77,14 @@ const Home = () => {
         );
     };
 
+    // 検索バーを削除
+    const removeSearchBar = (id) => {
+        setSearchBars(prev => prev.filter(bar => bar.id !== id)); // 指定したIDのバーを削除
+    };
+
     return (
         <div>
-            <h1>ポケモンの有利なタイプを計算</h1>
+            <h1>パーティー構築</h1>
 
             <form>
                 {searchBars.map((bar) => (
@@ -96,9 +101,12 @@ const Home = () => {
                         >
                             検索
                         </button>
-                        <button type="button" onClick={() => removeSearchBar(bar.id)}>
-                            -
-                        </button>
+                        {/* マイナスボタンを追加 */}
+                        {searchBars.length > 1 && (
+                            <button type="button" onClick={() => removeSearchBar(bar.id)}>
+                                -
+                            </button>
+                        )}
 
                         {/* 検索結果 */}
                         {loading && <p>ロード中...</p>}
