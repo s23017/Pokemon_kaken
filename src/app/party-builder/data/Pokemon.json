@@ -7771,7 +7771,7 @@
     "id": 993,
     "name": {
       "jpn": "テツノコウベ",
-      "eng": "Iron Jugulis"
+      "eng": "Iron-Jugulis"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/993.png"
   },
@@ -7779,7 +7779,7 @@
     "id": 995,
     "name": {
       "jpn": "テツノイバラ",
-      "eng": "Iron Thorns"
+      "eng": "Iron-Thorns"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/995.png"
   },
@@ -7787,7 +7787,7 @@
     "id": 992,
     "name": {
       "jpn": "テツノカイナ",
-      "eng": "Iron Hands"
+      "eng": "Iron-Hands"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/992.png"
   },
@@ -7803,7 +7803,7 @@
     "id": 990,
     "name": {
       "jpn": "テツノワダチ",
-      "eng": "Iron Treads"
+      "eng": "Iron-Treads"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/990.png"
   },
@@ -7827,7 +7827,7 @@
     "id": 987,
     "name": {
       "jpn": "ハバタクカミ",
-      "eng": "Flutter Mane"
+      "eng": "Flutter-Mane"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/987.png"
   },
@@ -7835,7 +7835,7 @@
     "id": 994,
     "name": {
       "jpn": "テツノドクガ",
-      "eng": "Iron Moth"
+      "eng": "Iron-Moth"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/994.png"
   },
@@ -7891,7 +7891,7 @@
     "id": 1005,
     "name": {
       "jpn": "トドロクツキ",
-      "eng": "Roaring Moon"
+      "eng": "Roaring-Moon"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1005.png"
   },
@@ -7915,7 +7915,7 @@
     "id": 1006,
     "name": {
       "jpn": "テツノブジン",
-      "eng": "Iron Valiant"
+      "eng": "Iron-Valiant"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1006.png"
   },
@@ -7971,7 +7971,7 @@
     "id": 984,
     "name": {
       "jpn": "イダイナキバ",
-      "eng": "Great Tusk"
+      "eng": "Great-Tusk"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/984.png"
   },
@@ -7987,7 +7987,7 @@
     "id": 985,
     "name": {
       "jpn": "サケブシッポ",
-      "eng": "Scream Tail"
+      "eng": "Scream-Tail"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/985.png"
   },
@@ -7995,7 +7995,7 @@
     "id": 991,
     "name": {
       "jpn": "テツノツツミ",
-      "eng": "Iron Bundle"
+      "eng": "Iron-Bundle"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/991.png"
   },
@@ -8003,7 +8003,7 @@
     "id": 988,
     "name": {
       "jpn": "チヲハウハネ",
-      "eng": "Slither Wing"
+      "eng": "Slither-Wing"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/988.png"
   },
@@ -8011,7 +8011,7 @@
     "id": 989,
     "name": {
       "jpn": "スナノケガワ",
-      "eng": "Sandy Shocks"
+      "eng": "Sandy-Shocks"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/989.png"
   },
@@ -8027,7 +8027,7 @@
     "id": 1009,
     "name": {
       "jpn": "ウネルミナモ",
-      "eng": "Walking Wake"
+      "eng": "Walking-Wake"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1009.png"
   },
@@ -8043,7 +8043,7 @@
     "id": 999,
     "name": {
       "jpn": "コレクレー",
-      "eng": "Chest Form"
+      "eng": "Chest-Form"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/999.png"
   },
@@ -8059,7 +8059,7 @@
     "id": 1023,
     "name": {
       "jpn": "テツノカシラ",
-      "eng": "Iron Crown"
+      "eng": "Iron-Crown"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1023.png"
   },
@@ -8091,7 +8091,7 @@
     "id": 1020,
     "name": {
       "jpn": "ウガツホムラ",
-      "eng": "gouging Fire"
+      "eng": "gouging-Fire"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1020.png"
   },
@@ -8131,7 +8131,7 @@
     "id": 986,
     "name": {
       "jpn": "アラブルタケ",
-      "eng": "Brute Bonnet"
+      "eng": "Brute-Bonnet"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/986.png"
   },
@@ -8147,7 +8147,7 @@
     "id": 1022,
     "name": {
       "jpn": "テツノイワオ",
-      "eng": "Iron Boulder"
+      "eng": "Iron-Boulder"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1022.png"
   },
@@ -8171,7 +8171,7 @@
     "id": 1010,
     "name": {
       "jpn": "テツノイサハ",
-      "eng": "Iron Leaves"
+      "eng": "Iron-Leaves"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1010.png"
   },
@@ -8187,7 +8187,7 @@
     "id": 1021,
     "name": {
       "jpn": "タケルライコ",
-      "eng": "Raging Bolt"
+      "eng": "Raging-Bolt"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1021.png"
   },
