@@ -38,7 +38,7 @@ export const calculateTotalStats = (stats) => {
     return stats.reduce((total, stat) => total + stat.base_stat, 0);
 };
 
-// 470以上の種族値のポケモンをフィルタリングする関数
+// 470以上の種族値のポケモンをフィルタリングし、-gmaxおよび-megaを除外する関数
 export const filterByStats = async (pokemons) => {
     // ポケモンの詳細情報を並列に取得
     const detailsPromises = pokemons.map(async (pokemonName) => {
@@ -49,9 +49,13 @@ export const filterByStats = async (pokemons) => {
 
     const allDetails = await Promise.all(detailsPromises);
 
-    // 種族値合計が470以上のポケモンを抽出
+    // 種族値合計が470以上かつ名前に-gmaxまたは-megaが含まれないポケモンを抽出
     const filteredPokemons = allDetails
-        .filter(({ totalStats }) => totalStats >= 470)
+        .filter(({ totalStats, details }) =>
+            totalStats >= 470 &&
+            !details.name.toLowerCase().includes('-gmax') &&
+            !details.name.toLowerCase().includes('-mega')
+        )
         .map(({ details }) => details);
 
     return filteredPokemons;
