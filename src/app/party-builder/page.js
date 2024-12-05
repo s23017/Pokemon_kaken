@@ -6,23 +6,25 @@ import {
     calculateTotalStats,
     findAdvantageousType,
     fetchAdvantageousPokemons,
-    filterByStats
+    filterByStats,
 } from '../api/pokemon';
 import typesEffectiveness from './data/typeEffectiveness.json';
 import pokemonData from './data/Pokemon.json';
 
 // Helper function to map Japanese name to English
 const getEnglishName = (japaneseName) => {
-    const pokemon = pokemonData.find(p => p.name.jpn === japaneseName);
+
+    const pokemon = pokemonData.find((p) => p.name.jpn === japaneseName);
+
     return pokemon ? pokemon.name.eng : null;
 };
 
 // Helper function to map English name to Japanese
-const getJapaneseName = (pokemon) => {
-    if (!pokemon) return null; // データが未定義の場合にnullを返す
-    const name = typeof pokemon === 'string' ? pokemon : pokemon.name;
-    const match = pokemonData.find(p => p.name.eng.toLowerCase() === name.toLowerCase());
-    return match ? match.name.jpn : null;
+
+const getJapaneseName = (englishName) => {
+    const pokemon = pokemonData.find((p) => p.name.eng.toLowerCase() === englishName.toLowerCase());
+    return pokemon ? pokemon.name.jpn : null;
+
 };
 
 // ランダムに要素を選択する関数
@@ -32,6 +34,7 @@ const getRandomElements = (array, num) => {
 };
 
 const Home = () => {
+
     const [searchBars, setSearchBars] = useState([{ id: 1, pokemonName: 'フシギダネ', result: [] }]); // 初期の検索バーと結果
     const [loading, setLoading] = useState(false); // ローディング状態
 
@@ -40,6 +43,7 @@ const Home = () => {
         setLoading(true);
 
         try {
+
             console.log('検索されたポケモン名:', pokemonName); // デバッグ用ログ
 
             // Convert Japanese name to English before search
@@ -53,30 +57,34 @@ const Home = () => {
             }
 
             // Fetch opponent Pokemon details
+
             const opponentDetails = await fetchPokemonDetails(englishName);
             console.log('取得したポケモンの詳細:', opponentDetails); // デバッグ用ログ
 
             const opponentTypes = opponentDetails.types;
 
-            const effectivenessMap = Object.keys(typesEffectiveness).map(type => ({
+            // Calculate advantageous type
+            const effectivenessMap = Object.keys(typesEffectiveness).map((type) => ({
                 type,
                 effectiveness: findAdvantageousType(opponentTypes, type),
             }));
 
-            // 最大倍率のタイプを取得
-            const maxEffectiveness = Math.max(...effectivenessMap.map(e => e.effectiveness));
-            const advantageousType = effectivenessMap.find(e => e.effectiveness === maxEffectiveness);
+            const maxEffectiveness = Math.max(...effectivenessMap.map((e) => e.effectiveness));
+            const advantageousType = effectivenessMap.find((e) => e.effectiveness === maxEffectiveness);
 
-            // 有利なポケモンを取得
+            // Fetch advantageous Pokémon
             const advantageousPokemons = advantageousType
                 ? await fetchAdvantageousPokemons(advantageousType.type)
                 : [];
+
+
 
             console.log('有利なポケモン:', advantageousPokemons); // デバッグ用ログ
 
             // 470以上の種族値のポケモンをフィルタリング
             const filteredResults = await filterByStats(advantageousPokemons);
             console.log('フィルタリング後の結果:', filteredResults); // デバッグ用ログ
+
 
             // ランダムに5体選択
             const randomPokemons = getRandomElements(filteredResults, 5).map(pokemon => {
@@ -92,7 +100,7 @@ const Home = () => {
             setSearchBars(prev => prev.map(bar =>
                 bar.id === id ? { ...bar, result: randomPokemons } : bar
             ));
-
+          
         } catch (error) {
             console.error('エラーの詳細:', error); // デバッグ用ログ
             alert('エラーが発生しました。再度お試しください。');
@@ -103,6 +111,7 @@ const Home = () => {
 
     return (
         <div>
+
             {searchBars.map(bar => (
                 <form key={bar.id} onSubmit={(e) => handleSubmit(e, bar.id, bar.pokemonName)}>
                     <input
@@ -131,7 +140,8 @@ const Home = () => {
                                 )}
                                 <p>{pokemon.name || '名前が不明です'}</p>
                             </div>
-                        ))
+                        );
+                        })
                     ) : (
                         <p>結果が見つかりませんでした</p>
                     )}
