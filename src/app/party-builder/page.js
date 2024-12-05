@@ -6,126 +6,137 @@ import {
     calculateTotalStats,
     findAdvantageousType,
     fetchAdvantageousPokemons,
-    filterByStats
+    filterByStats,
 } from '../api/pokemon';
 import typesEffectiveness from './data/typeEffectiveness.json';
+import pokemonData from './data/Pokemon.json';
+
+// Helper function to map Japanese name to English
+const getEnglishName = (japaneseName) => {
+    const pokemon = pokemonData.find((p) => p.name.jpn === japaneseName);
+    return pokemon ? pokemon.name.eng : null;
+};
+
+// Helper function to map English name to Japanese
+const getJapaneseName = (englishName) => {
+    const pokemon = pokemonData.find((p) => p.name.eng.toLowerCase() === englishName.toLowerCase());
+    return pokemon ? pokemon.name.jpn : null;
+};
+
+// ランダムに要素を選択する関数
+const getRandomElements = (array, num) => {
+    const shuffled = [...array].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, num);
+};
 
 const Home = () => {
-    const [searchBars, setSearchBars] = useState([{ id: 1, pokemonName: 'charizard', result: [] }]); // 初期の検索バーと結果
-    const [loading, setLoading] = useState(false); // ローディング状態
+    const [searchBars, setSearchBars] = useState([{ id: 1, pokemonName: 'フシギダネ', result: [] }]);
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (event, id, pokemonName) => {
         event.preventDefault();
         setLoading(true);
 
         try {
-            // 相手のポケモンの詳細を取得
-            const opponentDetails = await fetchPokemonDetails(pokemonName);
+            // Convert Japanese name to English
+            const englishName = getEnglishName(pokemonName);
+            if (!englishName) {
+                alert('入力されたポケモン名が見つかりませんでした');
+                setLoading(false);
+                return;
+            }
+
+            // Fetch opponent Pokemon details
+            const opponentDetails = await fetchPokemonDetails(englishName.toLowerCase());
             const opponentTypes = opponentDetails.types;
 
-            const effectivenessMap = Object.keys(typesEffectiveness).map(type => ({
+            // Calculate advantageous type
+            const effectivenessMap = Object.keys(typesEffectiveness).map((type) => ({
                 type,
                 effectiveness: findAdvantageousType(opponentTypes, type),
             }));
 
-            // 最大倍率のタイプを取得
-            const maxEffectiveness = Math.max(...effectivenessMap.map(e => e.effectiveness));
-            const advantageousType = effectivenessMap.find(e => e.effectiveness === maxEffectiveness);
+            const maxEffectiveness = Math.max(...effectivenessMap.map((e) => e.effectiveness));
+            const advantageousType = effectivenessMap.find((e) => e.effectiveness === maxEffectiveness);
 
-            // 有利なポケモンを取得
+            // Fetch advantageous Pokémon
             const advantageousPokemons = advantageousType
                 ? await fetchAdvantageousPokemons(advantageousType.type)
                 : [];
 
-            // 470以上の種族値のポケモンをフィルタリング
+            // Filter by total stats >= 470
             const filteredResults = await filterByStats(advantageousPokemons);
 
-            // ランダムに5体選択
-            const randomPokemons = getRandomElements(filteredResults, 5);
+            // Select 5 random Pokémon
+            const randomPokemons = getRandomElements(filteredResults, 5).map((pokemon) => ({
+                ...pokemon,
+                name: getJapaneseName(pokemon.name) || pokemon.name,
+            }));
 
-            setSearchBars(prev => prev.map(bar =>
-                bar.id === id ? { ...bar, result: randomPokemons } : bar
-            ));
-
+            setSearchBars((prev) =>
+                prev.map((bar) =>
+                    bar.id === id ? { ...bar, result: randomPokemons } : bar
+                )
+            );
         } catch (error) {
-            console.error("Error fetching Pokémon details:", error);
+            console.error('エラー:', error);
+            alert('エラーが発生しました。再度お試しください。');
         } finally {
             setLoading(false);
         }
     };
 
-    // ランダムにn個の要素を配列から選ぶ関数
-    const getRandomElements = (arr, n) => {
-        const shuffled = [...arr].sort(() => 0.5 - Math.random()); // 配列をシャッフル
-        return shuffled.slice(0, n); // 最初のn個を返す
-    };
-
-    // 検索バーを追加
-    const addSearchBar = () => {
-        setSearchBars(prev => [
-            ...prev,
-            { id: prev.length + 1, pokemonName: '', result: [] },
-        ]);
-    };
-
-    // 検索バーの入力が変更されたとき
-    const handleChange = (id, value) => {
-        setSearchBars(prev =>
-            prev.map(bar =>
-                bar.id === id ? { ...bar, pokemonName: value } : bar
-            )
-        );
-    };
-
-    // 検索バーを削除
-    const removeSearchBar = (id) => {
-        setSearchBars(prev => prev.filter(bar => bar.id !== id)); // 指定したIDのバーを削除
-    };
-
     return (
         <div>
-            <h1>パーティー構築</h1>
+            {searchBars.map((bar) => (
+                <form
+                    key={bar.id}
+                    onSubmit={(e) => handleSubmit(e, bar.id, bar.pokemonName)}
+                >
+                    <input
+                        type="text"
+                        value={bar.pokemonName}
+                        onChange={(e) =>
+                            setSearchBars((prev) =>
+                                prev.map((b) =>
+                                    b.id === bar.id
+                                        ? { ...b, pokemonName: e.target.value }
+                                        : b
+                                )
+                            )
+                        }
+                        placeholder="ポケモン名を入力"
+                    />
+                    <button type="submit">検索</button>
+                </form>
+            ))}
 
-            <form>
-                {searchBars.map((bar) => (
-                    <div key={bar.id}>
-                        <input
-                            type="text"
-                            value={bar.pokemonName}
-                            onChange={(e) => handleChange(bar.id, e.target.value)}
-                            placeholder="ポケモンの名前を入力"
-                        />
-                        <button
-                            type="button"
-                            onClick={(e) => handleSubmit(e, bar.id, bar.pokemonName)}
-                        >
-                            検索
-                        </button>
-                        {/* マイナスボタンを追加 */}
-                        {searchBars.length > 1 && (
-                            <button type="button" onClick={() => removeSearchBar(bar.id)}>
-                                -
-                            </button>
-                        )}
+            {loading && <p>検索中...</p>}
 
-                        {/* 検索結果 */}
-                        {loading && <p>ロード中...</p>}
-                        {bar.result.length > 0 && (
-                            <div>
-                                <h2>{bar.pokemonName}に対する有利なポケモン</h2>
-                                <ul>
-                                    {bar.result.map(pokemon => (
-                                        <li key={pokemon}>{pokemon}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )}
-                    </div>
-                ))}
-                <button type="button" onClick={addSearchBar}>
-                    +
-                </button>
-            </form>
+            {searchBars.map((bar) => (
+                <div key={bar.id}>
+                    {bar.result.length > 0 ? (
+                        bar.result.map((pokemon, index) => {
+                            const spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`;
+                            return (
+                                <div key={pokemon.id || index}>
+                                    {pokemon.official_artwork ? (
+                                        <img
+                                            src={pokemon.official_artwork}
+                                            alt={pokemon.name}
+                                        />
+                                    ) : (
+                                        <img src={spriteUrl} alt={pokemon.name} />
+                                    )}
+                                    <p>{pokemon.name}</p>
+                                </div>
+                            );
+                        })
+                    ) : (
+                        <p>結果が見つかりませんでした</p>
+                    )}
+                </div>
+            ))}
         </div>
     );
 };
