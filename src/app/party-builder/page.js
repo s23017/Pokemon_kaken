@@ -13,14 +13,18 @@ import pokemonData from './data/Pokemon.json';
 
 // Helper function to map Japanese name to English
 const getEnglishName = (japaneseName) => {
+
     const pokemon = pokemonData.find((p) => p.name.jpn === japaneseName);
+
     return pokemon ? pokemon.name.eng : null;
 };
 
 // Helper function to map English name to Japanese
+
 const getJapaneseName = (englishName) => {
     const pokemon = pokemonData.find((p) => p.name.eng.toLowerCase() === englishName.toLowerCase());
     return pokemon ? pokemon.name.jpn : null;
+
 };
 
 // ランダムに要素を選択する関数
@@ -30,16 +34,22 @@ const getRandomElements = (array, num) => {
 };
 
 const Home = () => {
-    const [searchBars, setSearchBars] = useState([{ id: 1, pokemonName: 'フシギダネ', result: [] }]);
-    const [loading, setLoading] = useState(false);
+
+    const [searchBars, setSearchBars] = useState([{ id: 1, pokemonName: 'フシギダネ', result: [] }]); // 初期の検索バーと結果
+    const [loading, setLoading] = useState(false); // ローディング状態
 
     const handleSubmit = async (event, id, pokemonName) => {
         event.preventDefault();
         setLoading(true);
 
         try {
-            // Convert Japanese name to English
-            const englishName = getEnglishName(pokemonName);
+
+            console.log('検索されたポケモン名:', pokemonName); // デバッグ用ログ
+
+            // Convert Japanese name to English before search
+            const englishName = getEnglishName(pokemonName)?.toLowerCase();
+            console.log('変換された英語名:', englishName); // デバッグ用ログ
+
             if (!englishName) {
                 alert('入力されたポケモン名が見つかりませんでした');
                 setLoading(false);
@@ -47,7 +57,10 @@ const Home = () => {
             }
 
             // Fetch opponent Pokemon details
-            const opponentDetails = await fetchPokemonDetails(englishName.toLowerCase());
+
+            const opponentDetails = await fetchPokemonDetails(englishName);
+            console.log('取得したポケモンの詳細:', opponentDetails); // デバッグ用ログ
+
             const opponentTypes = opponentDetails.types;
 
             // Calculate advantageous type
@@ -64,22 +77,32 @@ const Home = () => {
                 ? await fetchAdvantageousPokemons(advantageousType.type)
                 : [];
 
-            // Filter by total stats >= 470
+
+
+            console.log('有利なポケモン:', advantageousPokemons); // デバッグ用ログ
+
+            // 470以上の種族値のポケモンをフィルタリング
             const filteredResults = await filterByStats(advantageousPokemons);
+            console.log('フィルタリング後の結果:', filteredResults); // デバッグ用ログ
 
-            // Select 5 random Pokémon
-            const randomPokemons = getRandomElements(filteredResults, 5).map((pokemon) => ({
-                ...pokemon,
-                name: getJapaneseName(pokemon.name) || pokemon.name,
-            }));
 
-            setSearchBars((prev) =>
-                prev.map((bar) =>
-                    bar.id === id ? { ...bar, result: randomPokemons } : bar
-                )
-            );
+            // ランダムに5体選択
+            const randomPokemons = getRandomElements(filteredResults, 5).map(pokemon => {
+                const japaneseName = getJapaneseName(pokemon); // 日本語名を取得
+                return {
+                    ...pokemon,
+                    name: japaneseName || pokemon // 日本語名がない場合は元の名前
+                };
+            });
+
+            console.log('最終的な結果:', randomPokemons); // デバッグ用ログ
+
+            setSearchBars(prev => prev.map(bar =>
+                bar.id === id ? { ...bar, result: randomPokemons } : bar
+            ));
+          
         } catch (error) {
-            console.error('エラー:', error);
+            console.error('エラーの詳細:', error); // デバッグ用ログ
             alert('エラーが発生しました。再度お試しください。');
         } finally {
             setLoading(false);
@@ -88,23 +111,15 @@ const Home = () => {
 
     return (
         <div>
-            {searchBars.map((bar) => (
-                <form
-                    key={bar.id}
-                    onSubmit={(e) => handleSubmit(e, bar.id, bar.pokemonName)}
-                >
+
+            {searchBars.map(bar => (
+                <form key={bar.id} onSubmit={(e) => handleSubmit(e, bar.id, bar.pokemonName)}>
                     <input
                         type="text"
                         value={bar.pokemonName}
-                        onChange={(e) =>
-                            setSearchBars((prev) =>
-                                prev.map((b) =>
-                                    b.id === bar.id
-                                        ? { ...b, pokemonName: e.target.value }
-                                        : b
-                                )
-                            )
-                        }
+                        onChange={(e) => setSearchBars(prev => prev.map(b =>
+                            b.id === bar.id ? { ...b, pokemonName: e.target.value } : b
+                        ))}
                         placeholder="ポケモン名を入力"
                     />
                     <button type="submit">検索</button>
@@ -113,24 +128,19 @@ const Home = () => {
 
             {loading && <p>検索中...</p>}
 
-            {searchBars.map((bar) => (
+            {searchBars.map(bar => (
                 <div key={bar.id}>
                     {bar.result.length > 0 ? (
-                        bar.result.map((pokemon, index) => {
-                            const spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`;
-                            return (
-                                <div key={pokemon.id || index}>
-                                    {pokemon.official_artwork ? (
-                                        <img
-                                            src={pokemon.official_artwork}
-                                            alt={pokemon.name}
-                                        />
-                                    ) : (
-                                        <img src={spriteUrl} alt={pokemon.name} />
-                                    )}
-                                    <p>{pokemon.name}</p>
-                                </div>
-                            );
+                        bar.result.map((pokemon, index) => (
+                            <div key={pokemon.id || `${pokemon.name}-${index}`}>
+                                {pokemon.official_artwork ? (
+                                    <img src={pokemon.official_artwork} alt={pokemon.name} />
+                                ) : (
+                                    <p>画像が見つかりません</p>
+                                )}
+                                <p>{pokemon.name || '名前が不明です'}</p>
+                            </div>
+                        );
                         })
                     ) : (
                         <p>結果が見つかりませんでした</p>
