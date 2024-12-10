@@ -579,7 +579,7 @@
     "id": 83,
     "name": {
       "jpn": "カモネギ",
-      "eng": "Farfetch'd"
+      "eng": "farfetchd"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/83.png"
   },
@@ -2819,7 +2819,7 @@
     "id": 413,
     "name": {
       "jpn": "ミノマダム",
-      "eng": "Wormadam"
+      "eng": "wormadam-plant"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/413.png"
   },
@@ -3203,7 +3203,7 @@
     "id": 426,
     "name": {
       "jpn": "フワライド",
-      "eng": "Driftblim"
+      "eng": "drifblim"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/426.png"
   },
@@ -3651,7 +3651,7 @@
     "id": 479,
     "name": {
       "jpn": "ロトム",
-      "eng": "Rotom"
+      "eng": "rotom"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/479.png"
   },
@@ -3779,7 +3779,7 @@
     "id": 487,
     "name": {
       "jpn": "ギラティナ",
-      "eng": "Giratina"
+      "eng": "giratina-altered"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/487.png"
   },
@@ -4323,7 +4323,7 @@
     "id": 550,
     "name": {
       "jpn": "バスラオ",
-      "eng": "Basculin"
+      "eng": "basculin-red-striped"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/550.png"
   },
@@ -4331,7 +4331,7 @@
     "id": 555,
     "name": {
       "jpn": "ヒヒダルマ",
-      "eng": "Darmanitan"
+      "eng": "darmanitan-standard"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/555.png"
   },
@@ -5099,7 +5099,7 @@
     "id": 641,
     "name": {
       "jpn": "トルネロス",
-      "eng": "Tornadus"
+      "eng": "tornadus-incarnate"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/641.png"
   },
@@ -5139,7 +5139,7 @@
     "id": 647,
     "name": {
       "jpn": "ケルディオ",
-      "eng": "Keldeo"
+      "eng": "keldeo-ordinary"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/647.png"
   },
@@ -5331,7 +5331,7 @@
     "id": 710,
     "name": {
       "jpn": "バケッチャ",
-      "eng": "Pumpkaboo"
+      "eng": "pumpkaboo-average"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/710.png"
   },
@@ -5395,7 +5395,7 @@
     "id": 648,
     "name": {
       "jpn": "メロエッタ",
-      "eng": "Meloetta"
+      "eng": "meloetta-aria"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/648.png"
   },
@@ -5475,7 +5475,7 @@
     "id": 645,
     "name": {
       "jpn": "ランドロス",
-      "eng": "Landorus"
+      "eng": "landorus-incarnate"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/645.png"
   },
@@ -5547,7 +5547,7 @@
     "id": 746,
     "name": {
       "jpn": "ヨワシ",
-      "eng": "Wishiwashi"
+      "eng": "wishiwashi-solo"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/746.png"
   },
@@ -5659,7 +5659,7 @@
     "id": 711,
     "name": {
       "jpn": "パンプジン",
-      "eng": "Gourgeist"
+      "eng": "gourgeist-average"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/711.png"
   },
@@ -5819,7 +5819,7 @@
     "id": 785,
     "name": {
       "jpn": "カプ・コケコ",
-      "eng": "Tapu Koko"
+      "eng": "tapu-koko"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/785.png"
   },
@@ -5899,7 +5899,7 @@
     "id": 642,
     "name": {
       "jpn": "ボルトロス",
-      "eng": "Thundurus"
+      "eng": "thundurus-incarnate"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/642.png"
   },
@@ -5923,7 +5923,7 @@
     "id": 681,
     "name": {
       "jpn": "ギルガルド",
-      "eng": "Aegislash"
+      "eng": "aegislash-shield"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/681.png"
   },
@@ -5939,7 +5939,7 @@
     "id": 745,
     "name": {
       "jpn": "ルガルガン",
-      "eng": "Lycanroc"
+      "eng": "lycanroc-midday"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/745.png"
   },
@@ -6019,7 +6019,7 @@
     "id": 800,
     "name": {
       "jpn": "ネクロズマ",
-      "eng": "Necrozma"
+      "eng": "necrozma"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/800.png"
   },
@@ -6115,7 +6115,7 @@
     "id": 741,
     "name": {
       "jpn": "オドリドリ",
-      "eng": "Oricorio"
+      "eng": "oricorio-baile"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/741.png"
   },
@@ -6235,7 +6235,7 @@
     "id": 774,
     "name": {
       "jpn": "メテノ",
-      "eng": "Minior"
+      "eng": "minior-red-meteor"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/774.png"
   },
@@ -6251,7 +6251,7 @@
     "id": 772,
     "name": {
       "jpn": "タイプ：ヌル",
-      "eng": "Type: Null"
+      "eng": "type-null"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/772.png"
   },
@@ -6523,7 +6523,7 @@
     "id": 778,
     "name": {
       "jpn": "ミミッキュ",
-      "eng": "Mimikyu"
+      "eng": "mimikyu-disguised"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/778.png"
   },
@@ -6899,7 +6899,7 @@
     "id": 902,
     "name": {
       "jpn": "イダイトウ",
-      "eng": "Basculegion"
+      "eng": "basculegion-male"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/902.png"
   },
@@ -6923,7 +6923,7 @@
     "id": 905,
     "name": {
       "jpn": "ラブトロス",
-      "eng": "Enamorus"
+      "eng": "enamorus-incarnate"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/905.png"
   },
@@ -7155,7 +7155,7 @@
     "id": 876,
     "name": {
       "jpn": "イエッサン",
-      "eng": "Indeedee"
+      "eng": "indeedee-male"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/876.png"
   },
@@ -7307,7 +7307,7 @@
     "id": 925,
     "name": {
       "jpn": "イッカネズミ",
-      "eng": "Family of Three"
+      "eng": "maushold-family-of-four"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/925.png"
   },
@@ -7355,7 +7355,7 @@
     "id": 865,
     "name": {
       "jpn": "ネギガナイト",
-      "eng": "Sirfetch'd"
+      "eng": "sirfetchd"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/865.png"
   },
@@ -7403,7 +7403,7 @@
     "id": 849,
     "name": {
       "jpn": "ストリンダー",
-      "eng": "Toxtricity"
+      "eng": "toxtricity-amped"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/849.png"
   },
@@ -8198,5 +8198,13 @@
       "eng": "Terapagos"
     },
     "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1024.png"
+  },
+  {
+    "id": 10078,
+    "name": {
+      "jpn": "ゲンシグラードン",
+      "eng": "groudon-primal"
+    },
+    "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10078.png"
   }
 ]
