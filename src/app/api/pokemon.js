@@ -54,7 +54,41 @@ export const filterByStats = async (pokemons) => {
         .filter(({ totalStats, details }) =>
             totalStats >= 470 &&
             !details.name.toLowerCase().includes('-gmax') &&
-            !details.name.toLowerCase().includes('-mega')
+            !details.name.toLowerCase().includes('-mega')&&
+            !details.name.toLowerCase().includes('-small')&&
+            !details.name.toLowerCase().includes('-large')&&
+            !details.name.toLowerCase().includes('-super')&&
+            !details.name.toLowerCase().includes('-totem')&&
+            !details.name.toLowerCase().includes('-dada')&&
+            !details.name.toLowerCase().includes('-zen')&&
+            !details.name.toLowerCase().includes('-droopy')&&
+            !details.name.toLowerCase().includes('-stretchy')&&
+            !details.name.toLowerCase().includes('-ash')&&
+            !details.name.toLowerCase().includes('-school')&&
+            !details.name.toLowerCase().includes('-noice')&&
+            !details.name.toLowerCase().includes('-gulping')&&
+            !details.name.toLowerCase().includes('-gorging')&&
+            !details.name.toLowerCase().includes('-low-power-mode')&&
+            !details.name.toLowerCase().includes('-drive-mode')&&
+            !details.name.toLowerCase().includes('-aquatic-mode')&&
+            !details.name.toLowerCase().includes('-glide-mode')&&
+            !details.name.toLowerCase().includes('--limited-build')&&
+            !details.name.toLowerCase().includes('-sprinting-build')&&
+            !details.name.toLowerCase().includes('-swimming-build')&&
+            !details.name.toLowerCase().includes('-limited-build')&&
+            !details.name.toLowerCase().includes('-eternamax')&&
+            !details.name.toLowerCase().includes('-power-construct')&&
+            !details.name.toLowerCase().includes('-orange')&&
+            !details.name.toLowerCase().includes('-yellow')&&
+            !details.name.toLowerCase().includes('-green')&&
+            !details.name.toLowerCase().includes('-blue')&&
+            !details.name.toLowerCase().includes('-indigo')&&
+            !details.name.toLowerCase().includes('-busted')&&
+            !details.name.toLowerCase().includes('-eternal')&&
+            !details.name.toLowerCase().includes('-original')&&
+            !details.name.toLowerCase().includes('-violet')&&
+            !details.name.toLowerCase().includes('-battle-bond')&&
+            !details.name.toLowerCase().includes('-gliding-build')
         )
         .map(({ details }) => details);
 
