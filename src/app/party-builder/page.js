@@ -32,36 +32,63 @@ const Home = () => {
     const [searchBars, setSearchBars] = useState([{ id: 1, pokemonName: 'フシギダネ', result: [] }]);
     const [notTranslatedPokemons, setNotTranslatedPokemons] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [suggestions, setSuggestions] = useState([]);
+
+    const handleInputChange = (id, value) => {
+        setSearchBars((prev) =>
+            prev.map((bar) =>
+                bar.id === id ? { ...bar, pokemonName: value } : bar
+            )
+        );
+
+        // Suggestion filtering
+        if (value) {
+            const filteredSuggestions = pokemonData
+                .filter((pokemon) =>
+                    pokemon.name.jpn.startsWith(value) ||
+                    pokemon.name.eng.toLowerCase().startsWith(value.toLowerCase())
+                )
+                .map((pokemon) => pokemon.name.jpn);
+            setSuggestions(filteredSuggestions);
+        } else {
+            setSuggestions([]);
+        }
+    };
+
+    const handleSuggestionClick = (id, suggestion) => {
+        setSearchBars((prev) =>
+            prev.map((bar) =>
+                bar.id === id ? { ...bar, pokemonName: suggestion } : bar
+            )
+        );
+        setSuggestions([]);
+    };
 
     const handleSubmit = async (event, id, pokemonName) => {
         event.preventDefault();
         setLoading(true);
         try {
-            // Convert Japanese name to English
             const englishName = getEnglishName(pokemonName);
             if (!englishName) {
                 alert('入力されたポケモン名が見つかりませんでした');
                 setLoading(false);
                 return;
             }
-            // Fetch opponent Pokemon details
             const opponentDetails = await fetchPokemonDetails(englishName.toLowerCase());
             const opponentTypes = opponentDetails.types;
-            // Calculate advantageous type
+
             const effectivenessMap = Object.keys(typesEffectiveness).map((type) => ({
                 type,
                 effectiveness: findAdvantageousType(opponentTypes, type),
             }));
             const maxEffectiveness = Math.max(...effectivenessMap.map((e) => e.effectiveness));
             const advantageousType = effectivenessMap.find((e) => e.effectiveness === maxEffectiveness);
-            // Fetch advantageous Pokémon
+
             const advantageousPokemons = advantageousType
                 ? await fetchAdvantageousPokemons(advantageousType.type)
                 : [];
-            // Filter by total stats >= 470
             const filteredResults = await filterByStats(advantageousPokemons);
 
-            // 日本語名が取得できないポケモンをフィルタリングし保存
             const untranslatedPokemons = filteredResults
                 .filter((pokemon) => !getJapaneseName(pokemon.name))
                 .map((pokemon) => ({
@@ -70,7 +97,6 @@ const Home = () => {
                 }));
             setNotTranslatedPokemons(untranslatedPokemons);
 
-            // Select 5 random Pokémon
             const randomPokemons = getRandomElements(filteredResults, 5).map((pokemon) => ({
                 ...pokemon,
                 name: getJapaneseName(pokemon.name) || pokemon.name,
@@ -98,18 +124,23 @@ const Home = () => {
                     <input
                         type="text"
                         value={bar.pokemonName}
-                        onChange={(e) =>
-                            setSearchBars((prev) =>
-                                prev.map((b) =>
-                                    b.id === bar.id
-                                        ? { ...b, pokemonName: e.target.value }
-                                        : b
-                                )
-                            )
-                        }
+                        onChange={(e) => handleInputChange(bar.id, e.target.value)}
                         placeholder="ポケモン名を入力"
                     />
                     <button type="submit">検索</button>
+                    {suggestions.length > 0 && (
+                        <ul style={styles.suggestionsList}>
+                            {suggestions.map((suggestion, index) => (
+                                <li
+                                    key={index}
+                                    onClick={() => handleSuggestionClick(bar.id, suggestion)}
+                                    style={styles.suggestionItem}
+                                >
+                                    {suggestion}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                 </form>
             ))}
             {loading && <p>検索中...</p>}
@@ -133,21 +164,24 @@ const Home = () => {
                     )}
                 </div>
             ))}
-            {notTranslatedPokemons.length > 0 && (
-                <div>
-                    <h3>日本語名が取得できないポケモン:</h3>
-                    <div>
-                        {notTranslatedPokemons.map((pokemon, index) => (
-                            <div key={pokemon.id || index}>
-                                <img src={pokemon.official_artwork} alt={pokemon.name} />
-                                <p>{pokemon.name}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
         </div>
     );
+};
+
+const styles = {
+    suggestionsList: {
+        maxHeight: '150px',
+        overflowY: 'auto',
+        border: '1px solid #ccc',
+        padding: '0',
+        margin: '5px 0',
+        listStyle: 'none',
+        backgroundColor: '#fff',
+    },
+    suggestionItem: {
+        padding: '10px',
+        cursor: 'pointer',
+    },
 };
 
 export default Home;
