@@ -53,8 +53,10 @@ export const filterByStats = async (pokemons) => {
     const filteredPokemons = allDetails
         .filter(({ totalStats, details }) =>
             totalStats >= 470 &&
-            !details.name.toLowerCase().includes('-gmax') &&
-            !details.name.toLowerCase().includes('-mega')
+            !details.name.toLowerCase().includes('-gmax') &&    //ダイマックス
+            !details.name.toLowerCase().includes('-mega') &&    //メガシンカ
+            !details.name.toLowerCase().includes('eternatus-eternamax') && //キョダイマックスムゲンダイナ
+            !details.name.toLowerCase().includes('koraidon-') //戦闘時以外のコライドン
         )
         .map(({ details }) => details);
 

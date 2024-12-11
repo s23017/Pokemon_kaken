@@ -9,24 +9,30 @@ import {
 } from '../api/pokemon';
 import typesEffectiveness from './data/typeEffectiveness.json';
 import pokemonData from './data/Pokemon.json';
+
 // Helper function to map Japanese name to English
 const getEnglishName = (japaneseName) => {
     const pokemon = pokemonData.find((p) => p.name.jpn === japaneseName);
     return pokemon ? pokemon.name.eng : null;
 };
+
 // Helper function to map English name to Japanese
 const getJapaneseName = (englishName) => {
     const pokemon = pokemonData.find((p) => p.name.eng.toLowerCase() === englishName.toLowerCase());
     return pokemon ? pokemon.name.jpn : null;
 };
+
 // ランダムに要素を選択する関数
 const getRandomElements = (array, num) => {
     const shuffled = [...array].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, num);
 };
+
 const Home = () => {
     const [searchBars, setSearchBars] = useState([{ id: 1, pokemonName: 'フシギダネ', result: [] }]);
+    const [notTranslatedPokemons, setNotTranslatedPokemons] = useState([]);
     const [loading, setLoading] = useState(false);
+
     const handleSubmit = async (event, id, pokemonName) => {
         event.preventDefault();
         setLoading(true);
@@ -54,6 +60,16 @@ const Home = () => {
                 : [];
             // Filter by total stats >= 470
             const filteredResults = await filterByStats(advantageousPokemons);
+
+            // 日本語名が取得できないポケモンをフィルタリングし保存
+            const untranslatedPokemons = filteredResults
+                .filter((pokemon) => !getJapaneseName(pokemon.name))
+                .map((pokemon) => ({
+                    ...pokemon,
+                    imageUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`,
+                }));
+            setNotTranslatedPokemons(untranslatedPokemons);
+
             // Select 5 random Pokémon
             const randomPokemons = getRandomElements(filteredResults, 5).map((pokemon) => ({
                 ...pokemon,
@@ -71,6 +87,7 @@ const Home = () => {
             setLoading(false);
         }
     };
+
     return (
         <div>
             {searchBars.map((bar) => (
@@ -103,14 +120,10 @@ const Home = () => {
                             const spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`;
                             return (
                                 <div key={pokemon.id || index}>
-                                    {pokemon.official_artwork ? (
-                                        <img
-                                            src={pokemon.official_artwork}
-                                            alt={pokemon.name}
-                                        />
-                                    ) : (
-                                        <img src={spriteUrl} alt={pokemon.name} />
-                                    )}
+                                    <img
+                                        src={pokemon.official_artwork || spriteUrl}
+                                        alt={pokemon.name}
+                                    />
                                     <p>{pokemon.name}</p>
                                 </div>
                             );
@@ -120,7 +133,21 @@ const Home = () => {
                     )}
                 </div>
             ))}
+            {notTranslatedPokemons.length > 0 && (
+                <div>
+                    <h3>日本語名が取得できないポケモン:</h3>
+                    <div>
+                        {notTranslatedPokemons.map((pokemon, index) => (
+                            <div key={pokemon.id || index}>
+                                <img src={pokemon.official_artwork} alt={pokemon.name} />
+                                <p>{pokemon.name}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
+
 export default Home;
