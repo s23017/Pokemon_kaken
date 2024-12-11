@@ -52,9 +52,11 @@ export const filterByStats = async (pokemons) => {
     // 種族値合計が470以上かつ名前に-gmaxまたは-megaが含まれないポケモンを抽出
     const filteredPokemons = allDetails
         .filter(({ totalStats, details }) =>
-            totalStats >= 470 &&
+            totalStats >= 600 &&
             !details.name.toLowerCase().includes('-gmax') &&
-            !details.name.toLowerCase().includes('-mega')
+            !details.name.toLowerCase().includes('-mega') &&
+            !details.name.toLowerCase().includes('-o-totem') &&
+            !details.name.toLowerCase().includes('koraidon-')
         )
         .map(({ details }) => details);
 
