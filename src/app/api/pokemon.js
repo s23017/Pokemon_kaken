@@ -68,14 +68,8 @@ export const filterByStats = async (pokemons) => {
             !details.name.toLowerCase().includes('-noice')&&
             !details.name.toLowerCase().includes('-gulping')&&
             !details.name.toLowerCase().includes('-gorging')&&
-            !details.name.toLowerCase().includes('-low-power-mode')&&
-            !details.name.toLowerCase().includes('-drive-mode')&&
-            !details.name.toLowerCase().includes('-aquatic-mode')&&
-            !details.name.toLowerCase().includes('-glide-mode')&&
-            !details.name.toLowerCase().includes('--limited-build')&&
-            !details.name.toLowerCase().includes('-sprinting-build')&&
-            !details.name.toLowerCase().includes('-swimming-build')&&
-            !details.name.toLowerCase().includes('-limited-build')&&
+            !details.name.toLowerCase().includes('miraidon-')&&
+            !details.name.toLowerCase().includes('koraidon-')&&
             !details.name.toLowerCase().includes('-eternamax')&&
             !details.name.toLowerCase().includes('-power-construct')&&
             !details.name.toLowerCase().includes('-orange')&&
@@ -88,6 +82,7 @@ export const filterByStats = async (pokemons) => {
             !details.name.toLowerCase().includes('-original')&&
             !details.name.toLowerCase().includes('-violet')&&
             !details.name.toLowerCase().includes('-battle-bond')&&
+            !details.name.toLowerCase().includes('-blade')&&
             !details.name.toLowerCase().includes('-gliding-build')
         )
         .map(({ details }) => details);
