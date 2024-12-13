@@ -58,6 +58,19 @@ const Home = () => {
             )
         );
     };
+    const handleRemoveSearchBar = (id) => {
+        setSearchBars((prev) => prev.filter((bar) => bar.id !== id));
+    };
+
+    const handleAddSearchBarBelow = (id) => {
+        setSearchBars((prev) => {
+            const index = prev.findIndex((bar) => bar.id === id);
+            const newBar = {id: prev.length + 1, pokemonName: "", result: [], suggestions: []};
+            const newBars = [...prev];
+            newBars.splice(index + 1, 0, newBar);
+            return newBars;
+        });
+    };
 
     const handleSubmit = async (event, id, pokemonName) => {
         event.preventDefault();
@@ -102,20 +115,6 @@ const Home = () => {
         }
     };
 
-    const handleAddSearchBarBelow = (id) => {
-        setSearchBars((prev) => {
-            const index = prev.findIndex((bar) => bar.id === id);
-            const newBar = { id: prev.length + 1, pokemonName: "", result: [], suggestions: [] };
-            const newBars = [...prev];
-            newBars.splice(index + 1, 0, newBar);
-            return newBars;
-        });
-    };
-
-    const handleRemoveSearchBar = (id) => {
-        setSearchBars((prev) => prev.filter((bar) => bar.id !== id));
-    };
-
     const handleAddToParty = (pokemon) => {
         if (party.length >= 6) {
             alert("パーティーには最大6体のポケモンしか追加できません");
@@ -153,11 +152,30 @@ const Home = () => {
                 <div style={styles.searchContainer}>
                     {searchBars.map((bar) => (
                         <div key={bar.id}>
+                            {/* 入力されたポケモンの画像を表示 */}
+                            <div style={{textAlign: "center", marginBottom: "10px"}}>
+                                {bar.pokemonName && (() => {
+                                    const pokemon = pokemonData.find(
+                                        (p) =>
+                                            p.name.jpn === bar.pokemonName ||
+                                            p.name.eng.toLowerCase() === bar.pokemonName.toLowerCase()
+                                    );
+                                    return pokemon ? (
+                                        <img
+                                            src={pokemon.official_artwork}
+                                            alt={bar.pokemonName}
+                                            style={styles.pokemonImage}
+                                        />
+                                    ) : (
+                                        <p>該当する画像が見つかりません</p>
+                                    );
+                                })()}
+                            </div>
                             <form
                                 onSubmit={(e) => handleSubmit(e, bar.id, bar.pokemonName)}
                                 style={styles.searchBar}
                             >
-                                <div style={{ position: "relative", width: "100%" }}>
+                                <div style={{position: "relative", width: "100%"}}>
                                     <input
                                         type="text"
                                         value={bar.pokemonName}
@@ -171,9 +189,7 @@ const Home = () => {
                                                 <li
                                                     key={index}
                                                     style={styles.suggestionItem}
-                                                    onClick={() =>
-                                                        handleSuggestionClick(bar.id, suggestion)
-                                                    }
+                                                    onClick={() => handleSuggestionClick(bar.id, suggestion)}
                                                 >
                                                     {suggestion}
                                                 </li>
@@ -219,6 +235,7 @@ const Home = () => {
                                 検索バーを追加
                             </button>
                         </div>
+
                     ))}
                 </div>
                 {loading && <p>検索中...</p>}
@@ -232,7 +249,7 @@ const Home = () => {
                                 alt={pokemon.name}
                                 style={styles.partyImage}
                             />
-                            <p style={{ fontSize: "12px", margin: "5px 0" }}>{pokemon.name}</p>
+                            <p style={{fontSize: "12px", margin: "5px 0"}}>{pokemon.name}</p>
                             <button
                                 onClick={() => handleRemoveFromParty(pokemon)}
                                 style={styles.button}
@@ -246,7 +263,9 @@ const Home = () => {
         </div>
     );
 };
-        const styles = {
+
+
+const styles = {
     container: {
         marginTop: "80px", // ヘッダーの高さ分を空ける
         display: "flex",
@@ -265,6 +284,7 @@ const Home = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+
     },
     headerLeft: {
         position: "absolute",
@@ -288,14 +308,17 @@ const Home = () => {
         marginBottom: "20px",
     },
     searchBar: {
-        display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        marginBottom: "10px",
-        gap: "10px",
+        display: "flex", // 横並び
+        flexDirection: "row", // 子要素を横方向に配置
+        justifyContent: "center", // 横方向の中央揃え
+        alignItems: "center", // 縦方向の中央揃え
+        marginBottom: "20px", // 下部に余白
+        gap: "10px", // 子要素間の余白
         width: "100%",
-        maxWidth: "800px",
+        maxWidth: "200px",
         margin: "0 auto",
+        transform: "translateX(20px)",
+        position: "relative",// 右
     },
     input: {
         flex: 1,
@@ -393,6 +416,8 @@ const Home = () => {
         listStyle: "none",
         padding: "0",
         margin: "0",
+        maxHeight: "200px", // 最大表示高さを設定 (5体分程度)
+        overflowY: "auto",
     },
     suggestionItem: {
         padding: "10px",
