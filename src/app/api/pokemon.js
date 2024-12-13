@@ -7,9 +7,9 @@ export const fetchPokemonDetails = async (pokemonName) => {
     return {
         name: data.name,
         types: data.types.map(typeInfo => typeInfo.type.name),
-        stats: data.stats, // statsも含めて返す
-        sprite: data.sprites.front_default, // スプライト画像URLを含める
-        official_artwork: data.sprites.other['official-artwork'].front_default, // 公式アートを含める
+        stats: data.stats,
+        sprite: data.sprites.front_default,
+        official_artwork: data.sprites.other['official-artwork'].front_default,
     };
 };
 
@@ -28,8 +28,6 @@ export const findAdvantageousType = (opponentTypes, myType) => {
 export const fetchAdvantageousPokemons = async (type) => {
     const response = await fetch(`https://pokeapi.co/api/v2/type/${type}`);
     const data = await response.json();
-
-    // ポケモン名のみをリストとして返す
     return data.pokemon.map(pokemonEntry => pokemonEntry.pokemon.name);
 };
 
@@ -38,9 +36,8 @@ export const calculateTotalStats = (stats) => {
     return stats.reduce((total, stat) => total + stat.base_stat, 0);
 };
 
-// 470以上の種族値のポケモンをフィルタリングし、-gmaxおよび-megaを除外する関数
+// 種族値フィルタリング
 export const filterByStats = async (pokemons) => {
-    // ポケモンの詳細情報を並列に取得
     const detailsPromises = pokemons.map(async (pokemonName) => {
         const pokemonDetails = await fetchPokemonDetails(pokemonName);
         const totalStats = calculateTotalStats(pokemonDetails.stats);
@@ -48,8 +45,6 @@ export const filterByStats = async (pokemons) => {
     });
 
     const allDetails = await Promise.all(detailsPromises);
-
-    // 種族値合計が470以上かつ名前に-gmaxまたは-megaが含まれないポケモンを抽出
     const filteredPokemons = allDetails
         .filter(({ totalStats, details }) =>
             totalStats >= 470 &&
