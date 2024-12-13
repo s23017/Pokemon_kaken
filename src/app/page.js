@@ -39,7 +39,7 @@ const TopPage = () => {
                         />
                     </Link>
                 </div>
-                <h1 style={{ fontSize: "24px", margin: 0 }}>ポケモンSNSアプリ</h1>
+                <h1 className="header-title">ポケモンSNSアプリ</h1>
             </header>
 
             {/* メインコンテンツ */}
@@ -50,7 +50,7 @@ const TopPage = () => {
                     marginTop: "150px",
                 }}
             >
-                <p style={{ marginBottom: "40px", fontSize: "18px", fontWeight: "bold" }}>
+                <p style={{marginBottom: "40px", fontSize: "18px", fontWeight: "bold"}}>
                     各機能へのリンクを選択してください:
                 </p>
                 <div
@@ -63,20 +63,20 @@ const TopPage = () => {
                     }}
                 >
                     {[
-                        { href: "/party-builder", label: "パーティー構築", img: "/images/pikacyuuuuu.png" },
-                        { href: "/speed-comparison", label: "素早さ比較", img: "/images/bata2.png" },
-                        { href: "/damage-calculator", label: "ダメージ計算", img: "/images/bana.png" },
-                        { href: "/zukan", label: "図鑑", img: "/images/riza-don.png" },
-                        { href: "/sns", label: "SNS", img: "/images/kamex.png" },
-                    ].map(({ href, label, img }, index) => (
-                        <div key={index} style={{ textAlign: "center" }}>
+                        {href: "/party-builder", label: "えす", img: "/images/pikacyuuuuu.png"},
+                        {href: "/speed-comparison", label: "sns", img: "/images/bata2.png"},
+                        {href: "/damage-calculator", label: "♂", img: "/images/bana.png"},
+                        {href: "/zukan", label: "HN", img: "/images/riza-don.png"},
+                        {href: "/sns", label: "zu", img: "/images/kamex.png"},
+                    ].map(({href, label, img}, index) => (
+                        <div key={index} style={{textAlign: "center"}}>
                             <Link href={href}>
-                                <div style={{ display: "inline-block", position: "relative" }}>
+                                <div style={{display: "inline-block", position: "relative"}}>
                                     {/* モンスターボール */}
                                     <div className="pokeball">
-                                        <div className="pokeball__top" />
-                                        <div className="pokeball__bottom" />
-                                        <div className="pokeball__button" />
+                                        <div className="pokeball__top"/>
+                                        <div className="pokeball__bottom"/>
+                                        <div className="pokeball__button"/>
                                         {/* 隠された画像 */}
                                         <div className="pokeball__content">
                                             <Image
@@ -93,13 +93,41 @@ const TopPage = () => {
                                     </div>
                                 </div>
                             </Link>
-                            <p style={{ marginTop: "30px" }}>{label}</p>
+                            <p className="menu-label">{label}</p>
                         </div>
                     ))}
                 </div>
             </div>
 
             <style jsx>{`
+
+                @font-face {
+                    font-family: "PokemonGB";
+                    src: url("/font/pokemon-gb-font/pkmn_s.ttf") format("truetype");
+                    font-weight: normal;
+                    font-style: normal;
+                }
+
+                //@font-face {
+                //    font-family: "PokemonGB";
+                //    src: url("/font/pokemon-gb-font/PokemonUnownGb-YAWa.ttf") format("truetype");
+                //    font-weight: normal;
+                //    font-style: normal;
+                //}
+
+                /* すべての要素にフォントを適用 */
+                * {
+                    font-family: "pokemon-gb-font", sans-serif;
+                }
+
+                .header-title {
+                    font-size: 24px;
+                }
+
+                .menu-label {
+                    font-size: 18px;
+                }
+
                 .pokeball {
                     width: 120px;
                     height: 120px;
@@ -166,6 +194,7 @@ const TopPage = () => {
                     opacity: 1; /* ホバー時に画像を表示 */
                 }
             `}</style>
+
         </div>
     );
 };
