@@ -12,6 +12,7 @@ import {
     doc,
     deleteDoc,
     updateDoc,
+    getDoc,
 } from "firebase/firestore";
 import {
     getStorage,
@@ -73,6 +74,13 @@ export default function PostPage() {
     // 投稿の送信処理
     const handlePostSubmit = async (e) => {
         e.preventDefault();
+
+        // 画像もしくは文字がどちらも空の場合はアラートを表示
+        if (!content.trim() && !image) {
+            alert("投稿には画像またはテキストのいずれかが必要です！");
+            return;
+        }
+
         let imageUrl = "";
 
         if (image) {
@@ -84,11 +92,16 @@ export default function PostPage() {
         const user = auth.currentUser;
         if (!user) return;
 
+        // Firestoreからユーザー名を取得
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        const username = userDoc.exists() ? userDoc.data().username : "匿名";
+
         await addDoc(collection(db, "posts"), {
             content,
             imageUrl,
             timestamp: Date.now(),
             userId: user.uid, // 投稿者のIDを保存
+            username, // 投稿者のユーザー名を保存
         });
 
         setContent("");
@@ -149,6 +162,9 @@ export default function PostPage() {
                             padding: "10px",
                         }}
                     >
+                        <p>
+                            <strong>ユーザー名: {post.username}</strong>
+                        </p>
                         <p>{post.content}</p>
                         {post.imageUrl && (
                             <img
