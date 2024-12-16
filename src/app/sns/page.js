@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation'; // useRouterをインポート
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 
@@ -14,12 +15,11 @@ const firebaseConfig = {
     measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
 
-console.log("Firebase Config:", firebaseConfig); // デバッグログ
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 export default function LoginPage() {
+    const router = useRouter(); // useRouterの初期化
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -36,6 +36,7 @@ export default function LoginPage() {
                 await signInWithEmailAndPassword(auth, email, password);
                 alert('ログイン成功！');
             }
+            router.push('/sns/post'); // 投稿ページへリダイレクト
         } catch (err) {
             console.error('Authentication Error:', err.code, err.message);
             setError(`エラー: ${err.message}`);
