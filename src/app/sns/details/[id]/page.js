@@ -415,6 +415,19 @@ export default function PostDetailPage() {
                         ))}
                     </div>
                 </div>
+                <button
+                    style={{
+                        padding: "10px",
+                        backgroundColor: "#2196F3",
+                        color: "white",
+                        border: "none",
+                        cursor: "pointer",
+                        marginTop: "20px",
+                    }}
+                    onClick={() => router.push("/sns/post")} // /postページに戻る
+                >
+                    戻る
+                </button>
             </div>
         </div>
     );
