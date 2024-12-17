@@ -18,7 +18,7 @@ import {
     uploadBytes,
     getDownloadURL,
 } from "firebase/storage";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -48,7 +48,7 @@ export default function PostPage() {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (!user) {
-                router.push("/login");
+                router.push("/sns"); // ログインしていない場合はログインページにリダイレクト
             }
         });
 
@@ -103,6 +103,15 @@ export default function PostPage() {
         setImage(null);
     };
 
+    const handleLogout = async () => {
+        try {
+            await signOut(auth);
+            router.push("/sns"); // ログアウト後にログインページへリダイレクト
+        } catch (error) {
+            console.error("ログアウト失敗:", error);
+        }
+    };
+
     return (
         <div>
             {/* ヘッダー */}
@@ -141,6 +150,22 @@ export default function PostPage() {
                     </Link>
                 </div>
                 <h1 className="header-title">投稿</h1>
+                <button
+                    onClick={handleLogout}
+                    style={{
+                        position: "absolute",
+                        right: "20px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        backgroundColor: "transparent",
+                        border: "none",
+                        color: "white",
+                        cursor: "pointer",
+                        fontSize: "16px",
+                    }}
+                >
+                    ログアウト
+                </button>
             </header>
 
             {/* メインコンテンツ */}
