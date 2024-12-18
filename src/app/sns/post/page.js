@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { initializeApp } from "firebase/app";
 import {
     getFirestore,
     collection,
@@ -12,12 +11,6 @@ import {
     doc,
     getDoc,
 } from "firebase/firestore";
-import {
-    getStorage,
-    ref,
-    uploadBytes,
-    getDownloadURL,
-} from "firebase/storage";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -33,9 +26,10 @@ const firebaseConfig = {
     measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
 
+// Initialize Firebase
+import { initializeApp } from "firebase/app";
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const storage = getStorage(app);
 const auth = getAuth(app);
 
 export default function PostPage() {
@@ -43,7 +37,8 @@ export default function PostPage() {
     const [posts, setPosts] = useState([]);
     const [title, setTitle] = useState(""); // タイトルを追加
     const [content, setContent] = useState("");
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState(null); // 投稿画像
+    const [userImage, setUserImage] = useState(null); // アイコン画像
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -76,23 +71,19 @@ export default function PostPage() {
             return;
         }
 
-        let imageUrl = "";
-        if (image) {
-            const imageRef = ref(storage, `images/${image.name}`);
-            await uploadBytes(imageRef, image);
-            imageUrl = await getDownloadURL(imageRef);
-        }
-
         const user = auth.currentUser;
         if (!user) return;
 
         const userDoc = await getDoc(doc(db, "users", user.uid));
         const username = userDoc.exists() ? userDoc.data().username : "匿名";
 
+        const imageObjectURL = image ? URL.createObjectURL(image) : null;
+
         await addDoc(collection(db, "posts"), {
             title,
             content,
-            imageUrl,
+            userImage: userImage ? URL.createObjectURL(userImage) : null, // アイコン画像
+            postImage: imageObjectURL, // 投稿画像
             timestamp: Date.now(),
             userId: user.uid,
             username,
@@ -170,8 +161,13 @@ export default function PostPage() {
 
             {/* メインコンテンツ */}
             <div style={{ padding: "100px 20px 20px" }}>
-                {/* ヘッダーの高さ分の余白を確保 */}
                 <form onSubmit={handlePostSubmit}>
+                    <label>アイコン画像を設定:</label>
+                    <input
+                        type="file"
+                        onChange={(e) => setUserImage(e.target.files[0])}
+                        style={{ display: "block", marginBottom: "10px" }}
+                    />
                     <input
                         type="text"
                         value={title}
@@ -207,6 +203,18 @@ export default function PostPage() {
                                 padding: "10px",
                             }}
                         >
+                            {post.userImage && (
+                                <img
+                                    src={post.userImage}
+                                    alt="ユーザーアイコン"
+                                    style={{
+                                        width: "50px",
+                                        height: "50px",
+                                        borderRadius: "50%",
+                                        objectFit: "cover",
+                                    }}
+                                />
+                            )}
                             <p>
                                 <strong>投稿者:</strong> {post.username}
                             </p>
@@ -220,6 +228,13 @@ export default function PostPage() {
                             >
                                 <strong>{post.title}</strong>
                             </p>
+                            {post.postImage && (
+                                <img
+                                    src={post.postImage}
+                                    alt="投稿画像"
+                                    style={{ width: "100%", marginTop: "10px" }}
+                                />
+                            )}
                         </div>
                     ))}
                 </div>
