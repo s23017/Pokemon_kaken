@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { initializeApp } from "firebase/app";
 import {
     getFirestore,
     collection,
@@ -12,12 +11,6 @@ import {
     doc,
     getDoc,
 } from "firebase/firestore";
-import {
-    getStorage,
-    ref,
-    uploadBytes,
-    getDownloadURL,
-} from "firebase/storage";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -33,9 +26,10 @@ const firebaseConfig = {
     measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
 
+// Initialize Firebase
+import { initializeApp } from "firebase/app";
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const storage = getStorage(app);
 const auth = getAuth(app);
 
 export default function PostPage() {
@@ -46,6 +40,7 @@ export default function PostPage() {
     const [content, setContent] = useState("");
     const [image, setImage] = useState(null);
     const [partyImages, setPartyImages] = useState([]);
+
 
     // ログイン状態の確認
     useEffect(() => {
@@ -91,24 +86,21 @@ export default function PostPage() {
             return;
         }
 
-        let imageUrl = "";
-        if (image) {
-            const imageRef = ref(storage, `images/${image.name}`);
-            await uploadBytes(imageRef, image);
-            imageUrl = await getDownloadURL(imageRef);
-        }
-
         const user = auth.currentUser;
         if (!user) return;
 
         const userDoc = await getDoc(doc(db, "users", user.uid));
         const username = userDoc.exists() ? userDoc.data().username : "匿名";
 
+        const imageObjectURL = image ? URL.createObjectURL(image) : null;
+
         await addDoc(collection(db, "posts"), {
             title,
             content,
+
             imageUrl,
             partyImages,
+
             timestamp: Date.now(),
             userId: user.uid,
             username,
@@ -187,6 +179,7 @@ export default function PostPage() {
 
             {/* メインコンテンツ */}
             <div style={{ padding: "100px 20px 20px" }}>
+
                 {/* パーティー画像表示 */}
                 {partyImages.length > 0 && (
                     <div style={styles.partyImagesContainer}>
@@ -205,7 +198,14 @@ export default function PostPage() {
                 )}
 
                 {/* 投稿フォーム */}
+
                 <form onSubmit={handlePostSubmit}>
+                    <label>アイコン画像を設定:</label>
+                    <input
+                        type="file"
+                        onChange={(e) => setUserImage(e.target.files[0])}
+                        style={{ display: "block", marginBottom: "10px" }}
+                    />
                     <input
                         type="text"
                         value={title}
@@ -242,6 +242,18 @@ export default function PostPage() {
                                 padding: "10px",
                             }}
                         >
+                            {post.userImage && (
+                                <img
+                                    src={post.userImage}
+                                    alt="ユーザーアイコン"
+                                    style={{
+                                        width: "50px",
+                                        height: "50px",
+                                        borderRadius: "50%",
+                                        objectFit: "cover",
+                                    }}
+                                />
+                            )}
                             <p>
                                 <strong>投稿者:</strong> {post.username}
                             </p>
@@ -255,6 +267,7 @@ export default function PostPage() {
                             >
                                 <strong>{post.title}</strong>
                             </p>
+
                             <p>{post.content}</p>
                             {/* ポケモン画像を表示 */}
                             {post.partyImages && post.partyImages.length > 0 && (
@@ -268,6 +281,7 @@ export default function PostPage() {
                                         />
                                     ))}
                                 </div>
+
                             )}
                         </div>
                     ))}
