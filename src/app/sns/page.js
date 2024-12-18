@@ -1,8 +1,15 @@
 "use client";
 
-import React, { useState } from 'react';
-import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import React, { useState } from "react";
+import { initializeApp } from "firebase/app";
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    updateProfile,
+} from "firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { useRouter } from "next/navigation";
 
 const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -16,39 +23,75 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
-export default function LoginPage() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const [isRegister, setIsRegister] = useState(false);
+export default function AuthPage() {
+    const [isRegister, setIsRegister] = useState(false); // true: 新規登録, false: ログイン
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [username, setUsername] = useState(""); // 新規登録用のユーザー名
+    const [error, setError] = useState("");
+    const router = useRouter();
 
-    const handleSubmit = async (e) => {
+    const handleAuth = async (e) => {
         e.preventDefault();
-        setError('');
+        setError("");
+
         try {
             if (isRegister) {
-                await createUserWithEmailAndPassword(auth, email, password);
-                alert('アカウントが作成されました！');
+                // 新規登録処理
+                const userCredential = await createUserWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
+
+                // Firebase Authenticationのプロフィール更新
+                await updateProfile(userCredential.user, { displayName: username });
+
+                // Firestoreにユーザー情報を保存
+                await setDoc(doc(db, "users", userCredential.user.uid), {
+                    username,
+                    email,
+                });
+
+                alert("新規登録が完了しました！");
             } else {
+                // ログイン処理
                 await signInWithEmailAndPassword(auth, email, password);
-                alert('ログイン成功！');
+                alert("ログイン成功！");
             }
+            router.push("/sns/post"); // 投稿ページにリダイレクト
         } catch (err) {
-            setError(err.message);
+            console.error("認証エラー:", err.message);
+            setError(
+                isRegister
+                    ? "新規登録に失敗しました。入力内容を確認してください。"
+                    : "ログインに失敗しました。メールアドレスとパスワードを確認してください。"
+            );
         }
     };
 
     return (
-        <div style={{ maxWidth: '400px', margin: '50px auto', textAlign: 'center' }}>
-            <h1>{isRegister ? '新規登録' : 'ログイン'}</h1>
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ maxWidth: "400px", margin: "50px auto", textAlign: "center" }}>
+            <h1>{isRegister ? "新規登録" : "ログイン"}</h1>
+            <form onSubmit={handleAuth} style={{ display: "flex", flexDirection: "column" }}>
+                {isRegister && (
+                    <input
+                        type="text"
+                        placeholder="ユーザー名"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        style={{ marginBottom: "10px", padding: "10px" }}
+                        required
+                    />
+                )}
                 <input
                     type="email"
                     placeholder="メールアドレス"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    style={{ marginBottom: '10px', padding: '10px' }}
+                    style={{ marginBottom: "10px", padding: "10px" }}
                     required
                 />
                 <input
@@ -56,21 +99,29 @@ export default function LoginPage() {
                     placeholder="パスワード"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    style={{ marginBottom: '10px', padding: '10px' }}
+                    style={{ marginBottom: "10px", padding: "10px" }}
                     required
                 />
-                <button type="submit" style={{ padding: '10px', cursor: 'pointer' }}>
-                    {isRegister ? '登録する' : 'ログイン'}
+                <button type="submit" style={{ padding: "10px", cursor: "pointer" }}>
+                    {isRegister ? "登録" : "ログイン"}
                 </button>
             </form>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <p>
-                {isRegister ? 'アカウントを持っている場合' : 'アカウントを持っていない場合'}{' '}
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            <p style={{ marginTop: "20px" }}>
+                {isRegister
+                    ? "すでにアカウントをお持ちの方は"
+                    : "アカウントをお持ちでない方は"}{" "}
                 <button
+                    type="button"
                     onClick={() => setIsRegister(!isRegister)}
-                    style={{ background: 'none', border: 'none', color: 'blue', cursor: 'pointer' }}
+                    style={{
+                        background: "none",
+                        border: "none",
+                        color: "blue",
+                        cursor: "pointer",
+                    }}
                 >
-                    {isRegister ? 'ログインする' : '新規登録'}
+                    {isRegister ? "ログイン" : "新規登録"}
                 </button>
             </p>
         </div>
