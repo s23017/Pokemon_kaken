@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import {
     getAuth,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     updateProfile,
+    onAuthStateChanged,
 } from "firebase/auth";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
@@ -36,6 +37,17 @@ export default function AuthPage() {
     const [profileImage, setProfileImage] = useState(""); // プロフィール画像(Base64形式)
     const [preview, setPreview] = useState(""); // プレビュー画像
     const router = useRouter();
+
+    useEffect(() => {
+        // ページロード時に認証状態を確認
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // ユーザーがログイン済みの場合、投稿画面へリダイレクト
+                router.push("/sns/post");
+            }
+        });
+        return () => unsubscribe(); // コンポーネントがアンマウントされたらクリーンアップ
+    }, [router]);
 
     const handleAuth = async (e) => {
         e.preventDefault();
