@@ -18,8 +18,10 @@ import {
     uploadBytes,
     getDownloadURL,
 } from "firebase/storage";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
 
 const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -46,7 +48,7 @@ export default function PostPage() {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (!user) {
-                router.push("/login");
+                router.push("/sns"); // ログインしていない場合はログインページにリダイレクト
             }
         });
 
@@ -101,54 +103,133 @@ export default function PostPage() {
         setImage(null);
     };
 
-    return (
-        <div style={{ padding: "20px" }}>
-            <h1>投稿ページ</h1>
-            <form onSubmit={handlePostSubmit}>
-                <input
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="タイトルを入力"
-                    style={{ width: "100%", marginBottom: "10px", padding: "10px" }}
-                    required
-                />
-                <textarea
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    placeholder="投稿内容を記入"
-                    rows="3"
-                    style={{ width: "100%", marginBottom: "10px" }}
-                />
-                <input
-                    type="file"
-                    onChange={(e) => setImage(e.target.files[0])}
-                    style={{ display: "block", marginBottom: "10px" }}
-                />
-                <button type="submit">投稿する</button>
-            </form>
+    const handleLogout = async () => {
+        try {
+            await signOut(auth);
+            router.push("/sns"); // ログアウト後にログインページへリダイレクト
+        } catch (error) {
+            console.error("ログアウト失敗:", error);
+        }
+    };
 
-            <div style={{ marginTop: "20px" }}>
-                <h2>投稿一覧</h2>
-                {posts.map((post) => (
-                    <div
-                        key={post.id}
-                        style={{
-                            border: "1px solid #ccc",
-                            marginBottom: "10px",
-                            padding: "10px",
-                        }}
-                    >
-                        <p><strong>ユーザー名:</strong> {post.username}</p>
-                        <p
-                            style={{ color: "blue", cursor: "pointer" }}
-                            onClick={() => router.push(`/sns/details/${post.id}`)}
+    return (
+        <div>
+            {/* ヘッダー */}
+            <header
+                style={{
+                    backgroundColor: "#FF0000",
+                    color: "white",
+                    textAlign: "center",
+                    padding: "20px 0",
+                    position: "fixed", // ヘッダーを固定
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    zIndex: 1000, // 高い優先度を持つ
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}
+            >
+                <div
+                    style={{
+                        position: "absolute",
+                        left: "20px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                    }}
+                >
+                    <Link href="/">
+                        <Image
+                            src="/images/gaming.gif"
+                            width={50}
+                            height={50}
+                            alt="ホームに戻る"
+                            style={{ cursor: "pointer" }}
+                        />
+                    </Link>
+                </div>
+                <h1 className="header-title">投稿</h1>
+                <button
+                    onClick={handleLogout}
+                    style={{
+                        position: "absolute",
+                        right: "20px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        backgroundColor: "transparent",
+                        border: "none",
+                        color: "white",
+                        cursor: "pointer",
+                        fontSize: "16px",
+                    }}
+                >
+                    ログアウト
+                </button>
+            </header>
+
+            {/* メインコンテンツ */}
+            <div style={{ padding: "100px 20px 20px" }}>
+                {/* ヘッダーの高さ分の余白を確保 */}
+                <form onSubmit={handlePostSubmit}>
+                    <input
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        placeholder="タイトルを入力"
+                        style={{ width: "100%", marginBottom: "10px", padding: "10px" }}
+                        required
+                    />
+                    <textarea
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        placeholder="投稿内容を記入"
+                        rows="3"
+                        style={{ width: "100%", marginBottom: "10px" }}
+                    />
+                    <input
+                        type="file"
+                        onChange={(e) => setImage(e.target.files[0])}
+                        style={{ display: "block", marginBottom: "10px" }}
+                    />
+                    <button type="submit">投稿する</button>
+                </form>
+
+                {/* 投稿一覧 */}
+                <div style={{ marginTop: "20px" }}>
+                    <h2>投稿一覧</h2>
+                    {posts.map((post) => (
+                        <div
+                            key={post.id}
+                            style={{
+                                border: "1px solid #ccc",
+                                marginBottom: "10px",
+                                padding: "10px",
+                            }}
                         >
-                            <strong>{post.title}</strong>
-                        </p>
-                    </div>
-                ))}
+                            <p>
+                                <strong>投稿者:</strong> {post.username}
+                            </p>
+                            <p
+                                style={{
+                                    color: "black",
+                                    cursor: "pointer",
+                                    fontSize: "35px",
+                                }}
+                                onClick={() => router.push(`/sns/details/${post.id}`)}
+                            >
+                                <strong>{post.title}</strong>
+                            </p>
+                        </div>
+                    ))}
+                </div>
             </div>
+
+            <style jsx>{`
+                .header-title {
+                    font-size: 24px;
+                }
+            `}</style>
         </div>
     );
 }
