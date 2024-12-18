@@ -130,6 +130,13 @@ const Home = () => {
     const handleRemoveFromParty = (pokemon) => {
         setParty((prev) => prev.filter((p) => p.name !== pokemon.name));
     };
+    const handleShare = () => {
+        const partyImages = party.map((pokemon) => pokemon.official_artwork);
+        const queryString = partyImages.map((url, index) => `image${index + 1}=${encodeURIComponent(url)}`).join("&");
+        // /sns にパーティーの画像をクエリとして渡す
+        window.location.href = `http://localhost:3000/sns/post?${queryString}`;
+    };
+
 
     return (
         <div style={styles.container}>
@@ -241,6 +248,12 @@ const Home = () => {
                 {loading && <p>検索中...</p>}
             </div>
             <div style={styles.partyContainer}>
+                <h2 style={styles.partyTitle}>パーティー</h2>
+                <div style={styles.shareButtonContainer}>
+                    <button style={styles.shareButton} onClick={handleShare}>
+                        共有
+                    </button>
+                </div>
                 <div style={styles.partyGrid}>
                     {party.map((pokemon) => (
                         <div key={pokemon.name} style={styles.partyCard}>
@@ -424,6 +437,37 @@ const styles = {
         cursor: "pointer",
         borderBottom: "1px solid #ccc",
     },
+    partyTitle: {
+        position: "fixed",
+        left: "0",
+        textAlign: "center",
+        fontSize: "18px",
+        fontWeight: "bold",
+        marginBottom: "10px",
+        color: "#333",
+    },
+    shareButtonContainer: {
+        position: "fixed", // 固定位置
+        bottom: "20px",    // 画面下からの余白
+        right: "20px",     // 画面右からの余白
+        zIndex: 1000,      // 重なり順を上に
+    },
+    shareButton: {
+        padding: "10px 20px",         // ボタン内の余白
+        backgroundColor: "#4CAF50",  // ボタン色
+        color: "white",              // 文字色
+        border: "none",              // 境界線なし
+        borderRadius: "5px",         // ボタンの角を丸く
+        cursor: "pointer",           // ポインターカーソル
+        fontSize: "16px",            // フォントサイズ
+        boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", // 影を追加
+        transition: "transform 0.2s", // ホバーアニメーション
+    },
+    shareButtonHover: {
+        transform: "scale(1.1)", // ホバー時にボタンを少し拡大
+    },
+
+
 };
 
 export default Home;
