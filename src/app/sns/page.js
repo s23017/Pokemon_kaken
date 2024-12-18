@@ -10,6 +10,8 @@ import {
 } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
 
 const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -73,57 +75,100 @@ export default function AuthPage() {
     };
 
     return (
-        <div style={{ maxWidth: "400px", margin: "50px auto", textAlign: "center" }}>
-            <h1>{isRegister ? "新規登録" : "ログイン"}</h1>
-            <form onSubmit={handleAuth} style={{ display: "flex", flexDirection: "column" }}>
-                {isRegister && (
+        <div>
+            {/* ヘッダー */}
+            <header
+                style={{
+                    backgroundColor: "#FF0000",
+                    color: "white",
+                    textAlign: "center",
+                    padding: "20px 0",
+                    position: "relative",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}
+            >
+                <div
+                    style={{
+                        position: "absolute",
+                        left: "20px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                    }}
+                >
+                    <Link href="/">
+                        <Image
+                            src="/images/gaming.gif"
+                            width={50}
+                            height={50}
+                            alt="ホームに戻る"
+                            style={{ cursor: "pointer" }}
+                        />
+                    </Link>
+                </div>
+                <h1 className="header-title">ログイン</h1>
+            </header>
+
+            {/* メインコンテンツ */}
+            <div style={{ maxWidth: "400px", margin: "50px auto", textAlign: "center" }}>
+                <h1>{isRegister ? "新規登録" : "ログイン"}</h1>
+                <form onSubmit={handleAuth} style={{ display: "flex", flexDirection: "column" }}>
+                    {isRegister && (
+                        <input
+                            type="text"
+                            placeholder="ユーザー名"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            style={{ marginBottom: "10px", padding: "10px" }}
+                            required
+                        />
+                    )}
                     <input
-                        type="text"
-                        placeholder="ユーザー名"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        type="email"
+                        placeholder="メールアドレス"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         style={{ marginBottom: "10px", padding: "10px" }}
                         required
                     />
-                )}
-                <input
-                    type="email"
-                    placeholder="メールアドレス"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    style={{ marginBottom: "10px", padding: "10px" }}
-                    required
-                />
-                <input
-                    type="password"
-                    placeholder="パスワード"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    style={{ marginBottom: "10px", padding: "10px" }}
-                    required
-                />
-                <button type="submit" style={{ padding: "10px", cursor: "pointer" }}>
-                    {isRegister ? "登録" : "ログイン"}
-                </button>
-            </form>
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            <p style={{ marginTop: "20px" }}>
-                {isRegister
-                    ? "すでにアカウントをお持ちの方は"
-                    : "アカウントをお持ちでない方は"}{" "}
-                <button
-                    type="button"
-                    onClick={() => setIsRegister(!isRegister)}
-                    style={{
-                        background: "none",
-                        border: "none",
-                        color: "blue",
-                        cursor: "pointer",
-                    }}
-                >
-                    {isRegister ? "ログイン" : "新規登録"}
-                </button>
-            </p>
+                    <input
+                        type="password"
+                        placeholder="パスワード"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        style={{ marginBottom: "10px", padding: "10px" }}
+                        required
+                    />
+                    <button type="submit" style={{ padding: "10px", cursor: "pointer" }}>
+                        {isRegister ? "登録" : "ログイン"}
+                    </button>
+                </form>
+                {error && <p style={{ color: "red" }}>{error}</p>}
+                <p style={{ marginTop: "20px" }}>
+                    {isRegister
+                        ? "すでにアカウントをお持ちの方は"
+                        : "アカウントをお持ちでない方は"}{" "}
+                    <button
+                        type="button"
+                        onClick={() => setIsRegister(!isRegister)}
+                        style={{
+                            background: "none",
+                            border: "none",
+                            color: "blue",
+                            cursor: "pointer",
+                        }}
+                    >
+                        {isRegister ? "ログイン" : "新規登録"}
+                    </button>
+                </p>
+            </div>
+
+            <style jsx>{`
+                .header-title {
+                    font-size: 24px;
+                }
+            `}</style>
         </div>
     );
 }
