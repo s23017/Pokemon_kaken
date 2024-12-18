@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { initializeApp } from "firebase/app";
 import {
     getFirestore,
     collection,
@@ -12,14 +11,8 @@ import {
     doc,
     getDoc,
 } from "firebase/firestore";
-import {
-    getStorage,
-    ref,
-    uploadBytes,
-    getDownloadURL,
-} from "firebase/storage";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -33,28 +26,34 @@ const firebaseConfig = {
     measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
 
+// Initialize Firebase
+import { initializeApp } from "firebase/app";
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const storage = getStorage(app);
 const auth = getAuth(app);
 
 export default function PostPage() {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const [posts, setPosts] = useState([]);
-    const [title, setTitle] = useState(""); // タイトルを追加
+    const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [image, setImage] = useState(null);
+    const [partyImages, setPartyImages] = useState([]);
 
+
+    // ログイン状態の確認
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (!user) {
-                router.push("/sns"); // ログインしていない場合はログインページにリダイレクト
+                router.push("/sns"); // ログインしていない場合はログインページへリダイレクト
             }
         });
 
         return () => unsubscribe();
     }, [router]);
 
+    // Firestoreから投稿一覧を取得
     useEffect(() => {
         const q = query(collection(db, "posts"), orderBy("timestamp", "desc"));
         const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -68,6 +67,17 @@ export default function PostPage() {
         return () => unsubscribe();
     }, []);
 
+    // クエリパラメータからパーティー画像URLを取得
+    useEffect(() => {
+        const images = [];
+        for (let i = 1; i <= 6; i++) {
+            const imageUrl = searchParams.get(`image${i}`);
+            if (imageUrl) images.push(imageUrl);
+        }
+        setPartyImages(images);
+    }, [searchParams]);
+
+    // 投稿の送信処理
     const handlePostSubmit = async (e) => {
         e.preventDefault();
 
@@ -76,23 +86,21 @@ export default function PostPage() {
             return;
         }
 
-        let imageUrl = "";
-        if (image) {
-            const imageRef = ref(storage, `images/${image.name}`);
-            await uploadBytes(imageRef, image);
-            imageUrl = await getDownloadURL(imageRef);
-        }
-
         const user = auth.currentUser;
         if (!user) return;
 
         const userDoc = await getDoc(doc(db, "users", user.uid));
         const username = userDoc.exists() ? userDoc.data().username : "匿名";
 
+        const imageObjectURL = image ? URL.createObjectURL(image) : null;
+
         await addDoc(collection(db, "posts"), {
             title,
             content,
+
             imageUrl,
+            partyImages,
+
             timestamp: Date.now(),
             userId: user.uid,
             username,
@@ -103,10 +111,11 @@ export default function PostPage() {
         setImage(null);
     };
 
+    // ログアウト処理
     const handleLogout = async () => {
         try {
             await signOut(auth);
-            router.push("/sns"); // ログアウト後にログインページへリダイレクト
+            router.push("/sns"); // ログアウト後ログインページへリダイレクト
         } catch (error) {
             console.error("ログアウト失敗:", error);
         }
@@ -121,11 +130,11 @@ export default function PostPage() {
                     color: "white",
                     textAlign: "center",
                     padding: "20px 0",
-                    position: "fixed", // ヘッダーを固定
+                    position: "fixed",
                     top: 0,
                     left: 0,
                     width: "100%",
-                    zIndex: 1000, // 高い優先度を持つ
+                    zIndex: 1000,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -170,8 +179,33 @@ export default function PostPage() {
 
             {/* メインコンテンツ */}
             <div style={{ padding: "100px 20px 20px" }}>
-                {/* ヘッダーの高さ分の余白を確保 */}
+
+                {/* パーティー画像表示 */}
+                {partyImages.length > 0 && (
+                    <div style={styles.partyImagesContainer}>
+                        <h3>パーティーに含まれるポケモン</h3>
+                        <div style={styles.imageGrid}>
+                            {partyImages.map((url, index) => (
+                                <img
+                                    key={index}
+                                    src={url}
+                                    alt={`ポケモン${index + 1}`}
+                                    style={styles.pokemonImage}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* 投稿フォーム */}
+
                 <form onSubmit={handlePostSubmit}>
+                    <label>アイコン画像を設定:</label>
+                    <input
+                        type="file"
+                        onChange={(e) => setUserImage(e.target.files[0])}
+                        style={{ display: "block", marginBottom: "10px" }}
+                    />
                     <input
                         type="text"
                         value={title}
@@ -196,6 +230,7 @@ export default function PostPage() {
                 </form>
 
                 {/* 投稿一覧 */}
+                {/* 投稿一覧 */}
                 <div style={{ marginTop: "20px" }}>
                     <h2>投稿一覧</h2>
                     {posts.map((post) => (
@@ -207,6 +242,18 @@ export default function PostPage() {
                                 padding: "10px",
                             }}
                         >
+                            {post.userImage && (
+                                <img
+                                    src={post.userImage}
+                                    alt="ユーザーアイコン"
+                                    style={{
+                                        width: "50px",
+                                        height: "50px",
+                                        borderRadius: "50%",
+                                        objectFit: "cover",
+                                    }}
+                                />
+                            )}
                             <p>
                                 <strong>投稿者:</strong> {post.username}
                             </p>
@@ -220,16 +267,47 @@ export default function PostPage() {
                             >
                                 <strong>{post.title}</strong>
                             </p>
+
+                            <p>{post.content}</p>
+                            {/* ポケモン画像を表示 */}
+                            {post.partyImages && post.partyImages.length > 0 && (
+                                <div style={styles.imageGrid}>
+                                    {post.partyImages.map((url, index) => (
+                                        <img
+                                            key={index}
+                                            src={url}
+                                            alt={`ポケモン${index + 1}`}
+                                            style={styles.pokemonImage}
+                                        />
+                                    ))}
+                                </div>
+
+                            )}
                         </div>
                     ))}
                 </div>
             </div>
-
-            <style jsx>{`
-                .header-title {
-                    font-size: 24px;
-                }
-            `}</style>
         </div>
     );
 }
+
+const styles = {
+    partyImagesContainer: {
+        marginBottom: "20px",
+        textAlign: "center",
+    },
+    imageGrid: {
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center",
+        gap: "10px",
+    },
+    pokemonImage: {
+        width: "120px",
+        height: "120px",
+        objectFit: "contain",
+        border: "1px solid #ccc",
+        borderRadius: "10px",
+        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    },
+};

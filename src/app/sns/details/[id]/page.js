@@ -191,6 +191,25 @@ export default function PostDetailPage() {
                 {post && (
                     <>
                         <h1>{post.title}</h1>
+                        {post.partyImages && post.partyImages.length > 0 && (
+                            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginBottom: "20px" }}>
+                                {post.partyImages.map((url, index) => (
+                                    <img
+                                        key={index}
+                                        src={url}
+                                        alt={`ポケモン${index + 1}`}
+                                        style={{
+                                            width: "120px",
+                                            height: "120px",
+                                            objectFit: "contain",
+                                            border: "1px solid #ccc",
+                                            borderRadius: "10px",
+                                        }}
+                                    />
+                                ))}
+                            </div>
+                        )}
+
                         <p>
                             <strong>ユーザー名:</strong> {post.username}
                         </p>
