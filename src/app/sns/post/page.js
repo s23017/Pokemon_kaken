@@ -11,7 +11,17 @@ import {
     doc,
     getDoc,
 } from "firebase/firestore";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import {
+    getAuth,
+    onAuthStateChanged,
+    signOut,
+} from "firebase/auth";
+import {
+    getStorage,
+    ref,
+    uploadBytes,
+    getDownloadURL,
+} from "firebase/storage";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -31,6 +41,7 @@ import { initializeApp } from "firebase/app";
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+const storage = getStorage(app);
 
 export default function PostPage() {
     const router = useRouter();
@@ -63,6 +74,12 @@ export default function PostPage() {
         return () => unsubscribe();
     }, []);
 
+    const uploadToStorage = async (file) => {
+        const storageRef = ref(storage, `images/${Date.now()}_${file.name}`);
+        await uploadBytes(storageRef, file);
+        return await getDownloadURL(storageRef);
+    };
+
     const handlePostSubmit = async (e) => {
         e.preventDefault();
 
@@ -77,13 +94,21 @@ export default function PostPage() {
         const userDoc = await getDoc(doc(db, "users", user.uid));
         const username = userDoc.exists() ? userDoc.data().username : "匿名";
 
-        const imageObjectURL = image ? URL.createObjectURL(image) : null;
+        let postImageUrl = null;
+        if (image) {
+            postImageUrl = await uploadToStorage(image);
+        }
+
+        let userImageUrl = null;
+        if (userImage) {
+            userImageUrl = await uploadToStorage(userImage);
+        }
 
         await addDoc(collection(db, "posts"), {
             title,
             content,
-            userImage: userImage ? URL.createObjectURL(userImage) : null, // アイコン画像
-            postImage: imageObjectURL, // 投稿画像
+            userImage: userImageUrl, // アイコン画像
+            postImage: postImageUrl, // 投稿画像
             timestamp: Date.now(),
             userId: user.uid,
             username,
@@ -92,6 +117,7 @@ export default function PostPage() {
         setTitle("");
         setContent("");
         setImage(null);
+        setUserImage(null);
     };
 
     const handleLogout = async () => {
