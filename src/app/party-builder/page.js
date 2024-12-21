@@ -312,18 +312,20 @@ const Home = () => {
                     <div style={styles.modal}>
                         <h2 style={styles.modalTitle}>技を選択してください</h2>
                         {selectedPokemon?.moves?.length > 0 ? (
-                            <ul style={styles.moveList}>
-                                {selectedPokemon.moves.map((move, index) => (
-                                    <li key={index} style={styles.moveItem}>
-                                        <button
-                                            style={styles.moveButton}
-                                            onClick={() => handleConfirmMove(move)}
-                                        >
-                                            {move}
-                                        </button>
-                                    </li>
-                                ))}
-                            </ul>
+                            <div style={styles.scrollableMovesContainer}>
+                                <ul style={styles.moveList}>
+                                    {selectedPokemon.moves.map((move, index) => (
+                                        <li key={index} style={styles.moveItem}>
+                                            <button
+                                                style={styles.moveButton}
+                                                onClick={() => handleConfirmMove(move)}
+                                            >
+                                                {move}
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         ) : (
                             <p>利用可能な技がありません</p>
                         )}
@@ -333,6 +335,7 @@ const Home = () => {
                     </div>
                 </div>
             )}
+
         </div>
     );
 };

@@ -183,23 +183,38 @@ const styles = {
         fontSize: "18px",
         marginBottom: "10px",
     },
+    scrollableMovesContainer: {
+        maxHeight: "500px", // 表示高さを制限
+        overflowY: "scroll", // 縦方向スクロールを有効化
+        border: "1px solid #ccc", // ボーダーで視覚的に分かりやすく
+        padding: "10px", // 内側の余白
+        margin: "10px 0", // 外側の余白
+        borderRadius: "5px", // 角丸
+        backgroundColor: "#f9f9f9", // 背景色
+    },
     moveList: {
-        listStyle: "none",
+        listStyleType: "none", // デフォルトのリストスタイルを解除
+        margin: 0,
         padding: 0,
-        margin: "10px 0",
     },
     moveItem: {
-        marginBottom: "10px",
+        marginBottom: "5px", // 各技間の余白
     },
     moveButton: {
-        padding: "10px",
+        width: "100%", // ボタン幅を100%
+        padding: "8px",
+        textAlign: "center",
         backgroundColor: "#4CAF50",
         color: "white",
         border: "none",
-        borderRadius: "5px",
+        borderRadius: "3px",
         cursor: "pointer",
-        width: "100%",
+        transition: "background-color 0.2s",
     },
+    moveButtonHover: {
+        backgroundColor: "#45a049", // ホバー時の背景色
+    },
+
     closeButton: {
         marginTop: "10px",
         padding: "10px",
