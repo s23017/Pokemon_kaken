@@ -216,7 +216,13 @@ const styles = {
         padding: 0,
     },
     moveItem: {
-        marginBottom: "5px", // 各技間の余白
+        padding: "10px",
+        marginBottom: "5px",
+        border: "1px solid #ccc",
+        borderRadius: "5px",
+        cursor: "pointer",
+        textAlign: "center",
+        transition: "background-color 0.2s",
     },
     moveButton: {
         width: "100%", // ボタン幅を100%
@@ -229,6 +235,7 @@ const styles = {
         cursor: "pointer",
         transition: "background-color 0.2s",
     },
+
     moveButtonHover: {
         backgroundColor: "#45a049", // ホバー時の背景色
     },
@@ -240,6 +247,16 @@ const styles = {
         color: "white",
         border: "none",
         borderRadius: "5px",
+        cursor: "pointer",
+    },
+    confirmButton: {
+        marginTop: "10px",
+        padding: "10px",
+        fontSize: "14px",
+        backgroundColor: "#4CAF50",
+        color: "white",
+        border: "none",
+        borderRadius: "4px",
         cursor: "pointer",
     },
     partyTitle: {
@@ -291,16 +308,9 @@ const styles = {
         display: "flex",
         justifyContent: "center",
         gap: "10px",
+        marginTop: "10px",
     },
-    confirmButton: {
-        padding: "10px 20px",
-        fontSize: "14px",
-        backgroundColor: "#4CAF50",
-        color: "white",
-        border: "none",
-        borderRadius: "4px",
-        cursor: "pointer",
-    },
+
 
 };
 

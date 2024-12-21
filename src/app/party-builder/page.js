@@ -185,6 +185,39 @@ const Home = () => {
             setCurrentPage(currentPage - 1);
         }
     };
+    const [selectedMoves, setSelectedMoves] = useState([]);
+
+    const handleToggleMove = (move) => {
+        setSelectedMoves((prev) => {
+            if (prev.includes(move)) {
+                // 技がすでに選択されている場合は削除
+                return prev.filter((m) => m !== move);
+            } else if (prev.length < 4) {
+                // 技が4つ未満の場合は追加
+                return [...prev, move];
+            } else {
+                alert("最大4つの技しか選択できません");
+                return prev;
+            }
+        });
+    };
+
+    const handleConfirmMoves = () => {
+        if (selectedMoves.length === 0) {
+            alert("少なくとも1つの技を選択してください");
+            return;
+        }
+
+        const updatedPokemon = {
+            ...selectedPokemon,
+            selectedMoves: selectedMoves,
+        };
+
+        setParty((prev) => [...prev, updatedPokemon]);
+        handleCloseModal();
+        setSelectedMoves([]); // 技の選択をリセット
+    };
+
 
 
     return (
@@ -332,13 +365,16 @@ const Home = () => {
                                     {selectedPokemon.moves
                                         .slice(currentPage * movesPerPage, (currentPage + 1) * movesPerPage)
                                         .map((move, index) => (
-                                            <li key={index} style={styles.moveItem}>
-                                                <button
-                                                    style={styles.moveButton}
-                                                    onClick={() => handleConfirmMove(move)}
-                                                >
-                                                    {move}
-                                                </button>
+                                            <li
+                                                key={index}
+                                                style={{
+                                                    ...styles.moveItem,
+                                                    backgroundColor: selectedMoves.includes(move) ? "#4CAF50" : "#f9f9f9",
+                                                    color: selectedMoves.includes(move) ? "white" : "black",
+                                                }}
+                                                onClick={() => handleToggleMove(move)}
+                                            >
+                                                {move}
                                             </li>
                                         ))}
                                 </ul>
@@ -362,9 +398,14 @@ const Home = () => {
                         ) : (
                             <p>利用可能な技がありません</p>
                         )}
-                        <button style={styles.closeButton} onClick={handleCloseModal}>
-                            閉じる
-                        </button>
+                        <div style={styles.modalActions}>
+                            <button style={styles.confirmButton} onClick={handleConfirmMoves}>
+                                決定
+                            </button>
+                            <button style={styles.closeButton} onClick={handleCloseModal}>
+                                閉じる
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
