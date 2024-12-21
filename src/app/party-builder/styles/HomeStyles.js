@@ -184,14 +184,32 @@ const styles = {
         marginBottom: "10px",
     },
     scrollableMovesContainer: {
-        maxHeight: "500px", // 表示高さを制限
-        overflowY: "scroll", // 縦方向スクロールを有効化
-        border: "1px solid #ccc", // ボーダーで視覚的に分かりやすく
-        padding: "10px", // 内側の余白
-        margin: "10px 0", // 外側の余白
-        borderRadius: "5px", // 角丸
-        backgroundColor: "#f9f9f9", // 背景色
+        maxHeight: "1000px",
+        padding: "10px",
+        backgroundColor: "#f9f9f9",
+        border: "1px solid #ddd",
+        borderRadius: "5px",
+        marginBottom: "10px",
     },
+    paginationControls: {
+        display: "flex",
+        justifyContent: "space-between",
+        marginTop: "10px",
+    },
+    paginationButton: {
+        padding: "5px 10px",
+        backgroundColor: "#4CAF50",
+        color: "white",
+        border: "none",
+        borderRadius: "3px",
+        cursor: "pointer",
+        transition: "background-color 0.2s",
+    },
+    paginationButtonDisabled: {
+        backgroundColor: "#ccc",
+        cursor: "not-allowed",
+    },
+
     moveList: {
         listStyleType: "none", // デフォルトのリストスタイルを解除
         margin: 0,

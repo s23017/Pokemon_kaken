@@ -171,6 +171,21 @@ const Home = () => {
             alert("技名を選択できませんでした。再試行してください。");
         }
     };
+    const [currentPage, setCurrentPage] = useState(0);
+    const movesPerPage = 10;
+
+    const handleNextPage = () => {
+        if ((currentPage + 1) * movesPerPage < selectedPokemon.moves.length) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const handlePrevPage = () => {
+        if (currentPage > 0) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
 
     return (
         <div style={styles.container}>
@@ -314,17 +329,35 @@ const Home = () => {
                         {selectedPokemon?.moves?.length > 0 ? (
                             <div style={styles.scrollableMovesContainer}>
                                 <ul style={styles.moveList}>
-                                    {selectedPokemon.moves.map((move, index) => (
-                                        <li key={index} style={styles.moveItem}>
-                                            <button
-                                                style={styles.moveButton}
-                                                onClick={() => handleConfirmMove(move)}
-                                            >
-                                                {move}
-                                            </button>
-                                        </li>
-                                    ))}
+                                    {selectedPokemon.moves
+                                        .slice(currentPage * movesPerPage, (currentPage + 1) * movesPerPage)
+                                        .map((move, index) => (
+                                            <li key={index} style={styles.moveItem}>
+                                                <button
+                                                    style={styles.moveButton}
+                                                    onClick={() => handleConfirmMove(move)}
+                                                >
+                                                    {move}
+                                                </button>
+                                            </li>
+                                        ))}
                                 </ul>
+                                <div style={styles.paginationControls}>
+                                    <button
+                                        onClick={handlePrevPage}
+                                        disabled={currentPage === 0}
+                                        style={styles.paginationButton}
+                                    >
+                                        前へ
+                                    </button>
+                                    <button
+                                        onClick={handleNextPage}
+                                        disabled={(currentPage + 1) * movesPerPage >= selectedPokemon.moves.length}
+                                        style={styles.paginationButton}
+                                    >
+                                        次へ
+                                    </button>
+                                </div>
                             </div>
                         ) : (
                             <p>利用可能な技がありません</p>
