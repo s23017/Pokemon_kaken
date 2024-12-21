@@ -369,15 +369,31 @@ const Home = () => {
                                                 key={index}
                                                 style={{
                                                     ...styles.moveItem,
-                                                    backgroundColor: selectedMoves.includes(move) ? "#4CAF50" : "#f9f9f9",
-                                                    color: selectedMoves.includes(move) ? "white" : "black",
+                                                    backgroundColor: selectedMoves.includes(move.name) ? "#4CAF50" : "#f9f9f9",
+                                                    color: selectedMoves.includes(move.name) ? "white" : "black",
                                                 }}
-                                                onClick={() => handleToggleMove(move)}
+                                                onClick={() => handleToggleMove(move.name)} // 技名を選択
                                             >
-                                                {move}
+                                                <div style={styles.moveRow}>
+                                                    <div style={styles.moveTypeImageContainer}>
+                                                        <Image
+                                                            src={`/images/types/${move.type}.png`} // 技タイプに対応する画像を表示
+                                                            alt={move.type}
+                                                            width={24} // 画像の幅
+                                                            height={24} // 画像の高さ
+                                                            style={styles.moveTypeImage}
+                                                        />
+                                                    </div>
+                                                    <p style={styles.moveInfo}>
+                                                        {move.name} | 威力: {move.power} | 命中率: {move.accuracy}
+                                                    </p>
+                                                </div>
+
                                             </li>
                                         ))}
                                 </ul>
+
+
                                 <div style={styles.paginationControls}>
                                     <button
                                         onClick={handlePrevPage}

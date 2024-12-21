@@ -304,12 +304,34 @@ const styles = {
         borderRadius: "4px",
         border: "1px solid #ccc",
     },
+
     modalActions: {
         display: "flex",
         justifyContent: "center",
         gap: "10px",
         marginTop: "10px",
     },
+    moveRow: {
+        display: "flex",
+        alignItems: "center", // 垂直方向の中央揃え
+        gap: "8px", // アイテム間のスペース
+        justifyContent: "start", // 左揃え
+    },
+    moveTypeImageContainer: {
+        flexShrink: 0, // 画像のサイズを固定
+    },
+    moveTypeImage: {
+        borderRadius: "50%", // 必要なら丸くする
+        border: "1px solid #ccc", // 必要なら枠線を追加
+    },
+    moveInfo: {
+        fontWeight: "bold",
+        color: "#333",
+        textAlign: "left",
+        margin: "0", // 改行を防ぐためにマージンをリセット
+        whiteSpace: "nowrap", // テキストの折り返しを防止
+    },
+
 
 
 };

@@ -44,12 +44,41 @@ export const fetchMoveDetails = async (moveName) => {
             throw new Error(`Failed to fetch move details: ${response.statusText}`);
         }
         const data = await response.json();
-        const japaneseName = data.names.find(nameEntry => nameEntry.language.name === "ja");
-        return japaneseName ? japaneseName.name : moveName; // 日本語名がない場合は英語名を返す
+
+        // 技の日本語名を取得
+        const japaneseName = data.names.find(
+            (nameEntry) => nameEntry.language.name === "ja"
+        );
+
+        // 必要な情報を返す
+        return {
+            name: japaneseName ? japaneseName.name : moveName, // 日本語名または英語名
+            type: data.type.name, // 技のタイプ
+            power: data.power || "不明", // 威力 (null の場合は "不明")
+            accuracy: data.accuracy || "不明", // 命中率 (null の場合は "不明")
+        };
     } catch (error) {
-        return moveName; // エラー時は英語名を返す
+        console.error(`Failed to fetch move details for ${moveName}:`, error);
+        // エラー時には最低限の情報を返す
+        return {
+            name: moveName,
+            type: "不明",
+            power: "不明",
+            accuracy: "不明",
+        };
     }
 };
+const moveDetails = await fetchMoveDetails("flamethrower");
+console.log(moveDetails);
+/*
+{
+    name: "かえんほうしゃ",
+    type: "fire",
+    power: 90,
+    accuracy: 100
+}
+*/
+
 
 
 // タイプの相性を計算する関数
