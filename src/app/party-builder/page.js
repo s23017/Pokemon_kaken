@@ -649,6 +649,7 @@ const Home = () => {
                                 <div style={styles.selectedColumn}>
                                     <p>選択中の持ち物:</p>
                                     <p>{selectedItem ? selectedItem.name : "未選択"}</p>
+                                    <p>{selectedItem ? selectedItem.effect:""}</p>
                                 </div>
                                 <div style={styles.selectedColumn}>
                                     <p>選択中のテラスタル:</p>
