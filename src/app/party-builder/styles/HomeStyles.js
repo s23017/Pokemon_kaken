@@ -184,7 +184,7 @@ const styles = {
     },
     scrollableMovesContainer: {
         maxHeight: "1000px",
-        height: "560px",         //koko
+        height: "560px",
         padding: "10px",
         backgroundColor: "#f9f9f9",
         border: "1px solid #ddd",
@@ -197,10 +197,9 @@ const styles = {
     },
 
     moveList: {
-        listStyleType: "none", // デフォルトのリストスタイルを解除
+        listStyleType: "none",
         margin: 0,
         padding: 0,
-
     },
     moveItem: {
         padding: "10px",
@@ -212,7 +211,7 @@ const styles = {
         transition: "background-color 0.2s",
     },
     moveButton: {
-        width: "100%", // ボタン幅を100%
+        width: "100%",
         padding: "8px",
         textAlign: "center",
         backgroundColor: "#4CAF50",
@@ -224,7 +223,7 @@ const styles = {
     },
 
     moveButtonHover: {
-        backgroundColor: "#45a049", // ホバー時の背景色
+        backgroundColor: "#45a049",
     },
 
     closeButton: {
@@ -300,23 +299,23 @@ const styles = {
     },
     moveRow: {
         display: "flex",
-        alignItems: "center", // 垂直方向の中央揃え
-        gap: "8px", // アイテム間のスペース
-        justifyContent: "start", // 左揃え
+        alignItems: "center",
+        gap: "8px",
+        justifyContent: "start",
     },
     moveTypeImageContainer: {
-        flexShrink: 0, // 画像のサイズを固定
+        flexShrink: 0,
     },
     moveTypeImage: {
-        borderRadius: "50%", // 必要なら丸くする
-        border: "1px solid #ccc", // 必要なら枠線を追加
+        borderRadius: "50%",
+        border: "1px solid #ccc",
     },
     moveInfo: {
         fontWeight: "bold",
         color: "#333",
         textAlign: "left",
-        margin: "0", // 改行を防ぐためにマージンをリセット
-        whiteSpace: "nowrap", // テキストの折り返しを防止
+        margin: "0",
+        whiteSpace: "nowrap",
     },
 
     modalSubtitle: {
@@ -325,36 +324,34 @@ const styles = {
     },
 
     modalContent: {
-        display: "flex", // 横並びに配置
-        flexWrap: "wrap", // 必要に応じて折り返しを有効化
-        gap: "20px", // セクション間の間隔
-        justifyContent: "space-between", // スペースを均等に分割
-        alignItems: "flex-start", // 上揃え
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "20px",
+        justifyContent: "space-between",
+        alignItems: "flex-start",
     },
     movesContainer: {
-        flex: 1, // 横並びのサイズ調整
-        maxWidth: "50%", // 必要に応じて幅を調整
-        padding: "10px", // 内側の余白
-        border: "2px solid #ddd", // 外枠
-        borderRadius: "10px", // 角を丸く
-        backgroundColor: "#f9f9f9", // 背景色
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // 軽い影を追加
-        margin: "0 10px", // 他の要素との間隔
-
-
+        flex: 1,
+        maxWidth: "33%",
+        padding: "10px",
+        border: "2px solid #ddd",
+        borderRadius: "10px",
+        backgroundColor: "#f9f9f9",
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        margin: "0 10px",
     },
     itemsContainer: {
-        height: "280px",
-        flex: 1, // 横並びのサイズ調整
-        maxWidth: "50%", // 必要に応じて幅を調整
-        padding: "10px", // 内側の余白
-        border: "2px solid #ddd", // 外枠
-        borderRadius: "10px", // 角を丸く
-        backgroundColor: "#f9f9f9", // 背景色
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // 軽い影を追加
-        margin: "0 10px", // 他の要素との間隔
-    },
+        height: "630px",
 
+        flex: 1,
+        maxWidth: "33%",
+        padding: "10px",
+        border: "2px solid #ddd",
+        borderRadius: "10px",
+        backgroundColor: "#f9f9f9",
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        margin: "0 10px",
+    },
 
     itemsList: {
         display: "flex",
@@ -366,21 +363,15 @@ const styles = {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center", // 中央揃え
-        width: "120px", // 固定幅
+        justifyContent: "center",
+        width: "120px",
         padding: "10px",
         border: "1px solid #ccc",
         borderRadius: "5px",
         cursor: "pointer",
         transition: "background-color 0.2s",
-        boxSizing: "border-box", // パディングを含めたサイズ計算
+        boxSizing: "border-box",
     },
-
-
-    borderRadius: "5px",
-        cursor: "pointer",
-        transition: "background-color 0.2s",
-
     itemImage: {
         borderRadius: "5px",
         marginBottom: "5px",
@@ -388,39 +379,32 @@ const styles = {
     itemName: {
         fontSize: "14px",
         textAlign: "center",
-        overflow: "hidden", // テキストが溢れる場合に非表示
-        textOverflow: "ellipsis", // 溢れた部分を省略記号（...）で表示
-        whiteSpace: "nowrap", // テキストの折り返しを防止
-        width: "100%", // カードの幅に合わせる
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        width: "100%",
     },
-        paginationControls: {
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: "10px",
-        },
-        paginationButton: {
-            padding: "5px 10px",
-            backgroundColor: "#4CAF50",
-            color: "white",
-            border: "none",
-            borderRadius: "3px",
-            cursor: "pointer",
-            transition: "background-color 0.2s",
-        },
-        paginationInfo: {
-            margin: "0 10px",
-            fontSize: "14px",
-            fontWeight: "bold",
-            color: "#333",
-        },
-
-
-
-
-
-
-
+    paginationControls: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: "10px",
+    },
+    paginationButton: {
+        padding: "5px 10px",
+        backgroundColor: "#4CAF50",
+        color: "white",
+        border: "none",
+        borderRadius: "3px",
+        cursor: "pointer",
+        transition: "background-color 0.2s",
+    },
+    paginationInfo: {
+        margin: "0 10px",
+        fontSize: "14px",
+        fontWeight: "bold",
+        color: "#333",
+    },
 };
 
 export default styles;

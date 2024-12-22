@@ -13,6 +13,8 @@ import {
 import typesEffectiveness from "./data/typeEffectiveness.json";
 import pokemonData from "./data/Pokemon.json";
 import itemsData from "./data/Pokemon_items.json";
+import terastalData from "./data/Terastals.json"; // Terastals.jsonをインポート
+
 
 
 const getEnglishName = (japaneseName) => {
@@ -226,8 +228,8 @@ const Home = () => {
     };
 
     const handleConfirmSelection = () => {
-        if (selectedMoves.length === 0 || !selectedItem) {
-            alert("技と持ち物を選択してください");
+        if (selectedMoves.length === 0 || !selectedItem || !selectedTerastal) {
+            alert("技・持ち物・テラスタルをすべて選択してください");
             return;
         }
 
@@ -235,14 +237,17 @@ const Home = () => {
             ...selectedPokemon,
             selectedMoves: selectedMoves,
             selectedItem: selectedItem,
+            selectedTerastal: selectedTerastal, // テラスタル情報を追加
         };
 
         setParty((prev) => [...prev, updatedPokemon]);
         handleCloseModal();
         setSelectedMoves([]);
         setSelectedItem(null);
+        setSelectedTerastal(null); // テラスタル選択をリセット
     };
-    const itemsPerPage = 10; // 1ページあたりの持ち物の数
+
+    const itemsPerPage = 15; // 1ページあたりの持ち物の数
     const [currentItemPage, setCurrentItemPage] = useState(0);
 
     const handleNextItemPage = () => {
@@ -256,6 +261,28 @@ const Home = () => {
             setCurrentItemPage(currentItemPage - 1);
         }
     };
+    const [selectedTerastal, setSelectedTerastal] = useState(null); // 選択されたテラスタル
+    const terastalImages = Array.from({ length: 18 }, (_, index) => `/images/terastals/${index + 1}.png`); // テラスタル画像リスト
+    const terastalPerPage = 15; // 1ページあたりの表示数
+    const [currentTerastalPage, setCurrentTerastalPage] = useState(0); // 現在のページ
+
+    const handleSelectTerastal = (image) => {
+        setSelectedTerastal(image); // 選択された画像をセット
+    };
+
+    const handleNextTerastalPage = () => {
+        if ((currentTerastalPage + 1) * terastalPerPage < terastalImages.length) {
+            setCurrentTerastalPage(currentTerastalPage + 1);
+        }
+    };
+
+    const handlePrevTerastalPage = () => {
+        if (currentTerastalPage > 0) {
+            setCurrentTerastalPage(currentTerastalPage - 1);
+        }
+    };
+
+
 
 
 
@@ -400,11 +427,12 @@ const Home = () => {
             {showMoveModal && (
                 <div style={styles.modalBackdrop}>
                     <div style={styles.modal}>
-                        <h2 style={styles.modalTitle}>技・持ち物・テラスタルを選択してください</h2>
+                        <h2 style={styles.modalTitle}>わざ・もちもの・テラスタルを選択してください</h2>
 
                         <div style={styles.modalContent}>
                             {/* 技リスト */}
                             <div style={styles.movesContainer}>
+                                <h3 style={styles.modalSubtitle}>わざ</h3>
                                 <div style={styles.scrollableMovesContainer}>
                                     <ul style={styles.moveList}>
                                         {selectedPokemon.moves
@@ -475,6 +503,7 @@ const Home = () => {
 
                             {/* 持ち物リスト */}
                             <div style={styles.itemsContainer}>
+                                <h3 style={styles.modalSubtitle}>もちもの</h3>
                                 <ul style={styles.itemsList}>
                                     {itemsData
                                         .slice(currentItemPage * itemsPerPage, (currentItemPage + 1) * itemsPerPage)
@@ -499,7 +528,7 @@ const Home = () => {
                                         ))}
                                 </ul>
                                 <div
- style={styles.paginationControls}>
+                                    style={styles.paginationControls}>
                                     <button
                                         onClick={handlePrevItemPage}
                                         disabled={currentItemPage === 0}
@@ -513,6 +542,51 @@ const Home = () => {
                                     <button
                                         onClick={handleNextItemPage}
                                         disabled={(currentItemPage + 1) * itemsPerPage >= itemsData.length}
+                                        style={styles.paginationButton}
+                                    >
+                                        {"->"}
+                                    </button>
+                                </div>
+                            </div>
+                            <div style={styles.itemsContainer}>
+                                <h3 style={styles.modalSubtitle}>テラスタル</h3>
+                                <ul style={styles.itemsList}>
+                                    {terastalData
+                                        .slice(currentTerastalPage * terastalPerPage, (currentTerastalPage + 1) * terastalPerPage)
+                                        .map((terastal) => (
+                                            <li
+                                                key={terastal.id}
+                                                style={{
+                                                    ...styles.itemCard,
+                                                    backgroundColor: selectedTerastal?.id === terastal.id ? "#4CAF50" : "#f9f9f9",
+                                                }}
+                                                onClick={() => handleSelectTerastal(terastal)}
+                                            >
+                                                <Image
+                                                    src={terastal.image}
+                                                    alt={`テラスタル ${terastal.type}`}
+                                                    width={48}
+                                                    height={48}
+                                                    style={styles.itemImage}
+                                                />
+                                                <p style={styles.itemName}>{terastal.type}</p>
+                                            </li>
+                                        ))}
+                                </ul>
+                                <div style={styles.paginationControls}>
+                                    <button
+                                        onClick={handlePrevTerastalPage}
+                                        disabled={currentTerastalPage === 0}
+                                        style={styles.paginationButton}
+                                    >
+                                        {"<-"}
+                                    </button>
+                                    <span style={styles.paginationInfo}>
+                {currentTerastalPage + 1}/{Math.ceil(terastalData.length / terastalPerPage)}
+            </span>
+                                    <button
+                                        onClick={handleNextTerastalPage}
+                                        disabled={(currentTerastalPage + 1) * terastalPerPage >= terastalData.length}
                                         style={styles.paginationButton}
                                     >
                                         {"->"}

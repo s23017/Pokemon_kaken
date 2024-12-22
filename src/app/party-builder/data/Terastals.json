@@ -1,0 +1,21 @@
+[
+  { "id": 1, "type": "ノーマル", "image": "/images/terastals/normal.png" },
+  { "id": 2, "type": "ほのお", "image": "/images/terastals/fire.png" },
+  { "id": 3, "type": "みず", "image": "/images/terastals/water.png" },
+  { "id": 4, "type": "でんき", "image": "/images/terastals/electric.png" },
+  { "id": 5, "type": "くさ", "image": "/images/terastals/grass.png" },
+  { "id": 6, "type": "こおり", "image": "/images/terastals/ice.png" },
+  { "id": 7, "type": "かくとう", "image": "/images/terastals/fighting.png" },
+  { "id": 8, "type": "どく", "image": "/images/terastals/poison.png" },
+  { "id": 9, "type": "じめん", "image": "/images/terastals/ground.png" },
+  { "id": 10, "type": "ひこう", "image": "/images/terastals/flying.png" },
+  { "id": 11, "type": "エスパー", "image": "/images/terastals/psychic.png" },
+  { "id": 12, "type": "むし", "image": "/images/terastals/bug.png" },
+  { "id": 13, "type": "いわ", "image": "/images/terastals/rock.png" },
+  { "id": 14, "type": "ゴースト", "image": "/images/terastals/ghost.png" },
+  { "id": 15, "type": "ドラゴン", "image": "/images/terastals/dragon.png" },
+  { "id": 16, "type": "あく", "image": "/images/terastals/dark.png" },
+  { "id": 17, "type": "はがね", "image": "/images/terastals/steel.png" },
+  { "id": 18, "type": "フェアリー", "image": "/images/terastals/fairy.png" },
+  { "id": 19, "type": "ステラ", "image": "/images/terastals/sutera.png" }
+]
