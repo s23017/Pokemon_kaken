@@ -174,7 +174,6 @@ const styles = {
         padding: "20px",
         borderRadius: "15px",
         boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
-        maxWidth: "500px",
         width: "90%",
         textAlign: "center",
         animation: "fadeIn 0.8s ease",
@@ -185,25 +184,12 @@ const styles = {
     },
     scrollableMovesContainer: {
         maxHeight: "1000px",
+        height: "560px",         //koko
         padding: "10px",
         backgroundColor: "#f9f9f9",
         border: "1px solid #ddd",
         borderRadius: "5px",
         marginBottom: "10px",
-    },
-    paginationControls: {
-        display: "flex",
-        justifyContent: "space-between",
-        marginTop: "10px",
-    },
-    paginationButton: {
-        padding: "5px 10px",
-        backgroundColor: "#4CAF50",
-        color: "white",
-        border: "none",
-        borderRadius: "3px",
-        cursor: "pointer",
-        transition: "background-color 0.2s",
     },
     paginationButtonDisabled: {
         backgroundColor: "#ccc",
@@ -214,6 +200,7 @@ const styles = {
         listStyleType: "none", // デフォルトのリストスタイルを解除
         margin: 0,
         padding: 0,
+
     },
     moveItem: {
         padding: "10px",
@@ -331,6 +318,106 @@ const styles = {
         margin: "0", // 改行を防ぐためにマージンをリセット
         whiteSpace: "nowrap", // テキストの折り返しを防止
     },
+
+    modalSubtitle: {
+        fontSize: "16px",
+        marginBottom: "10px",
+    },
+
+    modalContent: {
+        display: "flex", // 横並びに配置
+        flexWrap: "wrap", // 必要に応じて折り返しを有効化
+        gap: "20px", // セクション間の間隔
+        justifyContent: "space-between", // スペースを均等に分割
+        alignItems: "flex-start", // 上揃え
+    },
+    movesContainer: {
+        flex: 1, // 横並びのサイズ調整
+        maxWidth: "50%", // 必要に応じて幅を調整
+        padding: "10px", // 内側の余白
+        border: "2px solid #ddd", // 外枠
+        borderRadius: "10px", // 角を丸く
+        backgroundColor: "#f9f9f9", // 背景色
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // 軽い影を追加
+        margin: "0 10px", // 他の要素との間隔
+
+
+    },
+    itemsContainer: {
+        height: "280px",
+        flex: 1, // 横並びのサイズ調整
+        maxWidth: "50%", // 必要に応じて幅を調整
+        padding: "10px", // 内側の余白
+        border: "2px solid #ddd", // 外枠
+        borderRadius: "10px", // 角を丸く
+        backgroundColor: "#f9f9f9", // 背景色
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // 軽い影を追加
+        margin: "0 10px", // 他の要素との間隔
+    },
+
+
+    itemsList: {
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "10px",
+        justifyContent: "center",
+    },
+    itemCard: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center", // 中央揃え
+        width: "120px", // 固定幅
+        padding: "10px",
+        border: "1px solid #ccc",
+        borderRadius: "5px",
+        cursor: "pointer",
+        transition: "background-color 0.2s",
+        boxSizing: "border-box", // パディングを含めたサイズ計算
+    },
+
+
+    borderRadius: "5px",
+        cursor: "pointer",
+        transition: "background-color 0.2s",
+
+    itemImage: {
+        borderRadius: "5px",
+        marginBottom: "5px",
+    },
+    itemName: {
+        fontSize: "14px",
+        textAlign: "center",
+        overflow: "hidden", // テキストが溢れる場合に非表示
+        textOverflow: "ellipsis", // 溢れた部分を省略記号（...）で表示
+        whiteSpace: "nowrap", // テキストの折り返しを防止
+        width: "100%", // カードの幅に合わせる
+    },
+        paginationControls: {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: "10px",
+        },
+        paginationButton: {
+            padding: "5px 10px",
+            backgroundColor: "#4CAF50",
+            color: "white",
+            border: "none",
+            borderRadius: "3px",
+            cursor: "pointer",
+            transition: "background-color 0.2s",
+        },
+        paginationInfo: {
+            margin: "0 10px",
+            fontSize: "14px",
+            fontWeight: "bold",
+            color: "#333",
+        },
+
+
+
+
 
 
 

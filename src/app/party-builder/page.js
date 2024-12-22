@@ -12,6 +12,8 @@ import {
 } from "../api/pokemon";
 import typesEffectiveness from "./data/typeEffectiveness.json";
 import pokemonData from "./data/Pokemon.json";
+import itemsData from "./data/Pokemon_items.json";
+
 
 const getEnglishName = (japaneseName) => {
     const pokemon = pokemonData.find((p) => p.name.jpn === japaneseName);
@@ -217,6 +219,46 @@ const Home = () => {
         handleCloseModal();
         setSelectedMoves([]); // 技の選択をリセット
     };
+    const [selectedItem, setSelectedItem] = useState(null);
+
+    const handleSelectItem = (item) => {
+        setSelectedItem(item);
+    };
+
+    const handleConfirmSelection = () => {
+        if (selectedMoves.length === 0 || !selectedItem) {
+            alert("技と持ち物を選択してください");
+            return;
+        }
+
+        const updatedPokemon = {
+            ...selectedPokemon,
+            selectedMoves: selectedMoves,
+            selectedItem: selectedItem,
+        };
+
+        setParty((prev) => [...prev, updatedPokemon]);
+        handleCloseModal();
+        setSelectedMoves([]);
+        setSelectedItem(null);
+    };
+    const itemsPerPage = 10; // 1ページあたりの持ち物の数
+    const [currentItemPage, setCurrentItemPage] = useState(0);
+
+    const handleNextItemPage = () => {
+        if ((currentItemPage + 1) * itemsPerPage < itemsData.length) {
+            setCurrentItemPage(currentItemPage + 1);
+        }
+    };
+
+    const handlePrevItemPage = () => {
+        if (currentItemPage > 0) {
+            setCurrentItemPage(currentItemPage - 1);
+        }
+    };
+
+
+
 
 
 
@@ -358,73 +400,141 @@ const Home = () => {
             {showMoveModal && (
                 <div style={styles.modalBackdrop}>
                     <div style={styles.modal}>
-                        <h2 style={styles.modalTitle}>技を選択してください</h2>
-                        {selectedPokemon?.moves?.length > 0 ? (
-                            <div style={styles.scrollableMovesContainer}>
-                                <ul style={styles.moveList}>
-                                    {selectedPokemon.moves
-                                        .slice(currentPage * movesPerPage, (currentPage + 1) * movesPerPage)
-                                        .map((move, index) => (
-                                            <li
-                                                key={index}
-                                                style={{
-                                                    ...styles.moveItem,
-                                                    backgroundColor: selectedMoves.includes(move.name) ? "#4CAF50" : "#f9f9f9",
-                                                    color: selectedMoves.includes(move.name) ? "white" : "black",
-                                                }}
-                                                onClick={() => handleToggleMove(move.name)} // 技名を選択
-                                            >
-                                                <div style={styles.moveRow}>
-                                                    <div style={styles.moveTypeImageContainer}>
+                        <h2 style={styles.modalTitle}>技・持ち物・テラスタルを選択してください</h2>
+
+                        <div style={styles.modalContent}>
+                            {/* 技リスト */}
+                            <div style={styles.movesContainer}>
+                                <div style={styles.scrollableMovesContainer}>
+                                    <ul style={styles.moveList}>
+                                        {selectedPokemon.moves
+                                            .slice(currentPage * movesPerPage, (currentPage + 1) * movesPerPage)
+                                            .map((move, index) => (
+                                                <li
+                                                    key={index}
+                                                    style={{
+                                                        ...styles.moveItem,
+                                                        backgroundColor: selectedMoves.includes(move.name)
+                                                            ? "#4CAF50"
+                                                            : "#f9f9f9",
+                                                        color: selectedMoves.includes(move.name) ? "white" : "black",
+                                                    }}
+                                                    onClick={() => handleToggleMove(move.name)}
+                                                >
+                                                    <div style={styles.moveRow}>
                                                         <Image
-                                                            src={`/images/types/${move.type}.png`} // 技タイプに対応する画像を表示
+                                                            src={`/images/types/${move.type}.png`}
                                                             alt={move.type}
-                                                            width={24} // 画像の幅
-                                                            height={24} // 画像の高さ
+                                                            width={24}
+                                                            height={24}
                                                             style={styles.moveTypeImage}
                                                         />
+                                                        <p style={styles.moveInfo}>
+                                                            {move.name} | 威力: {move.power} | 命中率: {move.accuracy}
+                                                        </p>
                                                     </div>
-                                                    <p style={styles.moveInfo}>
-                                                        {move.name} | 威力: {move.power} | 命中率: {move.accuracy}
-                                                    </p>
-                                                </div>
+                                                </li>
+                                            ))}
+                                        {/* 空のリストアイテムを追加 */}
+                                        {Array.from({length: movesPerPage - selectedPokemon.moves.slice(currentPage * movesPerPage, (currentPage + 1) * movesPerPage).length}).map((_, index) => (
+                                            <li
+                                                key={`empty-${index}`}
+                                                style={{
+                                                    ...styles.moveItem,
+                                                    visibility: "hidden", // 空アイテムを見えなくする
+                                                }}
+                                            >
+                                                空
+                                            </li>
+                                        ))}
+                                    </ul>
 
+                                    <div style={styles.paginationControls}>
+                                        <button
+                                            onClick={handlePrevPage}
+                                            disabled={currentPage === 0}
+                                            style={styles.paginationButton}
+                                        >
+                                            {"<-"}
+                                        </button>
+                                        <span style={styles.paginationInfo}>
+        {currentPage + 1}/{Math.ceil(selectedPokemon.moves.length / movesPerPage)}
+    </span>
+                                        <button
+                                            onClick={handleNextPage}
+                                            disabled={(currentPage + 1) * movesPerPage >= selectedPokemon.moves.length}
+                                            style={styles.paginationButton}
+                                        >
+                                            {"->"}
+                                        </button>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            {/* 持ち物リスト */}
+                            <div style={styles.itemsContainer}>
+                                <ul style={styles.itemsList}>
+                                    {itemsData
+                                        .slice(currentItemPage * itemsPerPage, (currentItemPage + 1) * itemsPerPage)
+                                        .map((item) => (
+                                            <li
+                                                key={item.id}
+                                                style={{
+                                                    ...styles.itemCard,
+                                                    backgroundColor: selectedItem?.id === item.id ? "#4CAF50" : "#f9f9f9",
+                                                }}
+                                                onClick={() => handleSelectItem(item)}
+                                            >
+                                                <Image
+                                                    src={`/images/items/${item.image}`}
+                                                    alt={item.name}
+                                                    width={48}
+                                                    height={48}
+                                                    style={styles.itemImage}
+                                                />
+                                                <p style={styles.itemName}>{item.name}</p>
                                             </li>
                                         ))}
                                 </ul>
-
-
-                                <div style={styles.paginationControls}>
+                                <div
+ style={styles.paginationControls}>
                                     <button
-                                        onClick={handlePrevPage}
-                                        disabled={currentPage === 0}
+                                        onClick={handlePrevItemPage}
+                                        disabled={currentItemPage === 0}
                                         style={styles.paginationButton}
                                     >
-                                        前へ
+                                        {"<-"}
                                     </button>
+                                    <span style={styles.paginationInfo}>
+        {currentItemPage + 1}/{Math.ceil(itemsData.length / itemsPerPage)}
+    </span>
                                     <button
-                                        onClick={handleNextPage}
-                                        disabled={(currentPage + 1) * movesPerPage >= selectedPokemon.moves.length}
+                                        onClick={handleNextItemPage}
+                                        disabled={(currentItemPage + 1) * itemsPerPage >= itemsData.length}
                                         style={styles.paginationButton}
                                     >
-                                        次へ
+                                        {"->"}
                                     </button>
                                 </div>
                             </div>
-                        ) : (
-                            <p>利用可能な技がありません</p>
-                        )}
+
+
+                        </div>
+
                         <div style={styles.modalActions}>
-                            <button style={styles.confirmButton} onClick={handleConfirmMoves}>
+                            <button style={styles.confirmButton} onClick={handleConfirmSelection}>
                                 決定
                             </button>
-                            <button style={styles.closeButton} onClick={handleCloseModal}>
+                            <button style={styles.closeButton} onClick={() => setShowMoveModal(false)}>
                                 閉じる
                             </button>
                         </div>
                     </div>
                 </div>
             )}
+
 
         </div>
     );
