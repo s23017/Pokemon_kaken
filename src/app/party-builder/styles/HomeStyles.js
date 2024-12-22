@@ -124,13 +124,14 @@ const styles = {
         alignItems: "center",
         border: "1px solid #ccc",
         borderRadius: "5px",
-        padding: "8px",
-        width: "150px",
+        padding: "10px",
+        width: "200px",
         textAlign: "center",
     },
     partyImage: {
-        width: "60px",
-        height: "60px",
+        width: "100px",
+        height: "100px",
+        marginBottom: "10px", // 技リストとの間隔
     },
     pokemonImage: {
         width: "250px",
@@ -373,8 +374,12 @@ const styles = {
         boxSizing: "border-box",
     },
     itemImage: {
-        borderRadius: "5px",
-        marginBottom: "5px",
+        width: "40px",
+        height: "40px",
+    },
+    terastalImage: {
+        width: "40px",
+        height: "40px",
     },
     itemName: {
         fontSize: "14px",
@@ -427,6 +432,22 @@ const styles = {
         color: "#333",
         margin: "2px 0",
         listStyleType: "none", // リストスタイルを非表示にする
+    },
+    additionalInfo: {
+        display: "flex",
+        flexDirection: "column", // 持ち物とテラスタルを縦方向に配置
+        alignItems: "center",
+        gap: "10px", // 各アイテム間の間隔
+    },
+    imageAndDetailsContainer: {
+        display: "flex",
+        alignItems: "center", // ポケモン画像と持ち物・テラスタルを中央揃え
+        justifyContent: "center",
+    },
+    itemAndTerastalContainer: {
+        display: "flex",
+        flexDirection: "column", // 縦に並べる
+        alignItems: "center",
     },
 
 

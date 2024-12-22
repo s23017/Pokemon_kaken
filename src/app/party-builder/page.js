@@ -247,7 +247,7 @@ const Home = () => {
         setSelectedTerastal(null); // テラスタル選択をリセット
     };
 
-    const itemsPerPage = 15; // 1ページあたりの持ち物の数
+    const itemsPerPage = 12; // 1ページあたりの持ち物の数
     const [currentItemPage, setCurrentItemPage] = useState(0);
 
     const handleNextItemPage = () => {
@@ -263,7 +263,7 @@ const Home = () => {
     };
     const [selectedTerastal, setSelectedTerastal] = useState(null); // 選択されたテラスタル
     const terastalImages = Array.from({ length: 18 }, (_, index) => `/images/terastals/${index + 1}.png`); // テラスタル画像リスト
-    const terastalPerPage = 15; // 1ページあたりの表示数
+    const terastalPerPage = 12; // 1ページあたりの表示数
     const [currentTerastalPage, setCurrentTerastalPage] = useState(0); // 現在のページ
 
     const handleSelectTerastal = (image) => {
@@ -404,16 +404,49 @@ const Home = () => {
                         共有
                     </button>
                 </div>
+
                 <div style={styles.partyGrid}>
                     {party.map((pokemon) => (
                         <div key={pokemon.name} style={styles.partyCard}>
-                            <img
-                                src={pokemon.official_artwork}
-                                alt={pokemon.name}
-                                style={styles.partyImage}
-                            />
-                            <p style={{fontSize: "12px", margin: "5px 0"}}>{pokemon.name}</p>
-                            <p style={{fontSize: "12px", margin: "5px 0"}}>技: {pokemon.selectedMove}</p>
+                            <div style={styles.imageAndDetailsContainer}>
+                                {/* ポケモン画像 */}
+                                <img
+                                    src={pokemon.official_artwork}
+                                    alt={pokemon.name}
+                                    style={styles.partyImage}
+                                />
+
+                                {/* 持ち物とテラスタル */}
+                                <div style={styles.itemAndTerastalContainer}>
+                                    {pokemon.selectedItem && (
+                                        <img
+                                            src={`/images/items/${pokemon.selectedItem.image}`}
+                                            alt={pokemon.selectedItem.name}
+                                            style={styles.itemImage}
+                                        />
+                                    )}
+                                    {pokemon.selectedTerastal && (
+                                        <img
+                                            src={pokemon.selectedTerastal.image}
+                                            alt={`テラスタル ${pokemon.selectedTerastal.type}`}
+                                            style={styles.terastalImage}
+                                        />
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* 技リスト */}
+                            <div>
+                                <ul style={{listStyle: "none", padding: 0, margin: 0}}>
+                                    {pokemon.selectedMoves.map((move, index) => (
+                                        <li key={index} style={{fontSize: "10px"}}>
+                                            {move}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            {/* 削除ボタン */}
                             <button
                                 onClick={() => setParty((prev) => prev.filter((p) => p.name !== pokemon.name))}
                                 style={styles.button}
@@ -423,6 +456,8 @@ const Home = () => {
                         </div>
                     ))}
                 </div>
+
+
             </div>
             {showMoveModal && (
                 <div style={styles.modalBackdrop}>
