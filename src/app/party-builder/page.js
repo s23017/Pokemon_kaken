@@ -595,7 +595,34 @@ const Home = () => {
                             </div>
 
 
+
                         </div>
+                        {/* 現在選択中の情報を横並びで表示 */}
+                        <div style={styles.selectedInfoContainer}>
+                            <h3 style={styles.modalSubtitle}>現在の選択状況</h3>
+                            <div style={styles.selectedInfoRow}>
+                                <div style={styles.selectedColumn}>
+                                    <p>選択中の技:</p>
+                                    <ul>
+                                        {selectedMoves.map((move, index) => (
+                                            <li key={index} style={styles.selectedMove}>
+                                                {move}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div style={styles.selectedColumn}>
+                                    <p>選択中の持ち物:</p>
+                                    <p>{selectedItem ? selectedItem.name : "未選択"}</p>
+                                </div>
+                                <div style={styles.selectedColumn}>
+                                    <p>選択中のテラスタル:</p>
+                                    <p>{selectedTerastal ? selectedTerastal.type : "未選択"}</p>
+                                </div>
+                            </div>
+                        </div>
+
+
 
                         <div style={styles.modalActions}>
                             <button style={styles.confirmButton} onClick={handleConfirmSelection}>

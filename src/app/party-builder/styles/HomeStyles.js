@@ -405,6 +405,31 @@ const styles = {
         fontWeight: "bold",
         color: "#333",
     },
+    selectedInfoContainer: {
+        marginTop: "20px",
+        border: "1px solid #ccc",
+        borderRadius: "5px",
+        padding: "10px",
+        backgroundColor: "#f9f9f9",
+    },
+    selectedInfoRow: {
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "flex-start",
+        gap: "20px",
+    },
+    selectedColumn: {
+        flex: 1,
+        textAlign: "center",
+    },
+    selectedMove: {
+        fontSize: "14px",
+        color: "#333",
+        margin: "2px 0",
+        listStyleType: "none", // リストスタイルを非表示にする
+    },
+
+
 };
 
 export default styles;
