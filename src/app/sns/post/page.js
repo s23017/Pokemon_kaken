@@ -91,28 +91,41 @@ export default function PostPage() {
             return;
         }
 
-        let imageUrl = "";
-        if (image) {
-            const imageRef = ref(storage, `images/${image.name}`);
-            await uploadBytes(imageRef, image);
-            imageUrl = await getDownloadURL(imageRef);
-        }
-
         const user = auth.currentUser;
         if (!user) return;
+
+        let imageUrl = null;
+        if (image) {
+            try {
+                const imageRef = ref(storage, `images/${user.uid}/${image.name}`);
+                await uploadBytes(imageRef, image);
+                imageUrl = await getDownloadURL(imageRef);
+                console.log("画像アップロード成功:", imageUrl);
+            } catch (error) {
+                console.error("画像アップロードエラー:", error);
+                alert("画像のアップロードに失敗しました。");
+                return;
+            }
+        }
 
         const userDoc = await getDoc(doc(db, "users", user.uid));
         const username = userDoc.exists() ? userDoc.data().username : "匿名";
 
-        await addDoc(collection(db, "posts"), {
-            title,
-            content,
-            imageUrl,
-            partyImages,
-            timestamp: Date.now(),
-            userId: user.uid,
-            username,
-        });
+        try {
+            await addDoc(collection(db, "posts"), {
+                title,
+                content,
+                imageUrl,
+                partyImages,
+                timestamp: Date.now(),
+                userId: user.uid,
+                username,
+            });
+            console.log("投稿が成功しました:", { title, content, imageUrl });
+        } catch (error) {
+            console.error("投稿エラー:", error);
+            alert("投稿に失敗しました。");
+        }
 
         setTitle("");
         setContent("");
@@ -230,7 +243,6 @@ export default function PostPage() {
                 </form>
 
                 {/* 投稿一覧 */}
-                {/* 投稿一覧 */}
                 <div style={{ marginTop: "20px" }}>
                     <h2>投稿一覧</h2>
                     {posts.map((post) => (
@@ -256,7 +268,13 @@ export default function PostPage() {
                                 <strong>{post.title}</strong>
                             </p>
                             <p>{post.content}</p>
-                            {/* ポケモン画像を表示 */}
+                            {post.imageUrl && (
+                                <img
+                                    src={post.imageUrl}
+                                    alt="投稿画像"
+                                    style={styles.pokemonImage}
+                                />
+                            )}
                             {post.partyImages && post.partyImages.length > 0 && (
                                 <div style={styles.imageGrid}>
                                     {post.partyImages.map((url, index) => (
