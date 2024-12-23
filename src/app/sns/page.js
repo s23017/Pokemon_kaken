@@ -9,7 +9,7 @@ import {
     updateProfile,
     onAuthStateChanged,
 } from "firebase/auth";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -34,6 +34,8 @@ export default function AuthPage() {
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState(""); // 新規登録用のユーザー名
     const [error, setError] = useState("");
+    const [profileImage, setProfileImage] = useState(""); // プロフィール画像(Base64形式)
+    const [preview, setPreview] = useState(""); // プレビュー画像
     const router = useRouter();
 
     useEffect(() => {
@@ -67,12 +69,20 @@ export default function AuthPage() {
                 await setDoc(doc(db, "users", userCredential.user.uid), {
                     username,
                     email,
+                    profileImage,
                 });
 
                 alert("新規登録が完了しました！");
             } else {
                 // ログイン処理
-                await signInWithEmailAndPassword(auth, email, password);
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+                // Firestoreからユーザーのプロフィール画像を取得
+                const userDoc = await getDoc(doc(db, "users", userCredential.user.uid));
+                if (userDoc.exists()) {
+                    setProfileImage(userDoc.data().profileImage);
+                }
+
                 alert("ログイン成功！");
             }
             router.push("/sns/post"); // 投稿ページにリダイレクト
@@ -83,6 +93,18 @@ export default function AuthPage() {
                     ? "新規登録に失敗しました。入力内容を確認してください。"
                     : "ログインに失敗しました。メールアドレスとパスワードを確認してください。"
             );
+        }
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setProfileImage(reader.result); // Base64形式の画像データを保存
+                setPreview(reader.result); // プレビュー用
+            };
+            reader.readAsDataURL(file);
         }
     };
 
@@ -127,14 +149,30 @@ export default function AuthPage() {
                 <h1>{isRegister ? "新規登録" : "ログイン"}</h1>
                 <form onSubmit={handleAuth} style={{ display: "flex", flexDirection: "column" }}>
                     {isRegister && (
-                        <input
-                            type="text"
-                            placeholder="ユーザー名"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            style={{ marginBottom: "10px", padding: "10px" }}
-                            required
-                        />
+                        <>
+                            <input
+                                type="text"
+                                placeholder="ユーザー名"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                style={{ marginBottom: "10px", padding: "10px" }}
+                                required
+                            />
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleFileChange}
+                                style={{ marginBottom: "10px", padding: "10px" }}
+                                required
+                            />
+                            {preview && (
+                                <img
+                                    src={preview}
+                                    alt="プレビュー"
+                                    style={{ maxWidth: "100px", marginBottom: "10px" }}
+                                />
+                            )}
+                        </>
                     )}
                     <input
                         type="email"
