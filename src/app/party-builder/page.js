@@ -247,7 +247,7 @@ const Home = () => {
         setSelectedTerastal(null); // テラスタル選択をリセット
     };
 
-    const itemsPerPage = 12; // 1ページあたりの持ち物の数
+    const itemsPerPage = 18; // 1ページあたりの持ち物の数
     const [currentItemPage, setCurrentItemPage] = useState(0);
 
     const handleNextItemPage = () => {
@@ -263,7 +263,7 @@ const Home = () => {
     };
     const [selectedTerastal, setSelectedTerastal] = useState(null); // 選択されたテラスタル
     const terastalImages = Array.from({ length: 18 }, (_, index) => `/images/terastals/${index + 1}.png`); // テラスタル画像リスト
-    const terastalPerPage = 12; // 1ページあたりの表示数
+    const terastalPerPage = 15; // 1ページあたりの表示数
     const [currentTerastalPage, setCurrentTerastalPage] = useState(0); // 現在のページ
 
     const handleSelectTerastal = (image) => {
