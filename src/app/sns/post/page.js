@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { initializeApp } from "firebase/app";
 import {
     getFirestore,
     collection,
@@ -11,6 +12,12 @@ import {
     doc,
     getDoc,
 } from "firebase/firestore";
+import {
+    getStorage,
+    ref,
+    uploadBytes,
+    getDownloadURL,
+} from "firebase/storage";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -26,10 +33,9 @@ const firebaseConfig = {
     measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
 
-// Initialize Firebase
-import { initializeApp } from "firebase/app";
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const storage = getStorage(app);
 const auth = getAuth(app);
 
 export default function PostPage() {
@@ -40,7 +46,6 @@ export default function PostPage() {
     const [content, setContent] = useState("");
     const [image, setImage] = useState(null);
     const [partyImages, setPartyImages] = useState([]);
-
 
     // ログイン状態の確認
     useEffect(() => {
@@ -89,22 +94,38 @@ export default function PostPage() {
         const user = auth.currentUser;
         if (!user) return;
 
+        let imageUrl = null;
+        if (image) {
+            try {
+                const imageRef = ref(storage, `images/${user.uid}/${image.name}`);
+                await uploadBytes(imageRef, image);
+                imageUrl = await getDownloadURL(imageRef);
+                console.log("画像アップロード成功:", imageUrl);
+            } catch (error) {
+                console.error("画像アップロードエラー:", error);
+                alert("画像のアップロードに失敗しました。");
+                return;
+            }
+        }
+
         const userDoc = await getDoc(doc(db, "users", user.uid));
         const username = userDoc.exists() ? userDoc.data().username : "匿名";
 
-        const imageObjectURL = image ? URL.createObjectURL(image) : null;
-
-        await addDoc(collection(db, "posts"), {
-            title,
-            content,
-
-            imageUrl,
-            partyImages,
-
-            timestamp: Date.now(),
-            userId: user.uid,
-            username,
-        });
+        try {
+            await addDoc(collection(db, "posts"), {
+                title,
+                content,
+                imageUrl,
+                partyImages,
+                timestamp: Date.now(),
+                userId: user.uid,
+                username,
+            });
+            console.log("投稿が成功しました:", { title, content, imageUrl });
+        } catch (error) {
+            console.error("投稿エラー:", error);
+            alert("投稿に失敗しました。");
+        }
 
         setTitle("");
         setContent("");
@@ -179,7 +200,6 @@ export default function PostPage() {
 
             {/* メインコンテンツ */}
             <div style={{ padding: "100px 20px 20px" }}>
-
                 {/* パーティー画像表示 */}
                 {partyImages.length > 0 && (
                     <div style={styles.partyImagesContainer}>
@@ -198,14 +218,7 @@ export default function PostPage() {
                 )}
 
                 {/* 投稿フォーム */}
-
                 <form onSubmit={handlePostSubmit}>
-                    <label>アイコン画像を設定:</label>
-                    <input
-                        type="file"
-                        onChange={(e) => setUserImage(e.target.files[0])}
-                        style={{ display: "block", marginBottom: "10px" }}
-                    />
                     <input
                         type="text"
                         value={title}
@@ -230,7 +243,6 @@ export default function PostPage() {
                 </form>
 
                 {/* 投稿一覧 */}
-                {/* 投稿一覧 */}
                 <div style={{ marginTop: "20px" }}>
                     <h2>投稿一覧</h2>
                     {posts.map((post) => (
@@ -242,18 +254,6 @@ export default function PostPage() {
                                 padding: "10px",
                             }}
                         >
-                            {post.userImage && (
-                                <img
-                                    src={post.userImage}
-                                    alt="ユーザーアイコン"
-                                    style={{
-                                        width: "50px",
-                                        height: "50px",
-                                        borderRadius: "50%",
-                                        objectFit: "cover",
-                                    }}
-                                />
-                            )}
                             <p>
                                 <strong>投稿者:</strong> {post.username}
                             </p>
@@ -267,9 +267,14 @@ export default function PostPage() {
                             >
                                 <strong>{post.title}</strong>
                             </p>
-
                             <p>{post.content}</p>
-                            {/* ポケモン画像を表示 */}
+                            {post.imageUrl && (
+                                <img
+                                    src={post.imageUrl}
+                                    alt="投稿画像"
+                                    style={styles.pokemonImage}
+                                />
+                            )}
                             {post.partyImages && post.partyImages.length > 0 && (
                                 <div style={styles.imageGrid}>
                                     {post.partyImages.map((url, index) => (
@@ -281,7 +286,6 @@ export default function PostPage() {
                                         />
                                     ))}
                                 </div>
-
                             )}
                         </div>
                     ))}

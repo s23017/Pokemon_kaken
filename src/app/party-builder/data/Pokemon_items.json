@@ -1,0 +1,674 @@
+[
+    {
+        "id": 1,
+        "name": "おんみつマント",
+        "image": "CovertCloak.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item638.png",
+        "effect": "相手の技による追加効果を受けない。"
+    },
+    {
+        "id": 2,
+        "name": "とくせいガード",
+        "image": "AbilityShield.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item452.png",
+        "effect": "相手から特性を変化させられない。"
+    },
+    {
+        "id": 3,
+        "name": "いかさまダイス",
+        "image": "LoadedDice.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item639.png",
+        "effect": "連続技の攻撃回数が増える可能性がある。"
+    },
+    {
+        "id": 4,
+        "name": "パンチグローブ",
+        "image": "PunchingGlove.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item640.png",
+        "effect": "パンチ技の威力を高め、接触効果を無効化する。"
+    },
+    {
+        "id": 5,
+        "name": "クリアチャーム",
+        "image": "ClearAmulet.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item641.png",
+        "effect": "相手の技で能力を下げられない。"
+    },
+    {
+        "id": 6,
+        "name": "ものまねハーブ",
+        "image": "MirrorHerb.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item456.png",
+        "effect": "相手の能力上昇を1回だけコピーできる。"
+    },
+    {
+        "id": 7,
+        "name": "ブーストエナジー",
+        "image": "BoosterEnergy.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item642.png",
+        "effect": "能力の高いステータスを1段階上昇させる。"
+    },
+    {
+        "id": 8,
+        "name": "ようせいのハネ",
+        "image": "FairyFeather.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item659.png",
+        "effect": "フェアリータイプの技の威力が上がる。"
+    },
+    {
+        "id": 9,
+        "name": "きせきのタネ",
+        "image": "MiracleSeed.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item224.png",
+        "effect": "くさタイプの技の威力が1.2倍になる。"
+    },
+    {
+        "id": 10,
+        "name": "もくたん",
+        "image": "Charcoal.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item234.png",
+        "effect": "ほのおタイプの技の威力が1.2倍になる。"
+    },
+    {
+        "id": 11,
+        "name": "しんぴのしずく",
+        "image": "MysticWater.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item228.png",
+        "effect": "みずタイプの技の威力が1.2倍になる。"
+    },
+    {
+        "id": 12,
+        "name": "シルクのスカーフ",
+        "image": "SilkScarf.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item236.png",
+        "effect": "ノーマルタイプの技の威力が1.2倍になる。"
+    },
+    {
+        "id": 13,
+        "name": "するどいくちばし",
+        "image": "SharpBeak.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item229.png",
+        "effect": "ひこうタイプの技の威力が1.2倍になる。"
+    },
+    {
+        "id": 14,
+        "name": "ぎんのこな",
+        "image": "SilverPowder.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item212.png",
+        "effect": "むしタイプの技の威力が1.2倍になる。"
+    },
+    {
+        "id": 15,
+        "name": "ちからのハチマキ",
+        "image": "MuscleBand.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item243.png",
+        "effect": "物理技の威力が1.1倍になる。"
+    },
+    {
+        "id": 16,
+        "name": "ものしりメガネ",
+        "image": "WiseGlasses.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item244.png",
+        "effect": "特殊技の威力が1.1倍になる。"
+    },
+    {
+        "id": 17,
+        "name": "きあいのハチマキ",
+        "image": "FocusBand.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item217.png",
+        "effect": "瀕死になる技(一撃必殺を含む)を受けても10%の確率でHPを1だけ残して耐える"
+    },
+    {
+        "id": 18,
+        "name": "せんせいのツメ",
+        "image": "QuickClaw.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item207.png",
+        "effect": "20%の確率で素早さに関係なく相手より先に行動できる"
+    },
+    {
+        "id": 19,
+        "name": "たつじんのおび",
+        "image": "ExpertBelt.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item640.png",
+        "effect": "効果バツグンのとき技の威力が1.2倍になる"
+    },
+    {
+        "id": 20,
+        "name": "きあいのタスキ",
+        "image": "FocusSash.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item250.png",
+        "effect": "HPが最大のときに瀕死になる技(一撃必殺を含む)を受けてもHPを1だけ残して耐える"
+    },
+    {
+        "id": 21,
+        "name": "こだわりスカーフ",
+        "image": "ChoiceScarf.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item262.png",
+        "effect": "素早さが1.5倍になるが、同じ技しかだせなくなる"
+    },
+    {
+        "id": 22,
+        "name": "こだわりハチマキ",
+        "image": "ChoiceBand.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item210.png",
+        "effect": "攻撃が1.5倍になるが、同じ技しかだせなくなる"
+    },
+    {
+        "id": 23,
+        "name": "こだわりメガネ",
+        "image": "ChoiceSpecs.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item272.png",
+        "effect": "特攻が1.5倍になるが、同じ技しかだせなくなる"
+    },
+    {
+        "id": 24,
+        "name": "ゴツゴツメット",
+        "image": "RockyHelmet.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item283.png",
+        "effect": "接触技を受けたとき、相手に最大HPの1/6のダメージを与える"
+    },
+    {
+        "id": 25,
+        "name": "するどいツメ",
+        "image": "RazorClaw.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item280.png",
+        "effect": "持たせたポケモンの技が急所に当たりやすくなる"
+    },
+    {
+        "id": 26,
+        "name": "ねばりのかぎづめ",
+        "image": "StickyBarb.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item261.png",
+        "effect": "締めつける技でダメージを与え続けるターン数が7ターンに増える"
+    },
+    {
+        "id": 27,
+        "name": "おうじゃのしるし",
+        "image": "KingsRock.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item211.png",
+        "effect": "攻撃してダメージを与えたときに10%の確率で相手をひるませる"
+    },
+    {
+        "id": 28,
+        "name": "のどスプレー",
+        "image": "ThroatSpray.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item305.png",
+        "effect": "音に関する技を使うと特攻が1段階上がる"
+    },
+    {
+        "id": 29,
+        "name": "あかいいと",
+        "image": "DestinyKnot.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item255.png",
+        "effect": "メロメロ状態にされた際、相手もメロメロにできる"
+    },
+    {
+        "id": 30,
+        "name": "いのちのたま",
+        "image": "LifeOrb.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item247.png",
+        "effect": "攻撃するたびにHPが最大HPの1/10減少するが、技の威力が1.3倍になる"
+    },
+    {
+        "id": 31,
+        "name": "しんかのきせき",
+        "image": "Eviolite.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item281.png",
+        "effect": "最終進化前のポケモンに防御と特防が1.5倍になる"
+    },
+    {
+        "id": 32,
+        "name": "とつげきチョッキ",
+        "image": "AssaultVest.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item293.png",
+        "effect": "特防が1.5倍になるが変化技を出せなくなる"
+    },
+    {
+        "id": 33,
+        "name": "じゃくてんほけん",
+        "image": "WeaknessPolicy.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item292.png",
+        "effect": "効果バツグンの技を受けたときに攻撃と特攻が2段階上がる"
+    },
+    {
+        "id": 34,
+        "name": "からぶりほけん",
+        "image": "BlunderPolicy.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item308.png",
+        "effect": "命中によって技がはずれたとき素早さが2段階上がる"
+    },
+    {
+        "id": 35,
+        "name": "やわらかいすな",
+        "image": "SoftSand.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item222.png",
+        "effect": "じめんタイプの技の威力が1.2倍になる"
+    },
+    {
+        "id": 36,
+        "name": "くろいメガネ",
+        "image": "BlackGlasses.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item225.png",
+        "effect": "あくタイプの技の威力が1.2倍になる"
+    },
+    {
+        "id": 37,
+        "name": "くろおび",
+        "image": "BlackBelt.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item226.png",
+        "effect": "かくとうタイプの技の威力が1.2倍になる"
+    },
+    {
+        "id": 38,
+        "name": "とけないこおり",
+        "image": "NeverMeltIce.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item231.png",
+        "effect": "こおりタイプの技の威力が1.2倍になる"
+    },
+    {
+        "id": 39,
+        "name": "まがったスプーン",
+        "image": "TwistedSpoon.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item233.png",
+        "effect": "エスパータイプの技の威力が1.2倍になる"
+    },
+    {
+        "id": 40,
+        "name": "メタルコート",
+        "image": "MetalCoat.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item220.png",
+        "effect": "はがねタイプの技の威力が1.2倍になる"
+    },
+    {
+        "id": 41,
+        "name": "かいがらのすず",
+        "image": "ShellBell.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item237.png",
+        "effect": "相手に与えたダメージの1/8だけHPが回復する"
+    },
+    {
+        "id": 42,
+        "name": "メトロノーム",
+        "image": "Metronome.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item252.png",
+        "effect": "同じ技を連続で使うたびに威力が20%ずつ上がる(最大100%上昇)。他の技を使うと威力が戻る"
+    },
+    {
+        "id": 43,
+        "name": "ピントレンズ",
+        "image": "ScopeLens.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item219.png",
+        "effect": "持たせたポケモンの技が急所に当たりやすくなる"
+    },
+    {
+        "id": 44,
+        "name": "こうかくレンズ",
+        "image": "ZoomLens.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item242.png",
+        "effect": "技の命中率が1.1倍になる"
+    },
+    {
+        "id": 45,
+        "name": "フォーカスレンズ",
+        "image": "WideLens.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item251.png",
+        "effect": "持たせたポケモンが相手よりも行動するのが遅いとき、技の命中率が1.2倍になる"
+    },
+    {
+        "id": 46,
+        "name": "ぼうじんゴーグル",
+        "image": "SafetyGoggles.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item297.png",
+        "effect": "天候ダメージと粉をだす技の効果を防げる"
+    },
+    {
+        "id": 47,
+        "name": "ぼうごパット",
+        "image": "ProtectivePads.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item300.png",
+        "effect": "接触したときに受ける相手の特性の効果を防げる"
+    },
+    {
+        "id": 48,
+        "name": "あつぞこブーツ",
+        "image": "HeavyDutyBoots.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item307.png",
+        "effect": "罠を足場にしかける技の影響を受けなくなる"
+    },
+    {
+        "id": 49,
+        "name": "だっしゅつボタン",
+        "image": "EjectButton.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item290.png",
+        "effect": "技を受けた後に手持ちと入れ替わることができる"
+    },
+    {
+        "id": 50,
+        "name": "だっしゅつパック",
+        "image": "EjectPack.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item306.png",
+        "effect": "持たせたポケモンの能力が下がると手持ちと入れ替わる"
+    },
+    {
+        "id": 51,
+        "name": "ビビリだま",
+        "image": "AdrenalineOrb.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item298.png",
+        "effect": "いかくを受けた時に素早さが1段階上がる"
+    },
+    {
+        "id": 52,
+        "name": "くろいヘドロ",
+        "image": "BlackSludge.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item256.png",
+        "effect": "毒タイプのポケモンに毎ターンHPが最大HPの1/16ずつ回復する。毒タイプ以外に毎ターンHPが最大HPの1/8ずつ減少する"
+    },
+    {
+        "id": 53,
+        "name": "しめつけバンド",
+        "image": "BindingBand.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item285.png",
+        "effect": "締めつける技で毎ターン与えるダメージが相手の最大HPの1/8から1/6に増える"
+    },
+    {
+        "id": 54,
+        "name": "かえんだま",
+        "image": "FlameOrb.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item312.png",
+        "effect": "戦闘に出た最初のターンの終わりに火傷の状態になる。すでに他の状態異常になっている場合は発動しない"
+    },
+    {
+        "id": 55,
+        "name": "どくどくだま",
+        "image": "ToxicOrb.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item313.png",
+        "effect": "戦闘に出た最初のターンの終わりに猛毒の状態になる。すでに他の状態異常になっている場合は発動しない"
+    },
+    {
+        "id": 56,
+        "name": "レッドカード",
+        "image": "RedCard.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item286.png",
+        "effect": "技を使ってきた相手を交代させる。技を受けたときに瀕死になったら発動しない"
+    },
+    {
+        "id": 57,
+        "name": "ルームサービス",
+        "image": "RoomService.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item309.png",
+        "effect": "トリックルームのときに使用し素早さが1段階下がる"
+    },
+    {
+        "id": 58,
+        "name": "こうこうのしっぽ",
+        "image": "LaggingTail.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item254.png",
+        "effect": "必ず後攻になる。ただし、優先度のある技を使うときは影響しない"
+    },
+    {
+        "id": 59,
+        "name": "くっつきバリ",
+        "image": "StickyBarb.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item263.png",
+        "effect": "毎ターンHPが最大HPの1/8ずつ減少する。相手が持ち物を持っていない場合、接触技を受けると相手にくっつくことがある"
+    },
+    {
+        "id": 60,
+        "name": "ねらいのまと",
+        "image": "RingTarget.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item287.png",
+        "effect": "タイプ相性で無効だった技が当たるようになってしまう"
+    },
+    {
+        "id": 61,
+        "name": "じしゃく",
+        "image": "Magnet.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item227.png",
+        "effect": "でんきタイプの技の威力が1.2倍になる"
+    },
+    {
+        "id": 62,
+        "name": "かたいいし",
+        "image": "HardStone.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item223.png",
+        "effect": "いわタイプの技の威力が1.2倍になる"
+    },
+    {
+        "id": 63,
+        "name": "どくバリ",
+        "image": "PoisonBarb.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item230.png",
+        "effect": "毒タイプの技の威力が1.2倍になる"
+    },
+    {
+        "id": 64,
+        "name": "のろいのおふだ",
+        "image": "SpellTag.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item232.png",
+        "effect": "ゴーストタイプの技の威力が1.2倍になる"
+    },
+    {
+        "id": 65,
+        "name": "りゅうのキバ",
+        "image": "DragonFang.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item235.png",
+        "effect": "ドラゴンタイプの技の威力が1.2倍になる"
+    },
+    {
+        "id": 66,
+        "name": "ノーマルジュエル",
+        "image": "NormalGem.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item291.png",
+        "effect": "1度だけノーマルの技の威力が1.3倍になる"
+    },
+    {
+        "id": 67,
+        "name": "たべのこし",
+        "image": "Leftovers.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item221.png",
+        "effect": "毎ターンHPが最大HPの1/16ずつ回復する。"
+    },
+    {
+        "id": 68,
+        "name": "おおきなねっこ",
+        "image": "BigRoot.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item271.png",
+        "effect": "HPを吸いとる技のHP回復量が1.3倍になる"
+    },
+    {
+        "id": 69,
+        "name": "ひかりのねんど",
+        "image": "LightClay.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item246.png",
+        "effect": "持たせたポケモンがひかりのかべ、リフレクター、オーロラベールを使ったとき効果時間が3ターン長くなる"
+    },
+    {
+        "id": 70,
+        "name": "ばんのうがさ",
+        "image": "UtilityUmbrella.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item310.png",
+        "effect": "持たせたポケモンは「雨」と「にほんばれ」の天候の影響を受けなくなる"
+    },
+    {
+        "id": 71,
+        "name": "ふうせん",
+        "image": "AirBalloon.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item284.png",
+        "effect": "ポケモンが宙に浮き、じめんタイプの技が当たらなくなる。攻撃を受けると効果が消える"
+    },
+    {
+        "id": 72,
+        "name": "きれいなぬけがら",
+        "image": "ShedShell.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item270.png",
+        "effect": "交代を封じる効果を受けても控えのポケモンと必ず入れ替われる"
+    },
+    {
+        "id": 73,
+        "name": "しろいハーブ",
+        "image": "WhiteHerb.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item205.png",
+        "effect": "持たせたポケモンの能力が下がったときに1度だけ元の状態に戻す"
+    },
+    {
+        "id": 74,
+        "name": "メンタルハーブ",
+        "image": "MentalHerb.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item209.png",
+        "effect": "「アンコール」「いちゃもん」「かなしばり」「ちょうはつ」「メロメロ」状態になったときに1度だけ回復する"
+    },
+    {
+        "id": 75,
+        "name": "きゅうこん",
+        "image": "HeatRock.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item288.png",
+        "effect": "みずタイプの技を受けたときに特攻が1段階上がる"
+    },
+    {
+        "id": 76,
+        "name": "じゅうでんち",
+        "image": "rechargeable battery.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item289.png",
+        "effect": "でんきタイプの技を受けたときに攻撃が1段階上がる"
+    },
+    {
+        "id": 77,
+        "name": "ひかりごけ",
+        "image": "LightRock.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item295.png",
+        "effect": "みずタイプの技を受けたときに特防が1段階上がる"
+    },
+    {
+        "id": 78,
+        "name": "ゆきだま",
+        "image": "SnowBall.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item296.png",
+        "effect": "こおりタイプの技を受けたときに攻撃が1段階上がる"
+    },
+    {
+        "id": 79,
+        "name": "あついいわ",
+        "image": "HeatRock.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item259.png",
+        "effect": "持たせたポケモンが天候を「はれ」にしたとき効果時間が3ターン長くなる"
+    },
+    {
+        "id": 80,
+        "name": "しめったいわ",
+        "image": "DampRock.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item260.png",
+        "effect": "持たせたポケモンが天候を「あめ」にしたとき効果時間が3ターン長くなる"
+    },
+    {
+        "id": 81,
+        "name": "さらさらいわ",
+        "image": "SmoothRock.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item258.png",
+        "effect": "持たせたポケモンが天候を「すなあらし」にしたとき効果時間が3ターン長くなる"
+    },
+    {
+        "id": 82,
+        "name": "つめたいいわ",
+        "image": "IcyRock.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item257.png",
+        "effect": "持たせたポケモンが天候を「ゆき」にしたとき効果時間が3ターン長くなる。"
+    },
+    {
+        "id": 83,
+        "name": "ひかりのこな",
+        "image": "BrightPowder.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item204.png",
+        "effect": "ポケモンに相手の技の命中率が0.9倍になる"
+    },
+    {
+        "id": 84,
+        "name": "グランドコート",
+        "image": "TerrainExtender.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item299.png",
+        "effect": "フィールドを張ったときに効果時間が3ターン長くなる"
+    },
+    {
+        "id": 85,
+        "name": "パワフルハーブ",
+        "image": "PowerHerb.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item248.png",
+        "effect": "1ターン目にちからをためる技を1度だけすぐに使うことができる"
+    },
+    {
+        "id": 86,
+        "name": "エレキシード",
+        "image": "ElectricSeed.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item301.png",
+        "effect": "エレキフィールドのときに使用し防御が1段階上がる"
+    },
+    {
+        "id": 87,
+        "name": "サイコシード",
+        "image": "PsychicSeed.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item302.png",
+        "effect": "サイコフィールドのときに使用し特防が1段階上がる"
+    },
+    {
+        "id": 88,
+        "name": "ミストシード",
+        "image": "MistySeed.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item303.png",
+        "effect": "ミストフィールドのときに使用し特防が1段階上がる"
+    },
+    {
+        "id": 89,
+        "name": "グラスシード",
+        "image": "GrassySeed.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item304.png",
+        "effect": "グラスフィールドのときに使用し防御が1段階上がる"
+    },
+    {
+        "id": 90,
+        "name": "でんきだま",
+        "image": "LightBall.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item435.png",
+        "effect": "ピカチュウに持たせると攻撃と特攻が2倍になる"
+    },
+    {
+        "id": 91,
+        "name": "かるいし",
+        "image": "FloatStone.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item282.png",
+        "effect": "持たせると体重が半減する"
+    },
+    {
+        "id": 92,
+        "name": "かまどのめん",
+        "image": "StonePlate.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item650.png",
+        "effect": "オーガポンに持たせるとほのおタイプが追加され、フォルムが変化する。また、使用する攻撃技の威力が1.2倍になる"
+    },
+    {
+        "id": 93,
+        "name": "いどのめん",
+        "image": "IronPlate.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item649.png",
+        "effect": "オーガポンに持たせるとみずタイプが追加され、フォルムが変化する。また、使用する攻撃技の威力が1.2倍になる"
+    },
+    {
+        "id": 94,
+        "name": "いしずえのめん",
+        "image": "RockIncense.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item648.png",
+        "effect": "オーガポンに持たせるといわタイプが追加され、フォルムが変化する。また、使用する攻撃技の威力が1.2倍になる"
+    },
+    {
+        "id": 95,
+        "name": "くちたけん",
+        "image": "RustySword.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item178.png?1",
+        "effect": "ザシアンに持たせると、戦闘中に「けんのおう」の姿になる"
+    },
+    {
+        "id": 96,
+        "name": "くちたたて",
+        "image": "RustyShield.png",
+        "image_url": "https://img.gamewith.jp/article_tools/pokemon-sv/gacha/i_item179.png?1",
+        "effect": "ザマゼンタに持たせると、戦闘中に「たてのおう」の姿になる"
+    }
+]
