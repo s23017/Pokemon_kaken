@@ -1,6 +1,8 @@
 import typesEffectiveness from '../party-builder/data/typeEffectiveness.json';
 import japaneseName from "pg/lib/query"; // 相性データをここでインポート
+import abilitiesData from "../party-builder/data/abilities.json";
 
+// ポケモンの詳細を取得する関数
 // ポケモンの詳細を取得する関数
 export const fetchPokemonDetails = async (pokemonName) => {
     const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`;
@@ -10,6 +12,10 @@ export const fetchPokemonDetails = async (pokemonName) => {
             throw new Error(`Failed to fetch Pokemon details: ${response.statusText}`);
         }
         const data = await response.json();
+
+        // 特性を取得して統合
+        const abilities = await fetchPokemonAbilities(pokemonName);
+
         return {
             name: data.name,
             types: data.types.map(typeInfo => typeInfo.type.name),
@@ -17,11 +23,15 @@ export const fetchPokemonDetails = async (pokemonName) => {
             sprite: data.sprites.front_default,
             official_artwork: data.sprites.other['official-artwork'].front_default,
             moves: data.moves.map(move => move.move.name),
+            abilities, // 特性を統合
         };
     } catch (error) {
+        console.error(`Error fetching details for ${pokemonName}:`, error);
         return null;
     }
 };
+
+
 // ステータス名をAPIから取得する補助関数
 // ステータス名を日本語で取得する補助関数
 // ステータス名を日本語で取得する補助関数
@@ -54,6 +64,7 @@ const fetchStatNames = async () => {
     return statNames;
 };
 
+
 // ポケモンの種族値を取得する関数
 export const fetchPokemonBaseStats = async (pokemonName) => {
     const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`;
@@ -82,20 +93,7 @@ export const fetchPokemonBaseStats = async (pokemonName) => {
 
 
 
-// 技リストを取得する関数
-export const fetchPokemonMoves = async (pokemonName) => {
-    const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`;
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`Failed to fetch Pokemon moves: ${response.statusText}`);
-        }
-        const data = await response.json();
-        return data.moves.map((move) => move.move.name);
-    } catch (error) {
-        return [];
-    }
-};
+
 export const fetchMoveDetails = async (moveName) => {
     const url = `https://pokeapi.co/api/v2/move/${moveName}`;
     try {
@@ -141,7 +139,7 @@ console.log(moveDetails);
 */
 // ポケモンの特性を取得する関数
 // 特性を取得する関数
-export const fetchPokemonAbilities = (pokemonName) => {
+const fetchPokemonAbilities = (pokemonName) => {
     const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`;
     return fetch(url)
         .then((response) => {
@@ -268,3 +266,9 @@ export const filterByStats = async (pokemons) => {
 export const calculateTotalStats = (stats) => {
     return stats.reduce((total, stat) => total + stat.base_stat, 0);
 };
+const displayPokemonDetails = async () => {
+    const details = await fetchPokemonDetails("pikachu");
+    console.log(details);
+};
+
+displayPokemonDetails();
