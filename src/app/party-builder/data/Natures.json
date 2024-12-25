@@ -1,0 +1,4 @@
+[
+  { "id": 1, "name": "いじっぱり", "boostedStat": "攻撃", "loweredStat": "特攻" },
+  { "id": 2, "name": "おくびょう", "boostedStat": "素早さ", "loweredStat": "攻撃" }
+]

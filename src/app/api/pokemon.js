@@ -1,4 +1,5 @@
-import typesEffectiveness from '../party-builder/data/typeEffectiveness.json'; // 相性データをここでインポート
+import typesEffectiveness from '../party-builder/data/typeEffectiveness.json';
+import japaneseName from "pg/lib/query"; // 相性データをここでインポート
 
 // ポケモンの詳細を取得する関数
 export const fetchPokemonDetails = async (pokemonName) => {
@@ -129,6 +130,7 @@ export const fetchMoveDetails = async (moveName) => {
 };
 const moveDetails = await fetchMoveDetails("flamethrower");
 console.log(moveDetails);
+
 /*
 {
     name: "かえんほうしゃ",
@@ -137,6 +139,52 @@ console.log(moveDetails);
     accuracy: 100
 }
 */
+// ポケモンの特性を取得する関数
+// 特性を取得する関数
+export const fetchPokemonAbilities = (pokemonName) => {
+    const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`;
+    return fetch(url)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`Failed to fetch abilities for ${pokemonName}`);
+            }
+            return response.json();
+        })
+        .then((data) =>
+            Promise.all(
+                data.abilities.map((abilityInfo) => {
+                    const abilityUrl = abilityInfo.ability.url;
+                    return fetch(abilityUrl)
+                        .then((res) => res.json())
+                        .then((abilityData) => {
+                            const japaneseName = abilityData.names.find(
+                                (nameEntry) => nameEntry.language.name === "ja"
+                            );
+                            const effectEntry = abilityData.effect_entries.find(
+                                (entry) => entry.language.name === "ja"
+                            );
+                            return {
+                                name: japaneseName ? japaneseName.name : abilityInfo.ability.name,
+                                effect: effectEntry ? effectEntry.effect : "効果不明",
+                            };
+                        });
+                })
+            )
+        );
+};
+
+
+const abilities = await fetchPokemonAbilities("pikachu");
+console.log(abilities);
+
+// 特性取得テスト
+/*
+[
+    { name: "せいでんき", isHidden: false, effect: "電気技を受けると...", shortEffect: "電気技を無効化" },
+    { name: "ひらいしん", isHidden: true, effect: "電気技を吸収して...", shortEffect: "電気技を吸収" }
+]
+*/
+
 
 
 
