@@ -44,7 +44,7 @@ export default function RegisterPage() {
             {/* ヘッダー */}
             <header
                 style={{
-                    backgroundColor: "#FF6347",
+                    backgroundColor: "red",
                     color: "white",
                     textAlign: "center",
                     padding: "20px 0",
@@ -130,7 +130,7 @@ export default function RegisterPage() {
                         style={{
                             padding: "10px",
                             fontSize: "16px",
-                            backgroundColor: "#FF6347",
+                            backgroundColor: "red",
                             color: "white",
                             border: "none",
                             borderRadius: "5px",
@@ -143,7 +143,7 @@ export default function RegisterPage() {
                 {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
                 <p style={{ marginTop: "20px", color: "#555" }}>
                     すでにアカウントをお持ちの方は
-                    <Link href="/sns" style={{ color: "#FF6347", textDecoration: "underline", marginLeft: "5px" }}>
+                    <Link href="/sns" style={{ color: "red", textDecoration: "underline", marginLeft: "5px" }}>
                         ログイン
                     </Link>
                 </p>
