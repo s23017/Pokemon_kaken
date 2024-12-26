@@ -20,6 +20,7 @@ import naturesData from "./data/Natures.json";
 import abilitiesData from "./data/abilities.json";
 
 
+
 const getEnglishName = (japaneseName) => {
     const pokemon = pokemonData.find((p) => p.name.jpn === japaneseName);
     return pokemon ? pokemon.name.eng : null;
@@ -153,11 +154,33 @@ const Home = () => {
         setSelectedPokemon(null);
     };
     const handleShare = () => {
-        const partyImages = party.map((pokemon) => pokemon.official_artwork);
-        const queryString = partyImages.map((url, index) => `image${index + 1}=${encodeURIComponent(url)}`).join("&");
-        // /sns にパーティーの画像をクエリとして渡す
-        window.location.href = `http://localhost:3000/sns/post?${queryString}`;
+        if (party.length === 0) {
+            alert("パーティーが空です。共有するポケモンを追加してください。");
+            return;
+        }
+
+        // パーティーデータをシリアライズ
+        const partyData = party.map((pokemon) => ({
+            name: pokemon.name,
+            imageUrl: pokemon.official_artwork,
+            selectedItem: pokemon.selectedItem?.name || null,
+            selectedTerastal: pokemon.selectedTerastal?.type || null,
+            selectedMoves: pokemon.selectedMoves || [],
+            selectedNature: pokemon.selectedNature?.name || null,
+            selectedAbility: pokemon.selectedAbility?.name || null,
+            effortValues: pokemon.effortValues || {},
+        }));
+
+        // JSON文字列をエンコードしてクエリパラメータに設定
+        const queryString = `party=${encodeURIComponent(JSON.stringify(partyData))}`;
+
+        // URLの作成
+        const shareUrl = `http://localhost:3000/sns/post?${queryString}`;
+
+        // 共有先に遷移
+        window.location.href = shareUrl;
     };
+
 
 
     const handleConfirmMove = async (move) => {

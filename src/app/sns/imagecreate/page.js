@@ -146,7 +146,7 @@ const styles = {
     },
     gridContainer: {
         display: "grid",
-        gridTemplateColumns: "repeat(2, 1fr)",
+        gridTemplateColumns: "repeat(3, 1fr)",
         gap: "0px", // 余白を完全になくす
         padding: "0", // コンテナの内側余白をなくす
         margin: "0", // 外側余白をなくす

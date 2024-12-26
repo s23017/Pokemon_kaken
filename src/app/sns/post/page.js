@@ -44,7 +44,7 @@ export default function PostPage() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [image, setImage] = useState(null);
-    const [partyImages, setPartyImages] = useState([]);
+    const [partyDetails, setPartyDetails] = useState([]);
 
     // ログイン状態の確認
     useEffect(() => {
@@ -71,14 +71,13 @@ export default function PostPage() {
         return () => unsubscribe();
     }, []);
 
-    // クエリパラメータからパーティー画像URLを取得
+    // クエリパラメータからパーティーデータを取得
     useEffect(() => {
-        const images = [];
-        for (let i = 1; i <= 6; i++) {
-            const imageUrl = searchParams.get(`image${i}`);
-            if (imageUrl) images.push(imageUrl);
+        const partyData = searchParams.get("party");
+        if (partyData) {
+            const decodedParty = JSON.parse(decodeURIComponent(partyData));
+            setPartyDetails(decodedParty);
         }
-        setPartyImages(images);
     }, [searchParams]);
 
     // 投稿の送信処理
@@ -115,7 +114,7 @@ export default function PostPage() {
                 title,
                 content,
                 imageUrl,
-                partyImages,
+                partyDetails,
                 timestamp: Date.now(),
                 userId: user.uid,
                 username,
@@ -140,6 +139,35 @@ export default function PostPage() {
             console.error("ログアウト失敗:", error);
         }
     };
+    useEffect(() => {
+        const partyData = searchParams.get("party");
+        if (partyData) {
+            const decodedParty = JSON.parse(decodeURIComponent(partyData));
+            console.log("デコードされたパーティーデータ:", decodedParty);
+            setPartyDetails(decodedParty);
+        }
+    }, [searchParams]);
+    const typeMapping = {
+        "ノーマル": "normal",
+        "ほのお": "fire",
+        "みず": "water",
+        "でんき": "electric",
+        "くさ": "grass",
+        "こおり": "ice",
+        "かくとう": "fighting",
+        "どく": "poison",
+        "じめん": "ground",
+        "ひこう": "flying",
+        "エスパー": "psychic",
+        "むし": "bug",
+        "いわ": "rock",
+        "ゴースト": "ghost",
+        "ドラゴン": "dragon",
+        "あく": "dark",
+        "はがね": "steel",
+        "フェアリー": "fairy",
+    };
+
 
     return (
         <div>
@@ -199,21 +227,54 @@ export default function PostPage() {
 
             {/* メインコンテンツ */}
             <div style={{ padding: "100px 20px 20px" }}>
-                {/* パーティー画像表示 */}
-                {partyImages.length > 0 && (
-                    <div style={styles.partyImagesContainer}>
+                {/* パーティーデータ表示 */}
+                {partyDetails.length > 0 && (
+                    <div style={styles.partyDetailsContainer}>
                         <h3>パーティーに含まれるポケモン</h3>
-                        <div style={styles.imageGrid}>
-                            {partyImages.map((url, index) => (
+                        {partyDetails.map((pokemon, index) => (
+                            <div key={index} style={styles.pokemonDetail}>
+                                <h4>{pokemon.name}</h4>
                                 <img
-                                    key={index}
-                                    src={url}
-                                    alt={`ポケモン${index + 1}`}
+                                    src={pokemon.imageUrl}
+                                    alt={pokemon.name}
                                     style={styles.pokemonImage}
                                 />
-                            ))}
-                        </div>
+                                <p><strong>特性:</strong> {pokemon.selectedAbility || "未選択"}</p>
+                                <p><strong>性格:</strong> {pokemon.selectedNature || "未選択"}</p>
+                                <p><strong>持ち物:</strong> {pokemon.selectedItem || "未選択"}</p>
+                                <p><strong>テラスタル:</strong></p>
+                                {typeof pokemon.selectedTerastal === "string" ? (
+                                    <div style={styles.terastalContainer}>
+                                        <img
+                                            src={`/images/terastals/${typeMapping[pokemon.selectedTerastal] || "unknown"}.png`}
+                                            alt={`テラスタル ${pokemon.selectedTerastal}`}
+                                            style={styles.terastalImage}
+                                        />
+                                    </div>
+                                ) : pokemon.selectedTerastal ? (
+                                    <div style={styles.terastalContainer}>
+                                        <img
+                                            src={pokemon.selectedTerastal.image}
+                                            alt={`テラスタル ${pokemon.selectedTerastal.type}`}
+                                            style={styles.terastalImage}
+                                        />
+                                        <p>{pokemon.selectedTerastal.type}</p>
+                                    </div>
+                                ) : (
+                                    <p>テラスタル未選択</p>
+                                )}
+                                <p><strong>技:</strong> {pokemon.selectedMoves.join(", ") || "未選択"}</p>
+                                <p><strong>努力値:</strong></p>
+                                <ul>
+                                    {Object.entries(pokemon.effortValues).map(([stat, value]) => (
+                                        <p key={stat}>{stat}: {value}</p>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
                     </div>
+
+
                 )}
 
                 {/* 投稿フォーム */}
@@ -223,7 +284,7 @@ export default function PostPage() {
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         placeholder="タイトルを入力"
-                        style={{ width: "100%", marginBottom: "10px", padding: "10px" }}
+                        style={{width: "100%", marginBottom: "10px", padding: "10px"}}
                         required
                     />
                     <textarea
@@ -231,18 +292,18 @@ export default function PostPage() {
                         onChange={(e) => setContent(e.target.value)}
                         placeholder="投稿内容を記入"
                         rows="3"
-                        style={{ width: "100%", marginBottom: "10px" }}
+                        style={{width: "100%", marginBottom: "10px"}}
                     />
                     <input
                         type="file"
                         onChange={(e) => setImage(e.target.files[0])}
-                        style={{ display: "block", marginBottom: "10px" }}
+                        style={{display: "block", marginBottom: "10px"}}
                     />
                     <button type="submit">投稿する</button>
                 </form>
 
                 {/* 投稿一覧 */}
-                <div style={{ marginTop: "20px" }}>
+                <div style={{marginTop: "20px"}}>
                     <h2>投稿一覧</h2>
                     {posts.map((post) => (
                         <div
@@ -256,16 +317,7 @@ export default function PostPage() {
                             <p>
                                 <strong>投稿者:</strong> {post.username}
                             </p>
-                            <p
-                                style={{
-                                    color: "black",
-                                    cursor: "pointer",
-                                    fontSize: "35px",
-                                }}
-                                onClick={() => router.push(`/sns/details/${post.id}`)}
-                            >
-                                <strong>{post.title}</strong>
-                            </p>
+                            <h3>{post.title}</h3>
                             <p>{post.content}</p>
                             {post.imageUrl && (
                                 <img
@@ -274,17 +326,45 @@ export default function PostPage() {
                                     style={styles.pokemonImage}
                                 />
                             )}
-                            {post.partyImages && post.partyImages.length > 0 && (
-                                <div style={styles.imageGrid}>
-                                    {post.partyImages.map((url, index) => (
-                                        <img
-                                            key={index}
-                                            src={url}
-                                            alt={`ポケモン${index + 1}`}
-                                            style={styles.pokemonImage}
-                                        />
+                            {post.partyDetails && (
+                                <div style={styles.partyDetailsContainer}>
+                                    <h3>パーティーに含まれるポケモン</h3>
+                                    {partyDetails.map((pokemon, index) => (
+                                        <div key={index} style={styles.pokemonDetail}>
+                                            <h4>{pokemon.name}</h4>
+                                            <img
+                                                src={pokemon.imageUrl}
+                                                alt={pokemon.name}
+                                                style={styles.pokemonImage}
+                                            />
+                                            <p><strong>特性:</strong> {pokemon.selectedAbility || "未選択"}</p>
+                                            <p><strong>性格:</strong> {pokemon.selectedNature || "未選択"}</p>
+                                            <p><strong>持ち物:</strong> {pokemon.selectedItem || "未選択"}</p>
+                                            <p><strong>テラスタル:</strong></p>
+                                            {pokemon.selectedTerastal ? (
+                                                <div style={styles.terastalContainer}>
+                                                    <img
+                                                        src={pokemon.selectedTerastal.image}
+                                                        alt={`テラスタル ${pokemon.selectedTerastal.type}`}
+                                                        style={styles.terastalImage}
+                                                    />
+                                                    <p>{pokemon.selectedTerastal.type}</p>
+                                                </div>
+                                            ) : (
+                                                <p>テラスタル未選択</p>
+                                            )}
+
+                                            <p><strong>技:</strong> {pokemon.selectedMoves.join(", ") || "未選択"}</p>
+                                            <p><strong>努力値:</strong></p>
+                                            <ul>
+                                                {Object.entries(pokemon.effortValues).map(([stat, value]) => (
+                                                    <li key={stat}>{stat}: {value}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
                                     ))}
                                 </div>
+
                             )}
                         </div>
                     ))}
@@ -295,15 +375,12 @@ export default function PostPage() {
 }
 
 const styles = {
-    partyImagesContainer: {
+    partyDetailsContainer: {
         marginBottom: "20px",
         textAlign: "center",
     },
-    imageGrid: {
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "center",
-        gap: "10px",
+    pokemonDetail: {
+        marginBottom: "10px",
     },
     pokemonImage: {
         width: "120px",
@@ -312,5 +389,18 @@ const styles = {
         border: "1px solid #ccc",
         borderRadius: "10px",
         boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    },
+    terastalContainer: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "column",
+        marginTop: "10px",
+    },
+    terastalImage: {
+        width: "80px",
+        height: "80px",
+        objectFit: "contain",
+        marginBottom: "5px",
     },
 };
