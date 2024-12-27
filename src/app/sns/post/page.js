@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import { initializeApp } from "firebase/app";
 import {
     getFirestore,
@@ -32,6 +32,7 @@ const firebaseConfig = {
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
@@ -45,6 +46,8 @@ export default function PostPage() {
     const [content, setContent] = useState("");
     const [image, setImage] = useState(null);
     const [partyDetails, setPartyDetails] = useState([]);
+    const cardContainerRef = useRef(null);
+
 
     // ログイン状態の確認
     useEffect(() => {
@@ -166,6 +169,7 @@ export default function PostPage() {
         "あく": "dark",
         "はがね": "steel",
         "フェアリー": "fairy",
+        "ステラ": "sutera",
     };
 
 
@@ -228,22 +232,18 @@ export default function PostPage() {
             {/* メインコンテンツ */}
             <div style={{ padding: "100px 20px 20px" }}>
                 {/* パーティーデータ表示 */}
-                {partyDetails.length > 0 && (
-                    <div style={styles.partyDetailsContainer}>
-                        <h3>パーティーに含まれるポケモン</h3>
-                        {partyDetails.map((pokemon, index) => (
-                            <div key={index} style={styles.pokemonDetail}>
-                                <h4>{pokemon.name}</h4>
-                                <img
-                                    src={pokemon.imageUrl}
-                                    alt={pokemon.name}
-                                    style={styles.pokemonImage}
-                                />
-                                <p><strong>特性:</strong> {pokemon.selectedAbility || "未選択"}</p>
-                                <p><strong>性格:</strong> {pokemon.selectedNature || "未選択"}</p>
-                                <p><strong>持ち物:</strong> {pokemon.selectedItem || "未選択"}</p>
-                                <p><strong>テラスタル:</strong></p>
-                                {typeof pokemon.selectedTerastal === "string" ? (
+                <div ref={cardContainerRef} style={styles.gridContainer}>
+                    {partyDetails.map((pokemon, index) => (
+                        <div key={index} style={styles.container}>
+                            <div style={styles.imageContainer}>
+                                <div style={styles.imageBox}>
+                                    <img
+                                        src={pokemon.imageUrl}
+                                        alt="ポケモンの画像"
+                                        style={styles.image}
+                                    />
+                                </div>
+                                {pokemon.selectedTerastal ? (
                                     <div style={styles.terastalContainer}>
                                         <img
                                             src={`/images/terastals/${typeMapping[pokemon.selectedTerastal] || "unknown"}.png`}
@@ -251,129 +251,170 @@ export default function PostPage() {
                                             style={styles.terastalImage}
                                         />
                                     </div>
-                                ) : pokemon.selectedTerastal ? (
-                                    <div style={styles.terastalContainer}>
-                                        <img
-                                            src={pokemon.selectedTerastal.image}
-                                            alt={`テラスタル ${pokemon.selectedTerastal.type}`}
-                                            style={styles.terastalImage}
-                                        />
-                                        <p>{pokemon.selectedTerastal.type}</p>
-                                    </div>
                                 ) : (
                                     <p>テラスタル未選択</p>
                                 )}
-                                <p><strong>技:</strong> {pokemon.selectedMoves.join(", ") || "未選択"}</p>
-                                <p><strong>努力値:</strong></p>
-                                <ul>
-                                    {Object.entries(pokemon.effortValues).map(([stat, value]) => (
-                                        <p key={stat}>{stat}: {value}</p>
-                                    ))}
-                                </ul>
                             </div>
-                        ))}
-                    </div>
-
-
-                )}
-
-                {/* 投稿フォーム */}
-                <form onSubmit={handlePostSubmit}>
-                    <input
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        placeholder="タイトルを入力"
-                        style={{width: "100%", marginBottom: "10px", padding: "10px"}}
-                        required
-                    />
-                    <textarea
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        placeholder="投稿内容を記入"
-                        rows="3"
-                        style={{width: "100%", marginBottom: "10px"}}
-                    />
-                    <input
-                        type="file"
-                        onChange={(e) => setImage(e.target.files[0])}
-                        style={{display: "block", marginBottom: "10px"}}
-                    />
-                    <button type="submit">投稿する</button>
-                </form>
-
-                {/* 投稿一覧 */}
-                <div style={{marginTop: "20px"}}>
-                    <h2>投稿一覧</h2>
-                    {posts.map((post) => (
-                        <div
-                            key={post.id}
-                            style={{
-                                border: "1px solid #ccc",
-                                marginBottom: "10px",
-                                padding: "10px",
-                            }}
-                        >
-                            <p>
-                                <strong>投稿者:</strong> {post.username}
-                            </p>
-                            <h3>{post.title}</h3>
-                            <p>{post.content}</p>
-                            {post.imageUrl && (
-                                <img
-                                    src={post.imageUrl}
-                                    alt="投稿画像"
-                                    style={styles.pokemonImage}
-                                />
-                            )}
-                            {post.partyDetails && (
-                                <div style={styles.partyDetailsContainer}>
-                                    <h3>パーティーに含まれるポケモン</h3>
-                                    {partyDetails.map((pokemon, index) => (
-                                        <div key={index} style={styles.pokemonDetail}>
-                                            <h4>{pokemon.name}</h4>
-                                            <img
-                                                src={pokemon.imageUrl}
-                                                alt={pokemon.name}
-                                                style={styles.pokemonImage}
-                                            />
-                                            <p><strong>特性:</strong> {pokemon.selectedAbility || "未選択"}</p>
-                                            <p><strong>性格:</strong> {pokemon.selectedNature || "未選択"}</p>
-                                            <p><strong>持ち物:</strong> {pokemon.selectedItem || "未選択"}</p>
-                                            <p><strong>テラスタル:</strong></p>
-                                            {pokemon.selectedTerastal ? (
-                                                <div style={styles.terastalContainer}>
-                                                    <img
-                                                        src={pokemon.selectedTerastal.image}
-                                                        alt={`テラスタル ${pokemon.selectedTerastal.type}`}
-                                                        style={styles.terastalImage}
-                                                    />
-                                                    <p>{pokemon.selectedTerastal.type}</p>
-                                                </div>
-                                            ) : (
-                                                <p>テラスタル未選択</p>
-                                            )}
-
-                                            <p><strong>技:</strong> {pokemon.selectedMoves.join(", ") || "未選択"}</p>
-                                            <p><strong>努力値:</strong></p>
-                                            <ul>
-                                                {Object.entries(pokemon.effortValues).map(([stat, value]) => (
-                                                    <li key={stat}>{stat}: {value}</li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    ))}
+                            <div style={styles.infoContainer}>
+                                <div style={styles.infoRow}>
+                                    <span style={styles.label}>性格</span>
+                                    <span style={styles.value}>{pokemon.selectedNature}</span>
                                 </div>
-
-                            )}
+                                <div style={styles.infoRow}>
+                                    <span style={styles.label}>持ち物</span>
+                                    <span style={styles.value}>{pokemon.selectedItem}</span>
+                                </div>
+                                <div style={styles.infoRow}>
+                                    <span style={styles.label}>特性</span>
+                                    <span style={styles.value}>{pokemon.selectedAbility}</span>
+                                </div>
+                                <div style={styles.infoRow}>
+                                    <span style={styles.label}>努力値</span>
+                                    <span style={styles.value}>{Object.entries(pokemon.effortValues || {})
+                                        .map(([stat, value]) => `${stat}: ${value}`)
+                                        .join(", ")}
+                                    </span>
+                                </div>
+                                {pokemon.selectedMoves.map((move, moveIndex) => (
+                                    <div style={styles.infoRow} key={moveIndex}>
+                                        <span style={styles.label}>わざ {moveIndex + 1}</span>
+                                        <span style={styles.value}>{move}</span>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     ))}
                 </div>
+
+
+
+                                {/* 投稿フォーム */}
+                                <form onSubmit={handlePostSubmit}>
+                                    <input
+                                        type="text"
+                                        value={title}
+                                        onChange={(e) => setTitle(e.target.value)}
+                                        placeholder="タイトルを入力"
+                                        style={{width: "100%", marginBottom: "10px", padding: "10px"}}
+                                        required
+                                    />
+                                    <textarea
+                                        value={content}
+                                        onChange={(e) => setContent(e.target.value)}
+                                        placeholder="投稿内容を記入"
+                                        rows="3"
+                                        style={{width: "100%", marginBottom: "10px"}}
+                                    />
+                                    <input
+                                        type="file"
+                                        onChange={(e) => setImage(e.target.files[0])}
+                                        style={{display: "block", marginBottom: "10px"}}
+                                    />
+                                    <button type="submit">投稿する</button>
+                                </form>
+
+                                {/* 投稿一覧 */}
+                                <div style={{marginTop: "20px"}}>
+                                    <h2>投稿一覧</h2>
+                                    {posts.map((post) => (
+                                        <div
+                                            key={post.id}
+                                            style={{
+                                                border: "1px solid #ccc",
+                                                marginBottom: "10px",
+                                                padding: "10px",
+                                            }}
+                                        >
+                                            <p>
+                                                <strong>投稿者:</strong> {post.username}
+                                            </p>
+
+                                            <p
+                                                style={{
+                                                    color: "black",
+                                                    cursor: "pointer",
+                                                    fontSize: "35px",
+                                                }}
+                                                onClick={() => router.push(`/sns/details/${post.id}`)}
+                                            >
+                                                <strong>{post.title}</strong>
+                                            </p>
+                                            <p>{post.content}</p>
+                                            {post.imageUrl && (
+                                                <img
+                                                    src={post.imageUrl}
+                                                    alt="投稿画像"
+                                                    style={styles.pokemonImage}
+                                                />
+                                            )}
+                                            {post.partyDetails && (
+                                                <div ref={cardContainerRef} style={styles.gridContainer}>
+                                                    {partyDetails.map((pokemon, index) => (
+                                                        <div key={index} style={styles.container}>
+                                                            <div style={styles.imageContainer}>
+                                                                <div style={styles.imageBox}>
+                                                                    <img
+                                                                        src={pokemon.imageUrl}
+                                                                        alt="ポケモンの画像"
+                                                                        style={styles.image}
+                                                                    />
+                                                                </div>
+                                                                {pokemon.selectedTerastal ? (
+                                                                    <div style={styles.terastalContainer}>
+                                                                        <img
+                                                                            src={`/images/terastals/${typeMapping[pokemon.selectedTerastal] || "unknown"}.png`}
+                                                                            alt={`テラスタル ${pokemon.selectedTerastal}`}
+                                                                            style={styles.terastalImage}
+                                                                        />
+                                                                    </div>
+                                                                ) : (
+                                                                    <p>テラスタル未選択</p>
+                                                                )}
+                                                            </div>
+                                                            <div style={styles.infoContainer}>
+                                                                <div style={styles.infoRow}>
+                                                                    <span style={styles.label}>性格</span>
+                                                                    <span
+                                                                        style={styles.value}>{pokemon.selectedNature}</span>
+                                                                </div>
+                                                                <div style={styles.infoRow}>
+                                                                    <span style={styles.label}>持ち物</span>
+                                                                    <span
+                                                                        style={styles.value}>{pokemon.selectedItem}</span>
+                                                                </div>
+                                                                <div style={styles.infoRow}>
+                                                                    <span style={styles.label}>特性</span>
+                                                                    <span
+                                                                        style={styles.value}>{pokemon.selectedAbility}</span>
+                                                                </div>
+                                                                <div style={styles.infoRow}>
+                                                                    <span style={styles.label}>努力値</span>
+                                                                    <span
+                                                                        style={styles.value}>{Object.entries(pokemon.effortValues || {})
+                                                                        .map(([stat, value]) => `${stat}: ${value}`)
+                                                                        .join(", ")}
+                                    </span>
+                                                                </div>
+                                                                {pokemon.selectedMoves.map((move, moveIndex) => (
+                                                                    <div style={styles.infoRow} key={moveIndex}>
+                                                                        <span
+                                                                            style={styles.label}>わざ {moveIndex + 1}</span>
+                                                                        <span style={styles.value}>{move}</span>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
             </div>
         </div>
     );
-}
-
+};
 const styles = {
     partyDetailsContainer: {
         marginBottom: "20px",
@@ -398,9 +439,81 @@ const styles = {
         marginTop: "10px",
     },
     terastalImage: {
-        width: "80px",
-        height: "80px",
+        width: "40px",
+        height: "40px",
         objectFit: "contain",
         marginBottom: "5px",
     },
+    saveButton: {
+        margin: "20px auto",
+        padding: "10px 20px",
+        backgroundColor: "#4CAF50",
+        color: "white",
+        border: "none",
+
+        borderRadius: "5px",
+        cursor: "pointer",
+        display: "block",
+    },
+    gridContainer: {
+        display: "grid",
+        gridTemplateColumns: "repeat(3, 1fr)",
+        gap: "0px", // 余白を完全になくす
+        padding: "0", // コンテナの内側余白をなくす
+        margin: "0", // 外側余白をなくす
+        width: "1200px", // コンテンツの幅に合わせる
+        height: "fit-content", // コンテンツの高さに合わせる
+    },
+    container: {
+        margin: "0", // カードの外側余白を削除
+        padding: "10px", // 適切な内側余白を設定
+        border: "1px solid #ccc",
+        backgroundColor: "#f9f9f9",
+    },
+    imageContainer: {
+        flex: "1",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    imageBox: {
+        width: "100px", // 幅を固定
+        height: "100px", // 高さを固定
+        backgroundColor: "#ddd",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: "10px",
+        margin: "0", // マージンを削除
+    },
+    image: {
+        maxWidth: "100%",
+        maxHeight: "100%",
+        borderRadius: "10px",
+    },
+    infoContainer: {
+        flex: "2",
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: "2px",
+    },
+    infoRow: {
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        backgroundColor: "#eee",
+        padding: "2px", // パディングを小さくする
+        margin: "0",   // マージンを削除
+        borderRadius: "3px", // 少しだけ丸みを残す
+        fontSize: "12px", // フォントサイズを調整
+    },
+    label: {
+        fontWeight: "bold",
+        color: "#333",
+    },
+    value: {
+        color: "#555",
+    },
 };
+
+

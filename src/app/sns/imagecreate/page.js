@@ -14,49 +14,34 @@ const PokemonCard = () => {
             特性: "かたやぶり",
             努力値: "HP: 0 / 攻撃: 252 / 素早さ: 252",
             技: ["アイアンヘッド", "じしん", "つるぎのまい", "がんせきふうじ"],
+            タイプ: ["ほのお", "かくとう"], // タイプ追加
         },
         // 他のポケモンデータを追加
         {
-            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png",
             性格: "いじっぱり",
             持ち物: "こだわりスカーフ",
             特性: "いかく",
             努力値: "HP: 4 / 攻撃: 252 / 素早さ: 252",
             技: ["ストーンエッジ", "しんそく", "じしん", "おんがえし"],
+            タイプ: ["みず", "ひこう"], // タイプ追加
         },
-        {
-            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
-            性格: "ひかえめ",
-            持ち物: "たべのこし",
-            特性: "てんねん",
-            努力値: "HP: 252 / 防御: 252 / 特攻: 4",
-            技: ["ムーンフォース", "めいそう", "どくどく", "みがわり"],
-        },
-        {
-            image:"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
-            性格: "のんき",
-            持ち物: "オボンのみ",
-            特性: "しんりょく",
-            努力値: "HP: 252 / 防御: 252 / 特防: 4",
-            技: ["リーフストーム", "やどりぎのタネ", "なやみのタネ", "まもる"],
-        },
-        {
-            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
-            性格: "おくびょう",
-            持ち物: "きあいのタスキ",
-            特性: "ふゆう",
-            努力値: "HP: 4 / 特攻: 252 / 素早さ: 252",
-            技: ["サイコキネシス", "シャドーボール", "エナジーボール", "かえんほうしゃ"],
-        },
-        {
-            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
-            性格: "わんぱく",
-            持ち物: "ゴツゴツメット",
-            特性: "いかく",
-            努力値: "HP: 252 / 防御: 252 / 特防: 4",
-            技: ["じしん", "ドラゴンクロー", "ステルスロック", "まもる"],
-        },
+        // 他のポケモンデータ...
     ];
+
+    // タイプに応じた背景色を取得する関数
+    const getTypeColor = (types) => {
+        const typeColors = {
+            ほのお: "#F08030", // ほのおタイプ
+            みず: "#6890F0", // みずタイプ
+            かくとう: "#C03028", // かくとうタイプ
+            ひこう: "#A890F0", // ひこうタイプ
+            // 他のタイプも追加可能
+        };
+
+        // 最初のタイプに基づいて背景色を返す
+        return typeColors[types[0]] || "#f9f9f9"; // デフォルトは灰色
+    };
 
     const handleSaveImage = () => {
         if (cardContainerRef.current === null) {
@@ -80,18 +65,15 @@ const PokemonCard = () => {
             });
     };
 
-
     return (
-        <div>
-            {/* 保存ボタン */}
+        <div style={styles.wrapper}>
             <button onClick={handleSaveImage} style={styles.saveButton}>
                 画像を保存
             </button>
 
-            {/* カード全体をラップ */}
             <div ref={cardContainerRef} style={styles.gridContainer}>
                 {partyData.map((pokemonData, index) => (
-                    <div key={index} style={styles.container}>
+                    <div key={index} style={{ ...styles.container, backgroundColor: getTypeColor(pokemonData.タイプ) }}>
                         <div style={styles.imageContainer}>
                             <div style={styles.imageBox}>
                                 <img
@@ -139,7 +121,6 @@ const styles = {
         backgroundColor: "#4CAF50",
         color: "white",
         border: "none",
-
         borderRadius: "5px",
         cursor: "pointer",
         display: "block",
@@ -147,17 +128,20 @@ const styles = {
     gridContainer: {
         display: "grid",
         gridTemplateColumns: "repeat(3, 1fr)",
-        gap: "0px", // 余白を完全になくす
-        padding: "0", // コンテナの内側余白をなくす
-        margin: "0", // 外側余白をなくす
-        width: "fit-content", // コンテンツの幅に合わせる
-        height: "fit-content", // コンテンツの高さに合わせる
+        gap: "0",
+        padding: "0",
+        margin: "0",
+        justifyItems: "center",
+        alignItems: "center",
+        width: "100%",
+        height: "100%",
     },
     container: {
-        margin: "0", // カードの外側余白を削除
-        padding: "10px", // 適切な内側余白を設定
+        margin: "0",
+        padding: "10px",
         border: "1px solid #ccc",
-        backgroundColor: "#f9f9f9",
+        backgroundColor: "#f9f9f9", // デフォルト背景色
+        boxSizing: "border-box",
     },
     imageContainer: {
         flex: "1",
@@ -166,14 +150,14 @@ const styles = {
         alignItems: "center",
     },
     imageBox: {
-        width: "100px", // 幅を固定
-        height: "100px", // 高さを固定
+        width: "100px",
+        height: "100px",
         backgroundColor: "#ddd",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         borderRadius: "10px",
-        margin: "0", // マージンを削除
+        margin: "0",
     },
     image: {
         maxWidth: "100%",
@@ -191,10 +175,10 @@ const styles = {
         justifyContent: "space-between",
         alignItems: "center",
         backgroundColor: "#eee",
-        padding: "2px", // パディングを小さくする
-        margin: "0",   // マージンを削除
-        borderRadius: "3px", // 少しだけ丸みを残す
-        fontSize: "12px", // フォントサイズを調整
+        padding: "2px",
+        margin: "0",
+        borderRadius: "3px",
+        fontSize: "12px",
     },
     label: {
         fontWeight: "bold",
