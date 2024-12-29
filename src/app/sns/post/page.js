@@ -473,7 +473,6 @@ const styles = {
         display: "block",
     },
     gridContainer: {
-        border: "1px solid #ccc",
         display: "grid",
         gridTemplateColumns: "repeat(3, 1fr)",
         gap: "0px", // 余白を完全になくす
