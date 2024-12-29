@@ -172,6 +172,18 @@ export default function PostPage() {
         "フェアリー": "fairy",
         "ステラ": "sutera",
     };
+    const getTypeColor = (types) => {
+        const typeColors = {
+            はがね: "#A8A8C0",
+            フェアリー: "#F4BDC9",
+            じめん: "#E0C068",
+            でんき: "#FAE078",
+            みず: "#6890F0",
+            ほのお: "#F08030",
+            // 他のタイプを追加
+        };
+        return types.map((type) => typeColors[type] || "#D3D3D3").join(", ");
+    };
 
 
     return (
@@ -462,7 +474,6 @@ const styles = {
     },
     gridContainer: {
         border: "1px solid #ccc",
-
         display: "grid",
         gridTemplateColumns: "repeat(3, 1fr)",
         gap: "0px", // 余白を完全になくす
