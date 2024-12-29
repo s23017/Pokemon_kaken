@@ -162,6 +162,7 @@ const Home = () => {
         // パーティーデータをシリアライズ
         const partyData = party.map((pokemon) => ({
             name: pokemon.name,
+            type: pokemon.type,
             imageUrl: pokemon.official_artwork,
             selectedItem: pokemon.selectedItem?.name || null,
             selectedTerastal: pokemon.selectedTerastal?.type || null,
@@ -268,6 +269,7 @@ const Home = () => {
             selectedTerastal: selectedTerastal,
             selectedNature: selectedNature,
             selectedAbility: selectedAbility,
+            selectedPokemonType: selectedPokemonType,
             effortValues: effortValues,
         };
 
@@ -288,7 +290,6 @@ const Home = () => {
         });
     };
 
-    const itemsPerPage = 18; // 1ページあたりの持ち物の数
     const [currentItemPage, setCurrentItemPage] = useState(0);
 
     const handleNextItemPage = () => {
@@ -305,6 +306,7 @@ const Home = () => {
     const [selectedTerastal, setSelectedTerastal] = useState(null); // 選択されたテラスタル
     const terastalImages = Array.from({ length: 18 }, (_, index) => `/images/terastals/${index + 1}.png`); // テラスタル画像リスト
     const terastalPerPage = 15; // 1ページあたりの表示数
+    const itemsPerPage = 18; // 1ページあたりの持ち物の数
     const [currentTerastalPage, setCurrentTerastalPage] = useState(0); // 現在のページ
 
     const handleSelectTerastal = (image) => {
@@ -327,6 +329,7 @@ const Home = () => {
         setSelectedNature(nature);
     };
     const [selectedAbility, setSelectedAbility] = useState(null);
+    const [selectedPokemonType, setSelectedPokemonType] = useState(null);
 
     const handleSelectAbility = (ability) => {
         console.log(ability); //

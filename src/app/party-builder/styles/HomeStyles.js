@@ -452,6 +452,8 @@ const styles = {
         display: "flex",
         flexDirection: "column", // 縦に並べる
         alignItems: "center",
+        width: "fit-content", // コンテンツの幅に合わせる
+        height: "fit-content", // コンテンツの高さに合わせる
     },
     columnContainer: {
         display: "flex",

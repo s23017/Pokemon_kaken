@@ -14,34 +14,19 @@ const PokemonCard = () => {
             特性: "かたやぶり",
             努力値: "HP: 0 / 攻撃: 252 / 素早さ: 252",
             技: ["アイアンヘッド", "じしん", "つるぎのまい", "がんせきふうじ"],
-            タイプ: ["ほのお", "かくとう"], // タイプ追加
+            タイプ: ["はがね", "じめん"], // 追加
         },
-        // 他のポケモンデータを追加
+        // 他のポケモンデータ
         {
-            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png",
-            性格: "いじっぱり",
-            持ち物: "こだわりスカーフ",
-            特性: "いかく",
-            努力値: "HP: 4 / 攻撃: 252 / 素早さ: 252",
-            技: ["ストーンエッジ", "しんそく", "じしん", "おんがえし"],
-            タイプ: ["みず", "ひこう"], // タイプ追加
+            image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
+            性格: "ひかえめ",
+            持ち物: "たべのこし",
+            特性: "てんねん",
+            努力値: "HP: 252 / 防御: 252 / 特攻: 4",
+            技: ["ムーンフォース", "めいそう", "どくどく", "みがわり"],
+            タイプ: ["フェアリー"], // 追加
         },
-        // 他のポケモンデータ...
     ];
-
-    // タイプに応じた背景色を取得する関数
-    const getTypeColor = (types) => {
-        const typeColors = {
-            ほのお: "#F08030", // ほのおタイプ
-            みず: "#6890F0", // みずタイプ
-            かくとう: "#C03028", // かくとうタイプ
-            ひこう: "#A890F0", // ひこうタイプ
-            // 他のタイプも追加可能
-        };
-
-        // 最初のタイプに基づいて背景色を返す
-        return typeColors[types[0]] || "#f9f9f9"; // デフォルトは灰色
-    };
 
     const handleSaveImage = () => {
         if (cardContainerRef.current === null) {
@@ -50,9 +35,9 @@ const PokemonCard = () => {
 
         toPng(cardContainerRef.current, {
             cacheBust: true,
-            backgroundColor: "white", // 背景色を白に設定
-            width: cardContainerRef.current.offsetWidth, // コンテンツの幅に合わせる
-            height: cardContainerRef.current.offsetHeight, // コンテンツの高さに合わせる
+            backgroundColor: "white",
+            width: cardContainerRef.current.offsetWidth,
+            height: cardContainerRef.current.offsetHeight,
         })
             .then((dataUrl) => {
                 const link = document.createElement("a");
@@ -65,15 +50,34 @@ const PokemonCard = () => {
             });
     };
 
+    const getTypeColor = (types) => {
+        const typeColors = {
+            はがね: "#A8A8C0",
+            フェアリー: "#F4BDC9",
+            じめん: "#E0C068",
+            でんき: "#FAE078",
+            みず: "#6890F0",
+            ほのお: "#F08030",
+            // 他のタイプを追加
+        };
+        return types.map((type) => typeColors[type] || "#D3D3D3").join(", ");
+    };
+
     return (
-        <div style={styles.wrapper}>
+        <div>
             <button onClick={handleSaveImage} style={styles.saveButton}>
                 画像を保存
             </button>
 
             <div ref={cardContainerRef} style={styles.gridContainer}>
                 {partyData.map((pokemonData, index) => (
-                    <div key={index} style={{ ...styles.container, backgroundColor: getTypeColor(pokemonData.タイプ) }}>
+                    <div
+                        key={index}
+                        style={{
+                            ...styles.container,
+                            backgroundColor: getTypeColor(pokemonData.タイプ), // 背景色をタイプに応じて変更
+                        }}
+                    >
                         <div style={styles.imageContainer}>
                             <div style={styles.imageBox}>
                                 <img
@@ -128,20 +132,18 @@ const styles = {
     gridContainer: {
         display: "grid",
         gridTemplateColumns: "repeat(3, 1fr)",
-        gap: "0",
+        gap: "0px",
         padding: "0",
         margin: "0",
-        justifyItems: "center",
-        alignItems: "center",
-        width: "100%",
-        height: "100%",
+        width: "fit-content",
+        height: "fit-content",
     },
     container: {
         margin: "0",
         padding: "10px",
         border: "1px solid #ccc",
-        backgroundColor: "#f9f9f9", // デフォルト背景色
-        boxSizing: "border-box",
+        borderRadius: "5px",
+        backgroundColor: "#f9f9f9",
     },
     imageContainer: {
         flex: "1",
@@ -157,7 +159,6 @@ const styles = {
         justifyContent: "center",
         alignItems: "center",
         borderRadius: "10px",
-        margin: "0",
     },
     image: {
         maxWidth: "100%",
