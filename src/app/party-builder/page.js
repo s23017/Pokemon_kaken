@@ -162,7 +162,7 @@ const Home = () => {
         // パーティーデータをシリアライズ
         const partyData = party.map((pokemon) => ({
             name: pokemon.name,
-            types: pokemon.name.types,
+            type: pokemon.types || null,
             imageUrl: pokemon.official_artwork,
             selectedItem: pokemon.selectedItem?.name || null,
             selectedTerastal: pokemon.selectedTerastal?.type || null,
