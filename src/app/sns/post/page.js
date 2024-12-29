@@ -182,8 +182,9 @@ export default function PostPage() {
             ほのお: "#F08030",
             // 他のタイプを追加
         };
-        return types.map((type) => typeColors[type] || "#D3D3D3").join(", ");
+        return partyDetails.map((type) => typeColors[type] || "#D3D3D3").join(", ");
     };
+
 
 
     return (
