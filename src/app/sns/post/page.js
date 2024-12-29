@@ -178,11 +178,11 @@ export default function PostPage() {
             フェアリー: "#F4BDC9",
             じめん: "#E0C068",
             でんき: "#FAE078",
-            みず: "#6890F0",
-            ほのお: "#F08030",
+            electric: "#6890F0",
+            fire: "#F08030",
             // 他のタイプを追加
         };
-        return partyDetails.map((type) => typeColors[type] || "#D3D3D3").join(", ");
+        return types.map((type) => typeColors[type] || "#fff").join(", ");
     };
 
 
@@ -248,7 +248,9 @@ export default function PostPage() {
                 {/* パーティーデータ表示 */}
                 <div ref={cardContainerRef} style={styles.gridContainer}>
                     {partyDetails.map((pokemon, index) => (
-                        <div key={index} style={styles.container}>
+                        <div key={index} style={{...styles.container,
+                            backgroundColor: getTypeColor(pokemon.type),
+                        }}>
                             <div style={styles.imageContainer}>
                                 <div style={styles.imageBox}>
                                     <img
