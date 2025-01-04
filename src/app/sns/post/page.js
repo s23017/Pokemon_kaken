@@ -172,18 +172,48 @@ export default function PostPage() {
         "フェアリー": "fairy",
         "ステラ": "sutera",
     };
-    const getTypeColor = (types) => {
-        const typeColors = {
-            はがね: "#A8A8C0",
-            フェアリー: "#F4BDC9",
-            じめん: "#E0C068",
-            でんき: "#FAE078",
-            electric: "#6890F0",
-            fire: "#F08030",
-            // 他のタイプを追加
-        };
-        return types.map((type) => typeColors[type] || "#fff").join(", ");
+    const typeColors = {
+        normal: "rgba(168, 168, 120, 0.8)",
+        fire: "rgba(240, 128, 48, 0.8)",
+        water: "rgba(104, 144, 240, 0.8)",
+        electric: "rgba(248, 208, 48, 0.8)",
+        grass: "rgba(120, 200, 80, 0.8)",
+        ice: "rgba(152, 216, 216, 0.8)",
+        fighting: "rgba(192, 48, 40, 0.8)",
+        poison: "rgba(160, 64, 160, 0.8)",
+        ground: "rgba(224, 192, 104, 0.8)",
+        flying: "rgba(168, 144, 240, 0.8)",
+        psychic: "rgba(248, 88, 136, 0.8)",
+        bug: "rgba(168, 184, 32, 0.8)",
+        rock: "rgba(184, 160, 56, 0.8)",
+        ghost: "rgba(112, 88, 152, 0.8)",
+        dragon: "rgba(112, 56, 248, 0.8)",
+        dark: "rgba(112, 88, 72, 0.8)",
+        steel: "rgba(184, 184, 208, 0.8)",
+        fairy: "rgba(238, 153, 172, 0.8)"
     };
+
+    const getTypeColor = (type) => {
+        if (!type || type.length === 0) return "rgba(255, 255, 255, 0.8)"; // デフォルトの透明な白色
+
+        const colors = type.map((t) => typeColors[t] || "rgba(255, 255, 255, 0.8)"); // タイプの色を取得
+
+        // 単一タイプの場合
+        if (colors.length === 1) {
+            return colors[0];
+        }
+
+        // 複合タイプの場合（ぼかしを追加）
+        if (colors.length === 2) {
+            return `linear-gradient(90deg, ${colors[0]} 30%, ${colors[1]} 70%)`;
+        }
+
+        // 想定外の場合
+        return "rgba(255, 255, 255, 0.8)";
+    };
+
+
+
 
 
 
@@ -249,7 +279,7 @@ export default function PostPage() {
                 <div ref={cardContainerRef} style={styles.gridContainer}>
                     {partyDetails.map((pokemon, index) => (
                         <div key={index} style={{...styles.container,
-                            backgroundColor: getTypeColor(pokemon.type),
+                            background: getTypeColor(pokemon.type),
                         }}>
                             <div style={styles.imageContainer}>
                                 <div style={styles.imageBox}>
