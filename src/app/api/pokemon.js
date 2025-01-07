@@ -1,5 +1,8 @@
-import typesEffectiveness from '../party-builder/data/typeEffectiveness.json'; // 相性データをここでインポート
+import typesEffectiveness from '../party-builder/data/typeEffectiveness.json';
+import japaneseName from "pg/lib/query"; // 相性データをここでインポート
+import abilitiesData from "../party-builder/data/abilities.json";
 
+// ポケモンの詳細を取得する関数
 // ポケモンの詳細を取得する関数
 export const fetchPokemonDetails = async (pokemonName) => {
     const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`;
@@ -9,6 +12,10 @@ export const fetchPokemonDetails = async (pokemonName) => {
             throw new Error(`Failed to fetch Pokemon details: ${response.statusText}`);
         }
         const data = await response.json();
+
+        // 特性を取得して統合
+        const abilities = await fetchPokemonAbilities(pokemonName);
+
         return {
             name: data.name,
             types: data.types.map(typeInfo => typeInfo.type.name),
@@ -16,26 +23,77 @@ export const fetchPokemonDetails = async (pokemonName) => {
             sprite: data.sprites.front_default,
             official_artwork: data.sprites.other['official-artwork'].front_default,
             moves: data.moves.map(move => move.move.name),
+            abilities, // 特性を統合
         };
     } catch (error) {
+        console.error(`Error fetching details for ${pokemonName}:`, error);
         return null;
     }
 };
 
-// 技リストを取得する関数
-export const fetchPokemonMoves = async (pokemonName) => {
+
+// ステータス名をAPIから取得する補助関数
+// ステータス名を日本語で取得する補助関数
+// ステータス名を日本語で取得する補助関数
+const fetchStatNames = async () => {
+    const statIds = [1, 2, 3, 4, 5, 6]; // ステータスID (1: HP, 2: 攻撃, ...)
+    const statNames = {};
+
+    // 各ステータスの日本語名を取得
+    await Promise.all(
+        statIds.map(async (id) => {
+            const url = `https://pokeapi.co/api/v2/stat/${id}`;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch stat ${id}: ${response.statusText}`);
+                }
+                const data = await response.json();
+
+                // 日本語名を取得
+                const japaneseName = data.names.find(
+                    (nameEntry) => nameEntry.language.name === 'ja'
+                );
+                statNames[data.name] = japaneseName ? japaneseName.name : data.name;
+            } catch (error) {
+                console.error(`Error fetching stat ${id}:`, error);
+            }
+        })
+    );
+
+    return statNames;
+};
+
+
+// ポケモンの種族値を取得する関数
+export const fetchPokemonBaseStats = async (pokemonName) => {
     const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`;
     try {
+        // 日本語ステータス名を取得
+        const statNames = await fetchStatNames();
+
         const response = await fetch(url);
         if (!response.ok) {
-            throw new Error(`Failed to fetch Pokemon moves: ${response.statusText}`);
+            throw new Error(`Failed to fetch Pokemon details: ${response.statusText}`);
         }
         const data = await response.json();
-        return data.moves.map((move) => move.move.name);
+
+        // 種族値を抽出し、日本語化された名前を含める
+        const baseStats = data.stats.map(stat => ({
+            name: statNames[stat.stat.name] || stat.stat.name, // 日本語名 or デフォルト英語名
+            base_stat: stat.base_stat, // 種族値
+        }));
+
+        return baseStats;
     } catch (error) {
-        return [];
+        console.error(`Error fetching base stats for ${pokemonName}:`, error);
+        return null; // エラー時は null を返す
     }
 };
+
+
+
+
 export const fetchMoveDetails = async (moveName) => {
     const url = `https://pokeapi.co/api/v2/move/${moveName}`;
     try {
@@ -70,6 +128,7 @@ export const fetchMoveDetails = async (moveName) => {
 };
 const moveDetails = await fetchMoveDetails("flamethrower");
 console.log(moveDetails);
+
 /*
 {
     name: "かえんほうしゃ",
@@ -78,6 +137,52 @@ console.log(moveDetails);
     accuracy: 100
 }
 */
+// ポケモンの特性を取得する関数
+// 特性を取得する関数
+const fetchPokemonAbilities = (pokemonName) => {
+    const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`;
+    return fetch(url)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`Failed to fetch abilities for ${pokemonName}`);
+            }
+            return response.json();
+        })
+        .then((data) =>
+            Promise.all(
+                data.abilities.map((abilityInfo) => {
+                    const abilityUrl = abilityInfo.ability.url;
+                    return fetch(abilityUrl)
+                        .then((res) => res.json())
+                        .then((abilityData) => {
+                            const japaneseName = abilityData.names.find(
+                                (nameEntry) => nameEntry.language.name === "ja"
+                            );
+                            const effectEntry = abilityData.effect_entries.find(
+                                (entry) => entry.language.name === "ja"
+                            );
+                            return {
+                                name: japaneseName ? japaneseName.name : abilityInfo.ability.name,
+                                effect: effectEntry ? effectEntry.effect : "効果不明",
+                            };
+                        });
+                })
+            )
+        );
+};
+
+
+const abilities = await fetchPokemonAbilities("pikachu");
+console.log(abilities);
+
+// 特性取得テスト
+/*
+[
+    { name: "せいでんき", isHidden: false, effect: "電気技を受けると...", shortEffect: "電気技を無効化" },
+    { name: "ひらいしん", isHidden: true, effect: "電気技を吸収して...", shortEffect: "電気技を吸収" }
+]
+*/
+
 
 
 
@@ -161,3 +266,9 @@ export const filterByStats = async (pokemons) => {
 export const calculateTotalStats = (stats) => {
     return stats.reduce((total, stat) => total + stat.base_stat, 0);
 };
+const displayPokemonDetails = async () => {
+    const details = await fetchPokemonDetails("pikachu");
+    console.log(details);
+};
+
+displayPokemonDetails();

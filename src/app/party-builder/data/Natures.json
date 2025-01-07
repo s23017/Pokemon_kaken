@@ -1,0 +1,21 @@
+[
+  { "id": 1, "name": "いじっぱり", "boostedStat": "攻撃", "loweredStat": "特攻" },
+  { "id": 2, "name": "おくびょう", "boostedStat": "素早さ", "loweredStat": "攻撃" },
+  { "id": 3, "name": "ひかえめ", "boostedStat": "特攻", "loweredStat": "攻撃" },
+  { "id": 4, "name": "わんぱく", "boostedStat": "防御", "loweredStat": "特攻" },
+  { "id": 5, "name": "しんちょう", "boostedStat": "特防", "loweredStat": "特攻" },
+  { "id": 6, "name": "ようき", "boostedStat": "素早さ", "loweredStat": "特攻" },
+  { "id": 7, "name": "おだやか", "boostedStat": "特防", "loweredStat": "攻撃" },
+  { "id": 8, "name": "ずぶとい", "boostedStat": "防御", "loweredStat": "攻撃" },
+  { "id": 9, "name": "やんちゃ", "boostedStat": "攻撃", "loweredStat": "特防" },
+  { "id": 10, "name": "むじゃき", "boostedStat": "素早さ", "loweredStat": "特防" },
+  { "id": 11, "name": "のうてんき", "boostedStat": "防御", "loweredStat": "特防" },
+  { "id": 12, "name": "れいせい", "boostedStat": "特攻", "loweredStat": "素早さ" },
+  { "id": 13, "name": "なまいき", "boostedStat": "特防", "loweredStat": "素早さ" },
+  { "id": 14, "name": "せっかち", "boostedStat": "素早さ", "loweredStat": "防御" },
+  { "id": 15, "name": "がんばりや", "boostedStat": null, "loweredStat": null },
+  { "id": 16, "name": "てれや", "boostedStat": null, "loweredStat": null },
+  { "id": 17, "name": "すなお", "boostedStat": null, "loweredStat": null },
+  { "id": 18, "name": "まじめ", "boostedStat": null, "loweredStat": null },
+  { "id": 19, "name": "きまぐれ", "boostedStat": null, "loweredStat": null }
+]
