@@ -145,18 +145,17 @@ export default function PostDetailPage() {
 
     return (
         <div>
-            {/* ヘッダー */}
             <header
                 style={{
                     backgroundColor: "#FF0000",
                     color: "white",
                     textAlign: "center",
                     padding: "20px 0",
-                    position: "fixed", // ヘッダーを固定
+                    position: "fixed",
                     top: 0,
                     left: 0,
                     width: "100%",
-                    zIndex: 1000, // 高い優先度を持つ
+                    zIndex: 1000,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -168,31 +167,35 @@ export default function PostDetailPage() {
                         left: "20px",
                         top: "50%",
                         transform: "translateY(-50%)",
+                        zIndex: 1001,  // 優先度を上げる
                     }}
                 >
-                    <Link href="/">
+                    <Link href="/sns/post">
                         <Image
                             src="/images/gaming.gif"
                             width={50}
                             height={50}
-                            alt="s.png"
-                            style={{
-                                cursor: "pointer",
-                            }}
+                            alt="戻る"
+                            style={{ cursor: "pointer" }}
                         />
                     </Link>
                 </div>
                 <h1 className="header-title">投稿詳細</h1>
             </header>
 
-            {/* メインコンテンツ */}
             <div style={{ padding: "100px 20px 20px" }}>
-                {/* ヘッダーの高さ分の余白を確保 */}
                 {post && (
                     <>
                         <h1>{post.title}</h1>
                         {post.partyImages && post.partyImages.length > 0 && (
-                            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginBottom: "20px" }}>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    flexWrap: "wrap",
+                                    gap: "10px",
+                                    marginBottom: "20px",
+                                }}
+                            >
                                 {post.partyImages.map((url, index) => (
                                     <img
                                         key={index}
@@ -227,27 +230,29 @@ export default function PostDetailPage() {
                                     }}
                                 />
                                 <button
+                                    onClick={handlePostEdit}
                                     style={{
-                                        padding: "10px",
+                                        padding: "5px 10px",
                                         backgroundColor: "#4CAF50",
                                         color: "white",
                                         border: "none",
+                                        borderRadius: "5px",
                                         cursor: "pointer",
-                                        marginRight: "5px",
                                     }}
-                                    onClick={handlePostEdit}
                                 >
                                     更新
                                 </button>
                                 <button
+                                    onClick={() => setEditingPost(false)}
                                     style={{
-                                        padding: "10px",
+                                        padding: "5px 10px",
                                         backgroundColor: "#f44336",
                                         color: "white",
                                         border: "none",
+                                        borderRadius: "5px",
                                         cursor: "pointer",
+                                        marginLeft: "10px",
                                     }}
-                                    onClick={() => setEditingPost(false)}
                                 >
                                     キャンセル
                                 </button>
@@ -258,29 +263,29 @@ export default function PostDetailPage() {
                                 {auth.currentUser?.uid === post.userId && (
                                     <div>
                                         <button
+                                            onClick={() => setEditingPost(true)}
                                             style={{
-                                                padding: "10px",
-                                                backgroundColor: "#2196F3",
+                                                padding: "5px 10px",
+                                                backgroundColor: "#4CAF50",
                                                 color: "white",
                                                 border: "none",
+                                                borderRadius: "5px",
                                                 cursor: "pointer",
-                                                marginRight: "5px",
                                             }}
-                                            onClick={() =>
-                                                setEditingPost(true)
-                                            }
                                         >
                                             編集
                                         </button>
                                         <button
+                                            onClick={handlePostDelete}
                                             style={{
-                                                padding: "10px",
+                                                padding: "5px 10px",
                                                 backgroundColor: "#f44336",
                                                 color: "white",
                                                 border: "none",
+                                                borderRadius: "5px",
                                                 cursor: "pointer",
+                                                marginLeft: "10px",
                                             }}
-                                            onClick={handlePostDelete}
                                         >
                                             削除
                                         </button>
@@ -291,16 +296,39 @@ export default function PostDetailPage() {
                     </>
                 )}
 
-                {/* コメント機能 */}
                 <div style={{ marginTop: "20px" }}>
                     <h2>コメント</h2>
-                    {/* コメントフォーム */}
+
+                    {post?.partyImages?.length > 0 && (
+                        <div
+                            style={{
+                                display: "flex",
+                                flexWrap: "wrap",
+                                gap: "10px",
+                                marginBottom: "20px",
+                            }}
+                        >
+                            {post.partyImages.map((url, index) => (
+                                <img
+                                    key={index}
+                                    src={url}
+                                    alt={`投稿主画像${index + 1}`}
+                                    style={{
+                                        width: "100px",
+                                        height: "100px",
+                                        objectFit: "contain",
+                                        border: "1px solid #ccc",
+                                        borderRadius: "5px",
+                                    }}
+                                />
+                            ))}
+                        </div>
+                    )}
+
                     <form onSubmit={handleCommentSubmit}>
                         <textarea
                             value={newComment}
-                            onChange={(e) =>
-                                setNewComment(e.target.value)
-                            }
+                            onChange={(e) => setNewComment(e.target.value)}
                             placeholder="コメントを入力"
                             rows="3"
                             style={{
@@ -309,19 +337,20 @@ export default function PostDetailPage() {
                             }}
                         />
                         <button
+                            type="submit"
                             style={{
-                                padding: "10px",
+                                padding: "5px 10px",
                                 backgroundColor: "#4CAF50",
                                 color: "white",
                                 border: "none",
+                                borderRadius: "5px",
                                 cursor: "pointer",
                             }}
-                            type="submit"
                         >
-                            コメントを投稿
+                            投稿
                         </button>
                     </form>
-                    {/* コメント一覧 */}
+
                     <div style={{ marginTop: "10px" }}>
                         {comments.map((comment) => (
                             <div
@@ -337,116 +366,52 @@ export default function PostDetailPage() {
                                         {comment.username || "匿名"}:
                                     </strong>
                                 </p>
-                                {editingComment === comment.id ? (
-                                    <>
-                                        <textarea
-                                            value={updatedCommentContent}
-                                            onChange={(e) =>
-                                                setUpdatedCommentContent(
-                                                    e.target.value
-                                                )
-                                            }
-                                            rows="3"
-                                            style={{
-                                                width: "100%",
-                                                marginBottom: "10px",
-                                            }}
-                                        />
+                                <p>{comment.content}</p>
+                                {auth.currentUser?.uid === comment.userId && (
+                                    <div>
                                         <button
+                                            onClick={() => {
+                                                setEditingComment(comment.id);
+                                                setUpdatedCommentContent(
+                                                    comment.content
+                                                );
+                                            }}
                                             style={{
-                                                padding: "10px",
+                                                padding: "5px 10px",
                                                 backgroundColor: "#4CAF50",
                                                 color: "white",
                                                 border: "none",
+                                                borderRadius: "5px",
                                                 cursor: "pointer",
-                                                marginRight: "5px",
                                             }}
+                                        >
+                                            編集
+                                        </button>
+                                        <button
                                             onClick={() =>
-                                                handleCommentEdit(
+                                                handleCommentDelete(
                                                     comment.id,
                                                     comment.userId
                                                 )
                                             }
-                                        >
-                                            更新
-                                        </button>
-                                        <button
                                             style={{
-                                                padding: "10px",
+                                                padding: "5px 10px",
                                                 backgroundColor: "#f44336",
                                                 color: "white",
                                                 border: "none",
+                                                borderRadius: "5px",
                                                 cursor: "pointer",
+                                                marginLeft: "10px",
                                             }}
-                                            onClick={() =>
-                                                setEditingComment(null)
-                                            }
                                         >
-                                            キャンセル
+                                            削除
                                         </button>
-                                    </>
-                                ) : (
-                                    <p>{comment.content}</p>
+                                    </div>
                                 )}
-                                {auth.currentUser?.uid ===
-                                    comment.userId && (
-                                        <div>
-                                            <button
-                                                style={{
-                                                    padding: "10px",
-                                                    backgroundColor: "#2196F3",
-                                                    color: "white",
-                                                    border: "none",
-                                                    cursor: "pointer",
-                                                    marginRight: "5px",
-                                                }}
-                                                onClick={() => {
-                                                    setEditingComment(
-                                                        comment.id
-                                                    );
-                                                    setUpdatedCommentContent(
-                                                        comment.content
-                                                    );
-                                                }}
-                                            >
-                                                編集
-                                            </button>
-                                            <button
-                                                style={{
-                                                    padding: "10px",
-                                                    backgroundColor: "#f44336",
-                                                    color: "white",
-                                                    border: "none",
-                                                    cursor: "pointer",
-                                                }}
-                                                onClick={() =>
-                                                    handleCommentDelete(
-                                                        comment.id,
-                                                        comment.userId
-                                                    )
-                                                }
-                                            >
-                                                削除
-                                            </button>
-                                        </div>
-                                    )}
                             </div>
                         ))}
                     </div>
                 </div>
-                <button
-                    style={{
-                        padding: "10px",
-                        backgroundColor: "#2196F3",
-                        color: "white",
-                        border: "none",
-                        cursor: "pointer",
-                        marginTop: "20px",
-                    }}
-                    onClick={() => router.push("/sns/post")} // /postページに戻る
-                >
-                    戻る
-                </button>
             </div>
         </div>
     );
