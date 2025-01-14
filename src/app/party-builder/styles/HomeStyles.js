@@ -169,6 +169,7 @@ const styles = {
         justifyContent: "center",
         alignItems: "center",
         zIndex: 2000,
+
     },
     modal: {
         backgroundColor: "white",
@@ -176,8 +177,11 @@ const styles = {
         borderRadius: "15px",
         boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
         width: "90%",
+        height: "90%",
         textAlign: "center",
         animation: "fadeIn 0.8s ease",
+        overflow: "auto", // スクロールを有効にする
+
     },
     modalTitle: {
         fontSize: "18px",
@@ -448,6 +452,71 @@ const styles = {
         display: "flex",
         flexDirection: "column", // 縦に並べる
         alignItems: "center",
+        width: "fit-content", // コンテンツの幅に合わせる
+        height: "fit-content", // コンテンツの高さに合わせる
+    },
+    columnContainer: {
+        display: "flex",
+        flexDirection: "column",
+        gap: "20px",
+        width: "100%",
+    },
+    abilitiesContainer: {
+        border: "1px solid #ddd",
+        padding: "10px",
+        borderRadius: "5px",
+    },
+    naturesContainer: {
+        border: "1px solid #ddd",
+        padding: "10px",
+        borderRadius: "5px",
+    },
+    effortValuesContainer: {
+        display: "flex",
+        flexDirection: "column",
+        gap: "10px",
+        border: "1px solid #ddd",
+        padding: "10px",
+        borderRadius: "5px",
+    },
+    effortValueRow: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: "10px",
+    },
+    effortValueLabel: {
+        flex: "1",
+        fontWeight: "bold",
+    },
+    effortValueInput: {
+        width: "60px", // 入力欄の幅
+        padding: "5px",
+        textAlign: "center",
+    },
+    rowContainer: {
+        display: "flex",
+        flexDirection: "row",
+        gap: "20px",
+        justifyContent: "space-between",
+        width: "100%",
+    },
+    selectionBox: {
+        border: "1px solid #ddd",
+        padding: "10px",
+        borderRadius: "5px",
+        flex: "1",
+    },
+    selectionTitle: {
+        fontWeight: "bold",
+        marginBottom: "10px",
+    },
+    selectionContent: {
+        maxHeight: "200px",
+        overflowY: "auto",
+    },
+    toggleIcon: {
+
     },
 
 

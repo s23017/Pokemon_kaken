@@ -1,19 +1,23 @@
 "use client";
 
-import React, { useState } from "react";
+import React, {useState} from "react";
 import styles from "@/app/party-builder/styles/HomeStyles";
 import Image from "next/image";
 import Link from "next/link";
 import {
-    fetchPokemonDetails,
-    findAdvantageousType,
     fetchAdvantageousPokemons,
-    filterByStats, fetchMoveDetails,
+    fetchMoveDetails,
+    fetchPokemonAbilities,
+    fetchPokemonDetails,
+    filterByStats,
+    findAdvantageousType
 } from "../api/pokemon";
 import typesEffectiveness from "./data/typeEffectiveness.json";
 import pokemonData from "./data/Pokemon.json";
 import itemsData from "./data/Pokemon_items.json";
 import terastalData from "./data/Terastals.json"; // Terastals.jsonをインポート
+import naturesData from "./data/Natures.json";
+import abilitiesData from "./data/abilities.json";
 
 
 
@@ -136,7 +140,9 @@ const Home = () => {
                 })
             );
             setSelectedPokemon({ ...pokemon, moves: movesInJapanese });
-            setShowMoveModal(true); // モーダルを表示
+            setShowMoveModal(true);// モーダルを表示
+
+
         } catch (error) {
             console.error("技名取得エラー:", error);
             alert("技名を取得できませんでした。");
@@ -148,11 +154,34 @@ const Home = () => {
         setSelectedPokemon(null);
     };
     const handleShare = () => {
-        const partyImages = party.map((pokemon) => pokemon.official_artwork);
-        const queryString = partyImages.map((url, index) => `image${index + 1}=${encodeURIComponent(url)}`).join("&");
-        // /sns にパーティーの画像をクエリとして渡す
-        window.location.href = `http://localhost:3000/sns/post?${queryString}`;
+        if (party.length === 0) {
+            alert("パーティーが空です。共有するポケモンを追加してください。");
+            return;
+        }
+
+        // パーティーデータをシリアライズ
+        const partyData = party.map((pokemon) => ({
+            name: pokemon.name,
+            type: pokemon.types || null,
+            imageUrl: pokemon.official_artwork,
+            selectedItem: pokemon.selectedItem?.name || null,
+            selectedTerastal: pokemon.selectedTerastal?.type || null,
+            selectedMoves: pokemon.selectedMoves || [],
+            selectedNature: pokemon.selectedNature?.name || null,
+            selectedAbility: pokemon.selectedAbility?.name || null,
+            effortValues: pokemon.effortValues || {},
+        }));
+
+        // JSON文字列をエンコードしてクエリパラメータに設定
+        const queryString = `party=${encodeURIComponent(JSON.stringify(partyData))}`;
+
+        // URLの作成
+        const shareUrl = `http://localhost:3000/sns/post?${queryString}`;
+
+        // 共有先に遷移
+        window.location.href = shareUrl;
     };
+
 
 
     const handleConfirmMove = async (move) => {
@@ -228,8 +257,8 @@ const Home = () => {
     };
 
     const handleConfirmSelection = () => {
-        if (selectedMoves.length === 0 || !selectedItem || !selectedTerastal) {
-            alert("技・持ち物・テラスタルをすべて選択してください");
+        if (selectedMoves.length === 0 || !selectedItem || !selectedTerastal || !selectedNature || !selectedAbility) {
+            alert("すべての項目を選択してください");
             return;
         }
 
@@ -237,17 +266,30 @@ const Home = () => {
             ...selectedPokemon,
             selectedMoves: selectedMoves,
             selectedItem: selectedItem,
-            selectedTerastal: selectedTerastal, // テラスタル情報を追加
+            selectedTerastal: selectedTerastal,
+            selectedNature: selectedNature,
+            selectedAbility: selectedAbility,
+            selectedPokemonType: selectedPokemonType,
+            effortValues: effortValues,
         };
 
         setParty((prev) => [...prev, updatedPokemon]);
         handleCloseModal();
         setSelectedMoves([]);
         setSelectedItem(null);
-        setSelectedTerastal(null); // テラスタル選択をリセット
+        setSelectedTerastal(null);
+        setSelectedNature(null);
+        setSelectedAbility(null);
+        setEffortValues({
+            HP: 0,
+            攻撃: 0,
+            防御: 0,
+            特攻: 0,
+            特防: 0,
+            素早さ: 0,
+        });
     };
 
-    const itemsPerPage = 18; // 1ページあたりの持ち物の数
     const [currentItemPage, setCurrentItemPage] = useState(0);
 
     const handleNextItemPage = () => {
@@ -264,6 +306,7 @@ const Home = () => {
     const [selectedTerastal, setSelectedTerastal] = useState(null); // 選択されたテラスタル
     const terastalImages = Array.from({ length: 18 }, (_, index) => `/images/terastals/${index + 1}.png`); // テラスタル画像リスト
     const terastalPerPage = 15; // 1ページあたりの表示数
+    const itemsPerPage = 18; // 1ページあたりの持ち物の数
     const [currentTerastalPage, setCurrentTerastalPage] = useState(0); // 現在のページ
 
     const handleSelectTerastal = (image) => {
@@ -281,6 +324,41 @@ const Home = () => {
             setCurrentTerastalPage(currentTerastalPage - 1);
         }
     };
+    const [selectedNature, setSelectedNature] = useState(null);
+    const handleSelectNature = (nature) => {
+        setSelectedNature(nature);
+    };
+    const [selectedAbility, setSelectedAbility] = useState(null);
+    const [selectedPokemonType, setSelectedPokemonType] = useState(null);
+
+    const handleSelectAbility = (ability) => {
+        console.log(ability); //
+        setSelectedAbility(ability);
+    };
+    const [effortValues, setEffortValues] = useState({
+        HP: 0,
+        攻撃: 0,
+        防御: 0,
+        特攻: 0,
+        特防: 0,
+        素早さ: 0,
+    });
+
+    const handleEffortValueChange = (stat, value) => {
+        setEffortValues((prev) => ({
+            ...prev,
+            [stat]: Math.max(0, Math.min(value, 252)), // 努力値の範囲を制限
+        }));
+    };
+
+    const [isPartyVisible, setIsPartyVisible] = useState(true); // パーティー欄の表示状態
+
+    const togglePartyVisibility = () => {
+        setIsPartyVisible((prev) => !prev);
+    };
+
+
+
 
 
 
@@ -306,6 +384,7 @@ const Home = () => {
                 <h1 style={styles.headerTitle}>ポケモンパーティー構築</h1>
             </header>
             <div style={styles.mainContainer}>
+
                 <h1 style={styles.title}>ポケモン検索</h1>
                 <div style={styles.searchContainer}>
                     {searchBars.map((bar) => (
@@ -398,64 +477,112 @@ const Home = () => {
                 {loading && <p>検索中...</p>}
             </div>
             <div style={styles.partyContainer}>
+
+
                 <h2 style={styles.partyTitle}>パーティー</h2>
+                <span
+                    style={{
+                        ...styles.toggleIcon,
+                        position: "fixed", // 画面に固定する
+                        bottom: isPartyVisible ? "200px" : "100px", // パーティー欄の状態に応じて位置調整
+                        right: "20px", // 画面右端からの距離
+                        zIndex: 1100, // パーティー欄よりも前面に表示
+                        cursor: "pointer",
+                        fontSize: "24px", // 見やすいサイズ
+                        backgroundColor: "white", // アイコンの背景を明確にする
+                        padding: "5px", // 見た目を整える
+                    }}
+                    onClick={togglePartyVisibility}
+                >
+    {isPartyVisible ? "∧" : "∨"}
+</span>
                 <div style={styles.shareButtonContainer}>
                     <button style={styles.shareButton} onClick={handleShare}>
                         共有
                     </button>
                 </div>
+                {isPartyVisible && (
+                    <div style={styles.partyGrid}>
+                        {party.map((pokemon) => (
+                            <div key={pokemon.name} style={styles.partyCard}>
+                                <div style={styles.imageAndDetailsContainer}>
+                                    {/* ポケモン画像 */}
+                                    <img
+                                        src={pokemon.official_artwork}
+                                        alt={pokemon.name}
+                                        style={styles.partyImage}
+                                    />
 
-                <div style={styles.partyGrid}>
-                    {party.map((pokemon) => (
-                        <div key={pokemon.name} style={styles.partyCard}>
-                            <div style={styles.imageAndDetailsContainer}>
-                                {/* ポケモン画像 */}
-                                <img
-                                    src={pokemon.official_artwork}
-                                    alt={pokemon.name}
-                                    style={styles.partyImage}
-                                />
+                                    {/* 持ち物とテラスタル */}
+                                    <div style={styles.itemAndTerastalContainer}>
+                                        {pokemon.selectedItem && (
+                                            <img
+                                                src={`/images/items/${pokemon.selectedItem.image}`}
+                                                alt={pokemon.selectedItem.name}
+                                                style={styles.itemImage}
+                                            />
+                                        )}
+                                        {pokemon.selectedTerastal && (
+                                            <img
+                                                src={pokemon.selectedTerastal.image}
+                                                alt={`テラスタル ${pokemon.selectedTerastal.type}`}
+                                                style={styles.terastalImage}
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+                                {/* 特性情報 */}
+                                <div style={styles.abilityInfo}>
+                                    <p style={{fontSize: "10px"}}>
+                                        特性: {pokemon.selectedAbility?.name || "未選択"}
+                                    </p>
+                                </div>
 
-                                {/* 持ち物とテラスタル */}
-                                <div style={styles.itemAndTerastalContainer}>
-                                    {pokemon.selectedItem && (
-                                        <img
-                                            src={`/images/items/${pokemon.selectedItem.image}`}
-                                            alt={pokemon.selectedItem.name}
-                                            style={styles.itemImage}
-                                        />
-                                    )}
-                                    {pokemon.selectedTerastal && (
-                                        <img
-                                            src={pokemon.selectedTerastal.image}
-                                            alt={`テラスタル ${pokemon.selectedTerastal.type}`}
-                                            style={styles.terastalImage}
-                                        />
+                                {/* 性格情報 */}
+                                <div style={styles.natureInfo}>
+                                    <p style={{fontSize: "10px"}}>
+                                        性格: {pokemon.selectedNature?.name || "未選択"}
+                                    </p>
+                                    {pokemon.selectedNature && (
+                                        <p style={{fontSize: "10px"}}>
+                                            ↑ {pokemon.selectedNature.boostedStat} / ↓{" "}
+                                            {pokemon.selectedNature.loweredStat}
+                                        </p>
                                     )}
                                 </div>
-                            </div>
 
-                            {/* 技リスト */}
-                            <div>
-                                <ul style={{listStyle: "none", padding: 0, margin: 0}}>
-                                    {pokemon.selectedMoves.map((move, index) => (
-                                        <li key={index} style={{fontSize: "10px"}}>
-                                            {move}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
+                                {/* 努力値 */}
+                                <div style={styles.effortValues}>
+                                    <p style={{fontSize: "10px"}}>
+                                        努力値:{" "}
+                                        {Object.entries(pokemon.effortValues || {})
+                                            .map(([stat, value]) => `${stat}: ${value}`)
+                                            .join(", ")}
+                                    </p>
+                                </div>
 
-                            {/* 削除ボタン */}
-                            <button
-                                onClick={() => setParty((prev) => prev.filter((p) => p.name !== pokemon.name))}
-                                style={styles.button}
-                            >
-                                削除
-                            </button>
-                        </div>
-                    ))}
-                </div>
+                                {/* 技リスト */}
+                                <div>
+                                    <ul style={{listStyle: "none", padding: 0, margin: 0}}>
+                                        {pokemon.selectedMoves.map((move, index) => (
+                                            <li key={index} style={{fontSize: "10px"}}>
+                                                {move}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                {/* 削除ボタン */}
+                                <button
+                                    onClick={() => setParty((prev) => prev.filter((p) => p.name !== pokemon.name))}
+                                    style={styles.button}
+                                >
+                                    削除
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                )}
 
 
             </div>
@@ -469,7 +596,7 @@ const Home = () => {
                             <div style={styles.movesContainer}>
                                 <h3 style={styles.modalSubtitle}>わざ</h3>
                                 <div style={styles.scrollableMovesContainer}>
-                                    <ul style={styles.moveList}>
+                                <ul style={styles.moveList}>
                                         {selectedPokemon.moves
                                             .slice(currentPage * movesPerPage, (currentPage + 1) * movesPerPage)
                                             .map((move, index) => (
@@ -628,7 +755,76 @@ const Home = () => {
                                     </button>
                                 </div>
                             </div>
+                            <div style={styles.rowContainer}>
+                                {/* 性格選択 */}
+                                <div style={styles.selectionBox}>
+                                    <h3 style={styles.selectionTitle}>性格</h3>
+                                    <ul style={styles.selectionContent}>
+                                        {naturesData.map((nature) => (
+                                            <li
+                                                key={nature.id}
+                                                style={{
+                                                    backgroundColor: selectedNature?.id === nature.id ? "#4CAF50" : "#f9f9f9",
+                                                    padding: "5px",
+                                                    marginBottom: "5px",
+                                                    cursor: "pointer",
+                                                }}
+                                                onClick={() => handleSelectNature(nature)}
+                                            >
+                                                <p>{nature.name}</p>
+                                                <p style={{fontSize: "10px"}}>
+                                                    ↑ {nature.boostedStat} ↓ {nature.loweredStat}
+                                                </p>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
 
+                                {/* 特性選択 */}
+                                <div style={styles.selectionBox}>
+                                    <h3 style={styles.selectionTitle}>特性</h3>
+                                    <ul style={styles.selectionContent}>
+                                        {selectedPokemon?.abilities?.map((ability, index) => (
+                                            <li
+                                                key={index}
+                                                style={{
+                                                    backgroundColor: selectedAbility?.name === ability.name ? "#4CAF50" : "#f9f9f9",
+                                                    padding: "5px",
+                                                    marginBottom: "5px",
+                                                    cursor: "pointer",
+                                                }}
+                                                onClick={() => handleSelectAbility(ability)}
+                                            >
+                                                <p>{ability.name}</p> {/* 特性名を日本語で表示 */}
+                                                <p style={{fontSize: "10px"}}>
+                                                    {abilitiesData.find(data => data.name.jpn === ability.name)?.effect || "説明が見つかりません"}
+                                                </p> {/* 特性の説明を表示 */}
+
+                                            </li>
+                                        ))}
+                                    </ul>
+
+                                </div>
+
+                                {/* 努力値 */}
+                                <div style={styles.effortValuesContainer}>
+                                    <h3 style={styles.modalSubtitle}>努力値</h3>
+                                    {Object.keys(effortValues).map((stat) => (
+                                        <div key={stat} style={styles.effortValueRow}>
+                                            <label style={styles.effortValueLabel}>{stat}</label>
+                                            <input
+                                                type="number"
+                                                value={effortValues[stat]}
+                                                onChange={(e) => handleEffortValueChange(stat, parseInt(e.target.value))}
+                                                style={styles.effortValueInput}
+                                                max={252}
+                                                min={0}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+
+                            </div>
 
 
                         </div>
@@ -649,15 +845,39 @@ const Home = () => {
                                 <div style={styles.selectedColumn}>
                                     <p>選択中の持ち物:</p>
                                     <p>{selectedItem ? selectedItem.name : "未選択"}</p>
-                                    <p>{selectedItem ? selectedItem.effect:""}</p>
+                                    <p>{selectedItem ? selectedItem.effect : ""}</p>
                                 </div>
                                 <div style={styles.selectedColumn}>
                                     <p>選択中のテラスタル:</p>
                                     <p>{selectedTerastal ? selectedTerastal.type : "未選択"}</p>
                                 </div>
+                                <div style={styles.selectedColumn}>
+                                    <p>選択中の性格:</p>
+                                    <p>{selectedNature ? selectedNature.name : "未選択"}</p>
+
+                                </div>
+                                <div style={styles.selectedColumn}>
+                                    <p>選択中の特性:</p>
+                                    <p>{selectedAbility ? selectedAbility.name : "未選択"}</p>
+                                    <p>
+                                        {selectedAbility
+                                            ? abilitiesData.find(data => data.name.jpn === selectedAbility.name)?.effect || "効果がありません"
+                                            : "効果がありません"}
+                                    </p>
+                                </div>
+
+
+                                <div style={styles.selectedColumn}>
+                                    <p>努力値:</p>
+                                    <ul>
+                                        {Object.entries(effortValues).map(([stat, value]) => (
+                                            <p key={stat}>{stat}: {value}</p>
+                                        ))}
+                                    </ul>
+                                </div>
+
                             </div>
                         </div>
-
 
 
                         <div style={styles.modalActions}>
