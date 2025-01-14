@@ -5640,6 +5640,14 @@
         "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/705.png"
     },
     {
+        "id": 10241,
+        "name": {
+            "jpn": "ヌメイル(ヒスイ)",
+            "eng": "sliggoo-hisui"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10241.png"
+    },
+    {
         "id": 706,
         "name": {
             "jpn": "ヌメルゴン",
@@ -8335,470 +8343,6 @@
         "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10026.png"
     },
     {
-        "id": 10033,
-        "name": {
-            "jpn": "メガフシギバナ",
-            "eng": "venusaur-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10033.png"
-    },
-    {
-        "id": 10034,
-        "name": {
-            "jpn": "リザードンX",
-            "eng": "charizard-mega-x"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10034.png"
-    },
-    {
-        "id": 10035,
-        "name": {
-            "jpn": "リザードンY",
-            "eng": "charizard-mega-y"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10035.png"
-    },
-    {
-        "id": 10036,
-        "name": {
-            "jpn": "メガカメックス",
-            "eng": "blastoise-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10036.png"
-    },
-    {
-        "id": 10090,
-        "name": {
-            "jpn": "メガスピアー",
-            "eng": "beedrill-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10090.png"
-    },
-    {
-        "id": 10073,
-        "name": {
-            "jpn": "メガピジョット",
-            "eng": "pidgeot-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10073.png"
-    },
-    {
-        "id": 10091,
-        "name": {
-            "jpn": "コラッタ(アローラ)",
-            "eng": "rattata-alola"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10091.png"
-    },
-    {
-        "id": 10092,
-        "name": {
-            "jpn": "ラッタ(アローラ)",
-            "eng": "raticate-alola"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10092.png"
-    },
-    {
-        "id": 10101,
-        "name": {
-            "jpn": "サンド(アローラ)",
-            "eng": "sandshrew-alola"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10101.png"
-    },
-    {
-        "id": 10102,
-        "name": {
-            "jpn": "サンドパン(アローラ)",
-            "eng": "sandslash-alola"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10102.png"
-    },
-    {
-        "id": 10103,
-        "name": {
-            "jpn": "ロコン(アローラ)",
-            "eng": "vulpix-alola"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10103.png"
-    },
-    {
-        "id": 10105,
-        "name": {
-            "jpn": "ディグダ(アローラ)",
-            "eng": "diglett-alola"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10105.png"
-    },
-    {
-        "id": 10106,
-        "name": {
-            "jpn": "ダグトリオ(アローラ)",
-            "eng": "dugtrio-alola"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10106.png"
-    },
-    {
-        "id": 10107,
-        "name": {
-            "jpn": "ニャース(アローラ)",
-            "eng": "meowth-alola"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10107.png"
-    },
-    {
-        "id": 10161,
-        "name": {
-            "jpn": "ニャース(ガラル)",
-            "eng": "meowth-galar"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10161.png"
-    },
-    {
-        "id": 10108,
-        "name": {
-            "jpn": "ペルシアン(アローラ)",
-            "eng": "persian-alola"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10108.png"
-    },
-    {
-        "id": 10229,
-        "name": {
-            "jpn": "ガーディ(ヒスイ)",
-            "eng": "growlithe-hisui"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10229.png"
-    },
-    {
-        "id": 10037,
-        "name": {
-            "jpn": "メガフーディン",
-            "eng": "alakazam-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10037.png"
-    },
-    {
-        "id": 10109,
-        "name": {
-            "jpn": "イシツブテ(アローラ)",
-            "eng": "geodude-alola"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10109.png"
-    },
-    {
-        "id": 10110,
-        "name": {
-            "jpn": "ゴローン(アローラ)",
-            "eng": "graveler-alola"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10110.png"
-    },
-    {
-        "id": 10162,
-        "name": {
-            "jpn": "ポニータ(ガラル)",
-            "eng": "ponyta-galar"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10162.png"
-    },
-    {
-        "id": 10164,
-        "name": {
-            "jpn": "ヤドン(ガラル)",
-            "eng": "slowbro-galar"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10164.png"
-    },
-    {
-        "id": 10071,
-        "name": {
-            "jpn": "メガヤドラン",
-            "eng": "slowbro-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10071.png"
-    },
-    {
-        "id": 10166,
-        "name": {
-            "jpn": "カモネギ(ガラル)",
-            "eng": "farfetchd-galar"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10166.png"
-    },
-    {
-        "id": 10112,
-        "name": {
-            "jpn": "ベトベター(アローラ)",
-            "eng": "grimer-alola"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10112.png"
-    },
-    {
-        "id": 10038,
-        "name": {
-            "jpn": "メガゲンガー",
-            "eng": "gengar-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10038.png"
-    },
-    {
-        "id": 10231,
-        "name": {
-            "jpn": "ビリリダマ(ヒスイ)",
-            "eng": "voltorb-hisui"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10231.png"
-    },
-    {
-        "id": 10115,
-        "name": {
-            "jpn": "ガラガラ(アローラ)",
-            "eng": "marowak-alola"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10115.png"
-    },
-    {
-        "id": 10039,
-        "name": {
-            "jpn": "メガガルーラ",
-            "eng": "kangaskhan-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10039.png"
-    },
-    {
-        "id": 10168,
-        "name": {
-            "jpn": "バリヤード(ガラル)",
-            "eng": "mr-mime-galar"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10168.png"
-    },
-    {
-        "id": 10040,
-        "name": {
-            "jpn": "メガカイロス",
-            "eng": "pinsir-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10040.png"
-    },
-    {
-        "id": 10041,
-        "name": {
-            "jpn": "メガギャラドス",
-            "eng": "gyarados-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10041.png"
-    },
-    {
-        "id": 10042,
-        "name": {
-            "jpn": "メガプテラ",
-            "eng": "aerodactyl-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10042.png"
-    },
-    {
-        "id": 10043,
-        "name": {
-            "jpn": "メガミュウツーX",
-            "eng": "mewtwo-mega-x"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10043.png"
-    },
-    {
-        "id": 10044,
-        "name": {
-            "jpn": "メガミュウツーY",
-            "eng": "mewtwo-mega-y"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10044.png"
-    },
-    {
-        "id": 10045,
-        "name": {
-            "jpn": "メガデンリュウー",
-            "eng": "ampharos-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10045.png"
-    },
-    {
-        "id": 10253,
-        "name": {
-            "jpn": "ウパー(パルデア)",
-            "eng": "wooper-paldea"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10253.png"
-    },
-    {
-        "id": 10072,
-        "name": {
-            "jpn": "メガハガネール",
-            "eng": "steelix-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10072.png"
-    },
-    {
-        "id": 10234,
-        "name": {
-            "jpn": "ハリーセン(ヒスイ)",
-            "eng": "qwilfish-hisui"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10234.png"
-    },
-    {
-        "id": 10046,
-        "name": {
-            "jpn": "メガハッサム",
-            "eng": "scizor-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10046.png"
-    },
-    {
-        "id": 10047,
-        "name": {
-            "jpn": "メガヘラクロス",
-            "eng": "heracross-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10047.png"
-    },
-    {
-        "id": 10235,
-        "name": {
-            "jpn": "ニューラ(ヒスイ)",
-            "eng": "sneasel-hisui"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10235.png"
-    },
-    {
-        "id": 10173,
-        "name": {
-            "jpn": "サニーゴ(ガラル)",
-            "eng": "corsola-galar"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10173.png"
-    },
-    {
-        "id": 10048,
-        "name": {
-            "jpn": "メガヘルガー",
-            "eng": "houndoom-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10048.png"
-    },
-    {
-        "id": 10049,
-        "name": {
-            "jpn": "メガバンギラス",
-            "eng": "tyranitar-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10049.png"
-    },
-    {
-        "id": 10065,
-        "name": {
-            "jpn": "メガジュカイン",
-            "eng": "sceptile-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10065.png"
-    },
-    {
-        "id": 10050,
-        "name": {
-            "jpn": "メガバシャーモ",
-            "eng": "blaziken-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10050.png"
-    },
-    {
-        "id": 10064,
-        "name": {
-            "jpn": "メガラグラージ",
-            "eng": "swampert-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10064.png"
-    },
-    {
-        "id": 10174,
-        "name": {
-            "jpn": "ジグザグマ(ガラル)",
-            "eng": "zigzagoon-galar"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10174.png"
-    },
-    {
-        "id": 10175,
-        "name": {
-            "jpn": "マッスグマ(ガラル)",
-            "eng": "linoone-galar"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10175.png"
-    },
-    {
-        "id": 10051,
-        "name": {
-            "jpn": "メガサーナイト",
-            "eng": "gardevoir-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10051.png"
-    },
-    {
-        "id": 10066,
-        "name": {
-            "jpn": "メガヤミラミ",
-            "eng": "sableye-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10066.png"
-    },
-    {
-        "id": 10053,
-        "name": {
-            "jpn": "メガボスゴドラ",
-            "eng": "aggron-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10053.png"
-    },
-    {
-        "id": 10052,
-        "name": {
-            "jpn": "メガクチート",
-            "eng": "mawile-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10052.png"
-    },
-    {
-        "id": 10054,
-        "name": {
-            "jpn": "メガチャーレム",
-            "eng": "medicham-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10054.png"
-    },
-    {
-        "id": 10055,
-        "name": {
-            "jpn": "メガライボルト",
-            "eng": "manectric-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10055.png"
-    },
-    {
-        "id": 10070,
-        "name": {
-            "jpn": "メガサメハダー",
-            "eng": "sharpedo-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10070.png"
-    },
-    {
-        "id": 10087,
-        "name": {
-            "jpn": "メガバクーダ",
-            "eng": "camerupt-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10087.png"
-    },
-    {
         "id": 10077,
         "name": {
             "jpn": "ゲンシカイオーガ",
@@ -8807,532 +8351,12 @@
         "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10077.png"
     },
     {
-        "id": 10067,
-        "name": {
-            "jpn": "メガチルタリス",
-            "eng": "altaria-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10067.png"
-    },
-    {
-        "id": 10056,
-        "name": {
-            "jpn": "メガジュペッタ",
-            "eng": "banette-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10056.png"
-    },
-    {
-        "id": 10057,
-        "name": {
-            "jpn": "メガアブソル",
-            "eng": "absol-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10057.png"
-    },
-    {
-        "id": 10074,
-        "name": {
-            "jpn": "メガオニゴーリ",
-            "eng": "glalie-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10074.png"
-    },
-    {
-        "id": 10089,
-        "name": {
-            "jpn": "メガボーマンダ",
-            "eng": "salamence-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10089.png"
-    },
-    {
-        "id": 10076,
-        "name": {
-            "jpn": "メガメタグロス",
-            "eng": "metagross-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10076.png"
-    },
-    {
-        "id": 10062,
-        "name": {
-            "jpn": "メガラティアス",
-            "eng": "latias-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10062.png"
-    },
-    {
-        "id": 10063,
-        "name": {
-            "jpn": "メガラティオス",
-            "eng": "latios-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10063.png"
-    },
-    {
-        "id": 10079,
-        "name": {
-            "jpn": "メガレックウザ",
-            "eng": "rayquaza-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10079.png"
-    },
-    {
-        "id": 413,
-        "name": {
-            "jpn": "ミノマダム(くさき)",
-            "eng": "wormadam-plant"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/413.png"
-    },
-    {
-        "id": 10004,
-        "name": {
-            "jpn": "ミノマダム(すなち)",
-            "eng": "wormadam-sandy"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10004.png"
-    },
-    {
-        "id": 10005,
-        "name": {
-            "jpn": "ミノマダム(ゴミ)",
-            "eng": "wormadam-trash"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10005.png"
-    },
-    {
-        "id": 10088,
-        "name": {
-            "jpn": "メガミミロップ",
-            "eng": "lopunny-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10088.png"
-    },
-    {
-        "id": 10058,
-        "name": {
-            "jpn": "メガガブリアス",
-            "eng": "garchomp-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10058.png"
-    },
-    {
-        "id": 10059,
-        "name": {
-            "jpn": "メガルカリオ",
-            "eng": "lucario-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10059.png"
-    },
-    {
-        "id": 10060,
-        "name": {
-            "jpn": "メガユキノオー",
-            "eng": "abomasnow-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10060.png"
-    },
-    {
-        "id": 10068,
-        "name": {
-            "jpn": "メガエルレイド",
-            "eng": "gallade-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10068.png"
-    },
-    {
-        "id": 10245,
-        "name": {
-            "jpn": "ディアルガ(オリジン)",
-            "eng": "dialga-origin"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10245.png"
-    },
-    {
         "id": 10078,
         "name": {
             "jpn": "ゲンシグラードン",
             "eng": "groudon-primal"
         },
         "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10078.png"
-    },
-    {
-        "id": 10246,
-        "name": {
-            "jpn": "パルキア(オリジン)",
-            "eng": "palkia-origin"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10246.png"
-    },
-    {
-        "id": 487,
-        "name": {
-            "jpn": "ギラティナ(アナザー)",
-            "eng": "giratina-altered"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/487.png"
-    },
-    {
-        "id": 10236,
-        "name": {
-            "jpn": "ダイケンキ(ヒスイ)",
-            "eng": "samurott-hisui"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10236.png"
-    },
-    {
-        "id": 10069,
-        "name": {
-            "jpn": "メガタブンネ",
-            "eng": "audino-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10069.png"
-    },
-    {
-        "id": 10237,
-        "name": {
-            "jpn": "ドレディア(ヒスイ)",
-            "eng": "lilligant-hisui"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10237.png"
-    },
-    {
-        "id": 10247,
-        "name": {
-            "jpn": "バスラオ(白)",
-            "eng": "basculin-white-striped"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10247.png"
-    },
-    {
-        "id": 550,
-        "name": {
-            "jpn": "バスラオ(赤)",
-            "eng": "basculin-red-striped"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/550.png"
-    },
-    {
-        "id": 10016,
-        "name": {
-            "jpn": "バスラオ(青)",
-            "eng": "basculin-blue-striped"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10016.png"
-    },
-    {
-        "id": 10176,
-        "name": {
-            "jpn": "ダルマッカ(ガラル)",
-            "eng": "darumaka-galar"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10176.png"
-    },
-    {
-        "id": 10177,
-        "name": {
-            "jpn": "ヒヒダルマ(ガラル)",
-            "eng": "darmanitan-galar-standard"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10177.png"
-    },
-    {
-        "id": 10017,
-        "name": {
-            "jpn": "ヒヒダルマ(ダルマ)",
-            "eng": "darmanitan-zen"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10017.png"
-    },
-    {
-        "id": 10178,
-        "name": {
-            "jpn": "ヒヒダルマ(ダルマ・ガラル)",
-            "eng": "darmanitan-galar-zen"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10178.png"
-    },
-    {
-        "id": 10179,
-        "name": {
-            "jpn": "デスマス(ガラル)",
-            "eng": "yamask-galar"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10179.png"
-    },
-    {
-        "id": 10238,
-        "name": {
-            "jpn": "ゾロア(ヒスイ)",
-            "eng": "zorua-hisui"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10238.png"
-    },
-    {
-        "id": 10239,
-        "name": {
-            "jpn": "ゾロアーク(ヒスイ)",
-            "eng": "zoroark-hisui"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10239.png"
-    },
-    {
-        "id": 10180,
-        "name": {
-            "jpn": "マッギョ(ガラル)",
-            "eng": "stunfisk-galar"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10180.png"
-    },
-    {
-        "id": 10240,
-        "name": {
-            "jpn": "ウォーグル(ヒスイ)",
-            "eng": "braviary-hisui"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10240.png"
-    },
-    {
-        "id": 641,
-        "name": {
-            "jpn": "トルネロス(化身)",
-            "eng": "tornadus-incarnate"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/641.png"
-    },
-    {
-        "id": 10019,
-        "name": {
-            "jpn": "トルネロス(霊獣)",
-            "eng": "tornadus-therian"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10019.png"
-    },
-    {
-        "id": 642,
-        "name": {
-            "jpn": "ボルトロス(化身)",
-            "eng": "thundurus-incarnate"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/642.png"
-    },
-    {
-        "id": 10020,
-        "name": {
-            "jpn": "ボルトロス(霊獣)",
-            "eng": "thundurus-therian"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10020.png"
-    },
-    {
-        "id": 645,
-        "name": {
-            "jpn": "ランドロス(化身)",
-            "eng": "landorus-incarnate"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/645.png"
-    },
-    {
-        "id": 10021,
-        "name": {
-            "jpn": "ランドロス(霊獣)",
-            "eng": "landorus-therian"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10021.png"
-    },
-    {
-        "id": 648,
-        "name": {
-            "jpn": "メロエッタ(ボイス)",
-            "eng": "meloetta-aria"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/648.png"
-    },
-    {
-        "id": 10117,
-        "name": {
-            "jpn": "サトシゲッコウガ",
-            "eng": "greninja-ash"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10117.png"
-    },
-    {
-        "id": 681,
-        "name": {
-            "jpn": "ギルガルド(シールド)",
-            "eng": "aegislash-shield"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/681.png"
-    },
-    {
-        "id": 10242,
-        "name": {
-            "jpn": "ヌメルゴン(ヒスイ)",
-            "eng": "goodra-hisui"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10242.png"
-    },
-    {
-        "id": 10028,
-        "name": {
-            "jpn": "バケッチャ(大)",
-            "eng": "pumpkaboo-large"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10028.png"
-    },
-    {
-        "id": 10027,
-        "name": {
-            "jpn": "バケッチャ(小)",
-            "eng": "pumpkaboo-small"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10027.png"
-    },
-    {
-        "id": 710,
-        "name": {
-            "jpn": "バケッチャ(普通)",
-            "eng": "pumpkaboo-average"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/710.png"
-    },
-    {
-        "id": 10029,
-        "name": {
-            "jpn": "バケッチャ(特大)",
-            "eng": "pumpkaboo-super"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10029.png"
-    },
-    {
-        "id": 10031,
-        "name": {
-            "jpn": "パンプジン(大)",
-            "eng": "gourgeist-large"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10031.png"
-    },
-    {
-        "id": 10030,
-        "name": {
-            "jpn": "パンプジン(小)",
-            "eng": "gourgeist-small"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10030.png"
-    },
-    {
-        "id": 711,
-        "name": {
-            "jpn": "パンブジン(普通)",
-            "eng": "gourgeist-average"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/711.png"
-    },
-    {
-        "id": 10032,
-        "name": {
-            "jpn": "パンプジン(特大)",
-            "eng": "gourgeist-super"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10032.png"
-    },
-    {
-        "id": 10181,
-        "name": {
-            "jpn": "ジガルデ(10%)",
-            "eng": "zygarde-10"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10181.png"
-    },
-    {
-        "id": 10075,
-        "name": {
-            "jpn": "メガディアンシー",
-            "eng": "diancie-mega"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10075.png"
-    },
-    {
-        "id": 10244,
-        "name": {
-            "jpn": "ジュナイパー(ヒスイ)",
-            "eng": "decidueye-hisui"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10244.png"
-    },
-    {
-        "id": 746,
-        "name": {
-            "jpn": "ヨワシ(単独)",
-            "eng": "wishiwashi-solo"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/746.png"
-    },
-    {
-        "id": 10127,
-        "name": {
-            "jpn": "ヨワシ(群れ)",
-            "eng": "wishiwashi-school"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10127.png"
-    },
-    {
-        "id": 875,
-        "name": {
-            "jpn": "コオリッポ(アイス)",
-            "eng": "eiscue-ice"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/875.png"
-    },
-    {
-        "id": 10185,
-        "name": {
-            "jpn": "コオリッポ(ナイス)",
-            "eng": "eiscue-noice"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10185.png"
-    },
-    {
-        "id": 10190,
-        "name": {
-            "jpn": "ムゲンダイナ(ムゲン)",
-            "eng": "eternatus-eternamax"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10190.png"
-    },
-    {
-        "id": 10263,
-        "name": {
-            "jpn": "コレクレー(とほ)",
-            "eng": "gimmighoul-roaming"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10263.png"
-    },
-    {
-        "id": 999,
-        "name": {
-            "jpn": "コレクレー(はこ)",
-            "eng": "gimmighoul"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/999.png"
-    },
-    {
-        "id": 10277,
-        "name": {
-            "jpn": "テラパゴス(ステラ)",
-            "eng": "terapagos-stellar"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10277.png"
-    },
-    {
-        "id": 10276,
-        "name": {
-            "jpn": "テラパゴス(テラスタル)",
-            "eng": "terapagos-terastal"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10276.png"
     },
     {
         "id":10086,
@@ -9471,14 +8495,6 @@
         "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10165.png"
     },
     {
-        "id":10167,
-        "name": {
-            "jpn": "マタドガス(ガラルのすがた)",
-            "eng": "weezing-galar"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10167.png"
-    },
-    {
         "id":10169,
         "name": {
             "jpn": "フリーザー(ガラルのすがた)",
@@ -9581,6 +8597,278 @@
             "eng": "calyrex-shadow"
         },
         "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10194.png"
+    },
+    {
+        "id": 10195,
+        "name": {
+            "jpn": "フシギバナ(キョダイマックス)",
+            "eng": "venusaur-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10195.png"
+    },
+    {
+        "id": 10196,
+        "name": {
+            "jpn": "リザードン(キョダイマックス)",
+            "eng": "charizard-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10196.png"
+    },
+    {
+        "id": 10197,
+        "name": {
+            "jpn": "カメックス(キョダイマックス)",
+            "eng": "blastoise-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10197.png"
+    },
+    {
+        "id": 10198,
+        "name": {
+            "jpn": "バタフリー(キョダイマックス)",
+            "eng": "butterfree-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10198.png"
+    },
+    {
+        "id": 10199,
+        "name": {
+            "jpn": "ピカチュウ(キョダイマックス)",
+            "eng": "pikachu-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10199.png"
+    },
+    {
+        "id": 10200,
+        "name": {
+            "jpn": "ニャース(キョダイマックス)",
+            "eng": "meowth-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10200.png"
+    },
+    {
+        "id": 10201,
+        "name": {
+            "jpn": "カイリキー(キョダイマックス)",
+            "eng": "machamp-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10201.png"
+    },
+    {
+        "id": 10202,
+        "name": {
+            "jpn": "ゲンガー(キョダイマックス)",
+            "eng": "gengar-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10202.png"
+    },
+    {
+        "id": 10203,
+        "name": {
+            "jpn": "キングラー(キョダイマックス)",
+            "eng": "kingler-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10203.png"
+    },
+    {
+        "id": 10204,
+        "name": {
+            "jpn": "ラプラス(キョダイマックス)",
+            "eng": "lapras-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10204.png"
+    },
+    {
+        "id": 10205,
+        "name": {
+            "jpn": "イーブイ(キョダイマックス)",
+            "eng": "eevee-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10205.png"
+    },
+    {
+        "id": 10206,
+        "name": {
+            "jpn": "カビゴン(キョダイマックス)",
+            "eng": "snorlax-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10206.png"
+    },
+    {
+        "id": 10207,
+        "name": {
+            "jpn": "ダストダス(キョダイマックス)",
+            "eng": "garbodor-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10207.png"
+    },
+    {
+        "id": 10208,
+        "name": {
+            "jpn": "メルメタル(キョダイマックス)",
+            "eng": "melmetal-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10208.png"
+    },
+    {
+        "id": 10209,
+        "name": {
+            "jpn": "ゴリランダー(キョダイマックス)",
+            "eng": "rillaboom-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10209.png"
+    },
+    {
+        "id": 10210,
+        "name": {
+            "jpn": "エースバーン(キョダイマックス)",
+            "eng": "cinderace-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10210.png"
+    },
+    {
+        "id": 10211,
+        "name": {
+            "jpn": "インテレオン(キョダイマックス)",
+            "eng": "inteleon-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10211.png"
+    },
+    {
+        "id": 10212,
+        "name": {
+            "jpn": "アーマーガア(キョダイマックス)",
+            "eng": "corviknight-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10212.png"
+    },
+    {
+        "id": 10213,
+        "name": {
+            "jpn": "イオルブ(キョダイマックス)",
+            "eng": "orbeetle-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10213.png"
+    },
+    {
+        "id": 10214,
+        "name": {
+            "jpn": "カジリガメ(キョダイマックス)",
+            "eng": "drednaw-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10214.png"
+    },
+    {
+        "id": 10215,
+        "name": {
+            "jpn": "セキタンザン(キョダイマックス)",
+            "eng": "coalossal-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10215.png"
+    },
+    {
+        "id": 10216,
+        "name": {
+            "jpn": "アップリュー(キョダイマックス)",
+            "eng": "flapple-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10216.png"
+    },
+    {
+        "id": 10217,
+        "name": {
+            "jpn": "タルップル(キョダイマックス)",
+            "eng": "appletun-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10217.png"
+    },
+    {
+        "id": 10218,
+        "name": {
+            "jpn": "サダイジャ(キョダイマックス)",
+            "eng": "sandaconda-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10218.png"
+    },
+    {
+        "id": 10219,
+        "name": {
+            "jpn": "ストリンダー(ハイ・キョダイマックス)",
+            "eng": "toxtricity-amped-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10219.png"
+    },
+    {
+        "id": 10220,
+        "name": {
+            "jpn": "マルヤクデ(キョダイマックス)",
+            "eng": "centiskorch-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10220.png"
+    },
+    {
+        "id": 10221,
+        "name": {
+            "jpn": "ブリムオン(キョダイマックス)",
+            "eng": "hatterene-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10221.png"
+    },
+    {
+        "id": 10222,
+        "name": {
+            "jpn": "オーロンゲ(キョダイマックス)",
+            "eng": "grimmsnarl-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10222.png"
+    },
+    {
+        "id": 10223,
+        "name": {
+            "jpn": "マホイップ(キョダイマックス)",
+            "eng": "alcremie-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10223.png"
+    },
+    {
+        "id": 10224,
+        "name": {
+            "jpn": "ダイオウドウ(キョダイマックス)",
+            "eng": "copperajah-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10224.png"
+    },
+    {
+        "id": 10225,
+        "name": {
+            "jpn": "ジュラルドン(キョダイマックス)",
+            "eng": "duraludon-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10225.png"
+    },
+    {
+        "id": 10226,
+        "name": {
+            "jpn": "ウーラオス(いちげきのかた・キョダイマックス)",
+            "eng": "urshifu-single-strike-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10226.png"
+    },
+    {
+        "id": 10227,
+        "name": {
+            "jpn": "ウーラオス(れんげきのかた・キョダイマックス)",
+            "eng": "urshifu-rapid-strike-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10227.png"
+    },
+    {
+        "id": 10228,
+        "name": {
+            "jpn": "ストリンダー(ロー・キョダイマックス)",
+            "eng": "toxtricity-low-key-gmax"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10228.png"
     },
     {
         "id": 10230,
@@ -9735,15 +9023,15 @@
         "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10275.png"
     },
     {
-        "id":10156,
+        "id":10556,
         "name": {
             "jpn": "ネクロズマ(あかつきの つばさ)",
             "eng": "necrozma-dawn"
         },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10156.png"
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10556.png"
     },
     {
-        "id": 10251,
+        "id": 20251,
         "name": {
             "jpn": "ケンタロス(パルデアのすがた・ブレイズ)",
             "eng": "tauros-paldea-blaze-breed"
