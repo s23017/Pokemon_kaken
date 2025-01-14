@@ -87,7 +87,6 @@ const Pokedex = () => {
                         <ul
                             style={{
                                 listStyle: "none",
-                                padding: 0,
                                 maxHeight: "500px",
                                 overflowY: "auto",
                                 border: "1px solid #ddd",

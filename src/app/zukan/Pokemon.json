@@ -9023,19 +9023,19 @@
         "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10275.png"
     },
     {
-        "id":10556,
+        "id":10156,
         "name": {
             "jpn": "ネクロズマ(あかつきの つばさ)",
             "eng": "necrozma-dawn"
         },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10556.png"
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10156.png"
     },
     {
-        "id": 20251,
+        "id": 10251,
         "name": {
             "jpn": "ケンタロス(パルデアのすがた・ブレイズ)",
             "eng": "tauros-paldea-blaze-breed"
         },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/20251.png"
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10251.png"
     }
 ]
