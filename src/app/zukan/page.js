@@ -2,7 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import PokemonData from "../party-builder/data/Pokemon.json"; // JSONファイルを読み込み
-import "./pokemonzukan.css"
+import "./pokemonzukan.css";
+import Link from "next/link";
+import Image from "next/image";
 
 // タイプ名の日本語対応マッピングと画像パス
 const typeTranslation = {
@@ -84,8 +86,45 @@ const Pokedex = () => {
     };
 
     return (
-        <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-            <h1 style={{ textAlign: "center" }}>ポケモン図鑑</h1>
+        <div style={{ paddingTop: "120px" }}>
+            {/* ヘッダー */}
+            <header
+                style={{
+                    backgroundColor: "#FF0000",
+                    color: "white",
+                    textAlign: "center",
+                    padding: "20px 0",
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    zIndex: 1000,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}
+            >
+                <div
+                    style={{
+                        position: "absolute",
+                        left: "20px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                    }}
+                >
+                    <Link href="/">
+                        <Image
+                            src="/images/gaming.gif"
+                            width={50}
+                            height={50}
+                            alt="ホームに戻る"
+                            style={{ cursor: "pointer" }}
+                        />
+                    </Link>
+                </div>
+                <h1 className="header-title">ポケモン図鑑</h1>
+            </header>
+
             <div style={{ marginBottom: "20px", textAlign: "center" }}>
                 <input
                     type="text"
@@ -140,8 +179,8 @@ const Pokedex = () => {
                                             style={{ width: "40px", height: "40px" }}
                                         />
                                         <span style={{ fontWeight: "bold" }}>
-                                            #{pokemon.id.toString().padStart(3, "0")}
-                                        </span>
+                                    #{pokemon.id.toString().padStart(3, "0")}
+                                </span>
                                         <span>{pokemon.name}</span>
                                     </li>
                                 ))}
