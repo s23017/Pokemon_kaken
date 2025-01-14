@@ -8,7 +8,7 @@ import Image from "next/image";
 
 // タイプ名の日本語対応マッピングと画像パス
 const typeTranslation = {
-    normal: { name: "ノーマル" },
+    normal: { name: "ノーマル"},
     fire: { name: "ほのお" },
     water: { name: "みず" },
     electric: { name: "でんき"},
