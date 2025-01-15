@@ -575,5 +575,17 @@
         "name": "くちたたて",
         "image": "RustyShield.png",
         "effect": "ザマゼンタに持たせると、戦闘中に「たてのおう」の姿になる"
+    },
+    {
+        "id": 97,
+        "name": "オボンのみ",
+        "image": "obon.png",
+        "effect": "持たせるとHPが半分以下になった時にHPを1/4回復する。"
+    },
+    {
+        "id": 98,
+        "name": "",
+        "image": "",
+        "effect": ""
     }
 ]

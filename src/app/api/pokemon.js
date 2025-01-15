@@ -3,7 +3,6 @@ import typesEffectiveness from '../party-builder/data/typeEffectiveness.json';
 //import abilitiesData from "../party-builder/data/abilities.json";
 
 // ポケモンの詳細を取得する関数
-// ポケモンの詳細を取得する関数
 export const fetchPokemonDetails = async (pokemonName) => {
     const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`;
     try {
