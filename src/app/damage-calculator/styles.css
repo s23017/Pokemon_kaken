@@ -77,27 +77,48 @@
     background-color: #f9f9f9;
 }
 
+/* 改善された予測変換リスト */
 .search-results.compact {
     position: absolute;
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 4px;
-    max-height: 150px; /* 高さを調整 */
+    max-height: 200px;
     overflow-y: auto;
     list-style: none;
     padding: 0;
-    margin: 0;
-    width: 400px; /* 幅を調整 */
-    font-size: 12px; /* フォントを小さく */
+    margin: 10px 0;
+    width: 300px;
+    font-size: 14px;
     z-index: 10;
 }
 
 .search-results.compact li {
-    padding: 5px; /* パディングを調整 */
+    padding: 8px;
     cursor: pointer;
-    line-height: 1.2; /* 行間を調整 */
+    line-height: 1.5;
+    transition: background-color 0.3s;
 }
 
 .search-results.compact li:hover {
-    background-color: #f0f0f0;
+    background-color: #f1f1f1;
+}
+
+/* 努力値・個体値入力セクション */
+.stat-inputs {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 10px;
+}
+
+.stat-input {
+    text-align: center;
+}
+
+.stat-input input {
+    width: 50px;
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
