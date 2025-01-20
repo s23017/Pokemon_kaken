@@ -24,6 +24,7 @@ const DamageCalculatorPage = () => {
         baseStats: {},
         iv: { hp: 31, def: 31, spd: 31 },
         ev: { hp: 0, def: 0, spd: 0 },
+        level: 50,
     });
 
     const [attackerSearchQuery, setAttackerSearchQuery] = useState("");
@@ -89,6 +90,7 @@ const DamageCalculatorPage = () => {
                     image: details.official_artwork,
                     moves: details.moves,
                     baseStats,
+                    level: 50, // レベルを初期値として設定
                 });
                 setAttackerSearchQuery("");
                 setAttackerSearchResults([]);
@@ -98,12 +100,15 @@ const DamageCalculatorPage = () => {
                     name: details.name,
                     image: details.official_artwork,
                     baseStats,
+                    level: 50, // レベルを初期値として設定
                 });
                 setDefenderSearchQuery("");
                 setDefenderSearchResults([]);
             }
         });
     };
+
+
 
     const handleInputChange = (role, type, stat, value) => {
         const updatedValue = Math.max(
@@ -342,11 +347,34 @@ const DamageCalculatorPage = () => {
                                 />
                             </div>
                         ))}
-                        <h3>実数値</h3>
                         <p>
-                            HP実数値: {calculateHP(defender.baseStats.hp || 100, defender.iv.hp, defender.ev.hp, defender.level)}<br />
-                            防御実数値: {calculateStat(defender.baseStats.def || 100, defender.iv.def, defender.ev.def, defender.level)}<br />
-                            特防実数値: {calculateStat(defender.baseStats.spd || 100, defender.iv.spd, defender.ev.spd, defender.level)}
+                            HP実数値: {(() => {
+                            console.log("HP計算データ:", {
+                                base: defender.baseStats.hp,
+                                iv: defender.iv.hp,
+                                ev: defender.ev.hp,
+                                level: defender.level
+                            });
+                            return calculateHP(defender.baseStats.hp || 100, defender.iv.hp, defender.ev.hp, defender.level);
+                        })()}<br />
+                            防御実数値: {(() => {
+                            console.log("防御計算データ:", {
+                                base: defender.baseStats.def,
+                                iv: defender.iv.def,
+                                ev: defender.ev.def,
+                                level: defender.level
+                            });
+                            return calculateStat(defender.baseStats.def || 100, defender.iv.def, defender.ev.def, defender.level);
+                        })()}<br />
+                            特防実数値: {(() => {
+                            console.log("特防計算データ:", {
+                                base: defender.baseStats.spd,
+                                iv: defender.iv.spd,
+                                ev: defender.ev.spd,
+                                level: defender.level
+                            });
+                            return calculateStat(defender.baseStats.spd || 100, defender.iv.spd, defender.ev.spd, defender.level);
+                        })()}
                         </p>
                     </div>
                 </div>
