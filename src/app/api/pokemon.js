@@ -13,36 +13,47 @@ export const fetchPokemonDetails = async (pokemonName) => {
         }
         const data = await response.json();
 
-        // 技データを取得し詳細を統合
+        console.log("APIデータ:", data); // デバッグ用
+
+        const statMapping = {
+            hp: "hp",
+            attack: "atk",
+            defense: "def",
+            "special-attack": "spa",
+            "special-defense": "spd",
+            speed: "spe",
+        };
+
+        const stats = data.stats.map((stat) => ({
+            base_stat: stat.base_stat,
+            name: statMapping[stat.stat.name] || stat.stat.name,
+        }));
+
         const moves = await Promise.all(
-            data.moves.map(async (moveInfo) => {
-                const moveDetails = await fetch(moveInfo.move.url).then((res) => res.json());
+            data.moves.map(async (move) => {
+                const moveDetails = await fetch(move.move.url).then((res) => res.json());
                 return {
                     name: moveDetails.names.find((name) => name.language.name === "ja")?.name || moveDetails.name,
-                    power: moveDetails.power || "不明", // 技威力
-                    type: moveDetails.type.name, // 技タイプ
-                    accuracy: moveDetails.accuracy || "不明", // 命中率
+                    power: moveDetails.power || "不明",
+                    type: moveDetails.type.name,
+                    category: moveDetails.damage_class.name, // 技の分類
                 };
             })
         );
 
-        // 特性を取得
-        const abilities = await fetchPokemonAbilities(pokemonName);
-
         return {
             name: data.name,
-            types: data.types.map((typeInfo) => typeInfo.type.name),
-            stats: data.stats,
+            stats,
             sprite: data.sprites.front_default,
             official_artwork: data.sprites.other["official-artwork"].front_default,
-            moves, // 技リスト（詳細付き）
-            abilities, // 特性リスト
+            moves,
         };
     } catch (error) {
         console.error(`Error fetching details for ${pokemonName}:`, error);
         return null;
     }
 };
+
 
 
 
@@ -306,3 +317,5 @@ export const calculateDamage = ({
 
     return Math.floor(baseDamage * criticalFactor * effectiveness * randomMultiplier);
 };
+
+

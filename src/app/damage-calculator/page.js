@@ -67,48 +67,39 @@ const DamageCalculatorPage = () => {
         }
     };
 
-    const handleSelectPokemon = (role, pokemon) => {
-        fetchPokemonDetails(pokemon.name.eng.toLowerCase()).then((details) => {
-            const statMapping = {
-                hp: "hp",
-                attack: "atk",
-                defense: "def",
-                "special-attack": "spa",
-                "special-defense": "spd",
-                speed: "spe",
-            };
+    const handleSelectPokemon = async (role, pokemon) => {
+        const details = await fetchPokemonDetails(pokemon.name.eng.toLowerCase());
+        if (!details) {
+            alert("ポケモンの詳細を取得できませんでした。");
+            return;
+        }
 
-            const baseStats = details.stats.reduce((acc, stat) => {
-                acc[statMapping[stat.stat.name]] = stat.base_stat;
-                return acc;
-            }, {});
+        console.log("ポケモン詳細データ:", details); // デバッグ用
 
-            if (role === "attacker") {
-                setAttacker({
-                    ...attacker,
-                    name: details.name,
-                    image: details.official_artwork,
-                    moves: details.moves,
-                    baseStats,
-                    level: 50, // レベルを初期値として設定
-                });
-                setAttackerSearchQuery("");
-                setAttackerSearchResults([]);
-            } else {
-                setDefender({
-                    ...defender,
-                    name: details.name,
-                    image: details.official_artwork,
-                    baseStats,
-                    level: 50, // レベルを初期値として設定
-                });
-                setDefenderSearchQuery("");
-                setDefenderSearchResults([]);
-            }
-        });
+        const baseStats = details.stats.reduce((acc, stat) => {
+            acc[stat.name] = stat.base_stat;
+            return acc;
+        }, {});
+
+        if (role === "attacker") {
+            setAttacker({
+                ...attacker,
+                name: details.name,
+                image: details.official_artwork,
+                moves: details.moves,
+                baseStats,
+                level: 50,
+            });
+        } else {
+            setDefender({
+                ...defender,
+                name: details.name,
+                image: details.official_artwork,
+                baseStats,
+                level: 50,
+            });
+        }
     };
-
-
 
     const handleInputChange = (role, type, stat, value) => {
         const updatedValue = Math.max(
@@ -164,15 +155,22 @@ const DamageCalculatorPage = () => {
             return;
         }
 
-        const isPhysical = move.type === "physical";
+        // 技の物理/特殊判定
+        const isPhysical = move.category === "physical";
 
+        // 攻撃側のステータス
         const attackStat = isPhysical
             ? calculateStat(attacker.baseStats.atk, attacker.iv.atk, attacker.ev.atk, level)
             : calculateStat(attacker.baseStats.spa, attacker.iv.spa, attacker.ev.spa, level);
 
+        // 防御側のステータス
         const defenseStat = isPhysical
             ? calculateStat(defender.baseStats.def, defender.iv.def, defender.ev.def, level)
             : calculateStat(defender.baseStats.spd, defender.iv.spd, defender.ev.spd, level);
+
+        console.log("技分類:", isPhysical ? "物理" : "特殊");
+        console.log("攻撃ステータス:", attackStat);
+        console.log("防御ステータス:", defenseStat);
 
         const hp = calculateHP(defender.baseStats.hp, defender.iv.hp, defender.ev.hp, level);
 
@@ -401,6 +399,7 @@ const DamageCalculatorPage = () => {
                                 <p>名前: {move.name}</p>
                                 <p>威力: {move.power}</p>
                                 <p>タイプ: {move.type}</p>
+                                <p>分類: {move.category === "physical" ? "物理" : "特殊"}</p>
                             </li>
                         ))}
                     </ul>
