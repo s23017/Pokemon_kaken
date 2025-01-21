@@ -168,31 +168,53 @@ const DamageCalculatorPage = () => {
             ? calculateStat(defender.baseStats.def, defender.iv.def, defender.ev.def, level)
             : calculateStat(defender.baseStats.spd, defender.iv.spd, defender.ev.spd, level);
 
-        console.log("技分類:", isPhysical ? "物理" : "特殊");
-        console.log("攻撃ステータス:", attackStat);
-        console.log("防御ステータス:", defenseStat);
-
+        // 防御側のHP
         const hp = calculateHP(defender.baseStats.hp, defender.iv.hp, defender.ev.hp, level);
 
+        // タイプ一致ボーナス (STAB)
         const stab = attacker.moves.some((m) => m.type === move.type) ? 1.5 : 1.0;
+
+        // タイプ相性倍率
         const typeEffectiveness =
             (typesEffectiveness[move.type] || {})[defender.name] || 1.0;
 
+        // クリティカル倍率
         const critical = 1.5;
+
+        // ランダム係数
         const randomFactor = Math.random() * 0.15 + 0.85;
 
+        console.log("レベル:", level);
+        console.log("技の威力:", power);
+        console.log("攻撃側ステータス:", attackStat);
+        console.log("防御側ステータス:", defenseStat);
+        console.log("防御側HP:", hp);
+        console.log("STAB (タイプ一致ボーナス):", stab);
+        console.log("タイプ相性倍率:", typeEffectiveness);
+        console.log("クリティカル倍率:", critical);
+        console.log("ランダム係数:", randomFactor);
+
+        // 基本ダメージ計算式
         const baseDamage =
             (((2 * level) / 5 + 2) * power * attackStat) / defenseStat / 50 + 2;
 
+        // 最終ダメージ
         const finalDamage = Math.floor(
             baseDamage * stab * typeEffectiveness * critical * randomFactor
         );
+
+        console.log("基礎ダメージ:", baseDamage);
+        console.log("最終ダメージ:", finalDamage);
 
         setDamageResult({
             damage: finalDamage,
             hitsRequired: Math.ceil(hp / finalDamage),
         });
     };
+
+
+
+
 
     return (
         <div>
