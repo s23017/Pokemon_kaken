@@ -63,11 +63,11 @@ const TopPage = () => {
                     }}
                 >
                     {[
-                        {href: "/party-builder", label: "えす", img: "/images/pikacyuuuuu.png"},
-                        {href: "/speed-comparison", label: "sns", img: "/images/bata2.png"},
-                        {href: "/damage-calculator", label: "♂", img: "/images/bana.png"},
-                        {href: "/zukan", label: "HN", img: "/images/riza-don.png"},
-                        {href: "/sns", label: "zu", img: "/images/kamex.png"},
+                        {href: "/party-builder", label: "パーティ構築", img: "/images/pikacyuuuuu.png"},
+                        {href: "/speed-comparison", label: "スピード比較", img: "/images/bata2.png"},
+                        {href: "/damage-calculator", label: "ダメージ計算", img: "/images/bana.png"},
+                        {href: "/zukan", label: "図鑑", img: "/images/riza-don.png"},
+                        {href: "/sns", label: "SNS", img: "/images/kamex.png"},
                     ].map(({href, label, img}, index) => (
                         <div key={index} style={{textAlign: "center"}}>
                             <Link href={href}>
