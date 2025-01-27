@@ -23,6 +23,7 @@ export const fetchPokemonDetails = async (pokemonName) => {
             speed: "spe",
         };
 
+
         // const stats = data.stats.map((stat) => ({
         //     base_stat: stat.base_stat,
         //     name: statMapping[stat.stat.name] || stat.stat.name,
@@ -52,6 +53,7 @@ export const fetchPokemonDetails = async (pokemonName) => {
             official_artwork: data.sprites.other['official-artwork'].front_default,
             moves: data.moves.map(move => move.move.name),
             abilities, // 特性を統合
+
         };
     } catch (error) {
         console.error(`Error fetching details for ${pokemonName}:`, error);
@@ -300,3 +302,4 @@ const displayPokemonDetails = async () => {
 };
 
 displayPokemonDetails();
+
