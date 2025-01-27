@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import PokemonData from "../party-builder/data/Pokemon.json";
 import "./pokemonzukan.css";
@@ -15,7 +14,6 @@ import {
     Tooltip,
     Legend,
 } from "chart.js";
-
 ChartJS.register(
     RadialLinearScale,
     PointElement,
@@ -24,7 +22,6 @@ ChartJS.register(
     Tooltip,
     Legend
 );
-
 const typeTranslation = {
     normal: { name: "ノーマル" },
     fire: { name: "ほのお" },
@@ -45,13 +42,11 @@ const typeTranslation = {
     steel: { name: "はがね" },
     fairy: { name: "フェアリー" },
 };
-
 const Pokedex = () => {
     const [pokemonList, setPokemonList] = useState([]);
     const [selectedPokemon, setSelectedPokemon] = useState(null);
     const [loading, setLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
-
     useEffect(() => {
         const formattedPokemonList = PokemonData.map((pokemon) => ({
             id: pokemon.id,
@@ -61,7 +56,6 @@ const Pokedex = () => {
         }));
         setPokemonList(formattedPokemonList);
     }, []);
-
     const fetchPokemonDetails = async (pokemon) => {
         setLoading(true);
         try {
@@ -71,9 +65,7 @@ const Pokedex = () => {
             if (!pokemonResponse.ok) {
                 throw new Error(`ポケモンID ${pokemon.id} が見つかりませんでした。`);
             }
-
             const pokemonData = await pokemonResponse.json();
-
             const speciesResponse = await fetch(
                 `https://pokeapi.co/api/v2/pokemon-species/${pokemon.id}`
             );
@@ -81,16 +73,13 @@ const Pokedex = () => {
                 throw new Error("Failed to fetch Pokémon species details.");
             }
             const speciesData = await speciesResponse.json();
-
             const descriptionEntry = speciesData.flavor_text_entries.find(
                 (entry) => entry.language.name === "ja"
             );
-
             const stats = pokemonData.stats.reduce((acc, stat) => {
                 acc[stat.stat.name] = stat.base_stat;
                 return acc;
             }, {});
-
             setSelectedPokemon({
                 id: pokemon.id,
                 name: pokemon.name,
@@ -116,7 +105,6 @@ const Pokedex = () => {
             setLoading(false);
         }
     };
-
     return (
         <div style={{ paddingTop: "120px" }}>
             <header
@@ -265,5 +253,4 @@ const Pokedex = () => {
         </div>
     );
 };
-
 export default Pokedex;
