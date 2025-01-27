@@ -1,19 +1,37 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import PokemonData from "../party-builder/data/Pokemon.json"; // JSONファイルを読み込み
+import PokemonData from "../party-builder/data/Pokemon.json";
 import "./pokemonzukan.css";
 import Link from "next/link";
 import Image from "next/image";
+import { Radar } from "react-chartjs-2";
+import {
+    Chart as ChartJS,
+    RadialLinearScale,
+    PointElement,
+    LineElement,
+    Filler,
+    Tooltip,
+    Legend,
+} from "chart.js";
 
-// タイプ名の日本語対応マッピングと画像パス
+ChartJS.register(
+    RadialLinearScale,
+    PointElement,
+    LineElement,
+    Filler,
+    Tooltip,
+    Legend
+);
+
 const typeTranslation = {
-    normal: { name: "ノーマル"},
+    normal: { name: "ノーマル" },
     fire: { name: "ほのお" },
     water: { name: "みず" },
-    electric: { name: "でんき"},
+    electric: { name: "でんき" },
     grass: { name: "くさ" },
-    ice: { name: "こおり"},
+    ice: { name: "こおり" },
     fighting: { name: "かくとう" },
     poison: { name: "どく" },
     ground: { name: "じめん" },
@@ -21,11 +39,11 @@ const typeTranslation = {
     psychic: { name: "エスパー" },
     bug: { name: "むし" },
     rock: { name: "いわ" },
-    ghost: { name: "ゴースト"},
-    dragon: { name: "ドラゴン"},
-    dark: { name: "あく"},
+    ghost: { name: "ゴースト" },
+    dragon: { name: "ドラゴン" },
+    dark: { name: "あく" },
     steel: { name: "はがね" },
-    fairy: { name: "フェアリー"},
+    fairy: { name: "フェアリー" },
 };
 
 const Pokedex = () => {
@@ -39,7 +57,7 @@ const Pokedex = () => {
             id: pokemon.id,
             name: pokemon.name.jpn || pokemon.name.eng,
             artwork: pokemon.official_artwork,
-            icon: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`, // アイコン画像
+            icon: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`,
         }));
         setPokemonList(formattedPokemonList);
     }, []);
@@ -47,15 +65,28 @@ const Pokedex = () => {
     const fetchPokemonDetails = async (pokemon) => {
         setLoading(true);
         try {
-            const response = await fetch(
+            const pokemonResponse = await fetch(
                 `https://pokeapi.co/api/v2/pokemon/${pokemon.id}`
             );
-            if (!response.ok) {
-                throw new Error("Failed to fetch Pokémon details.");
+            if (!pokemonResponse.ok) {
+                throw new Error(`ポケモンID ${pokemon.id} が見つかりませんでした。`);
             }
-            const data = await response.json();
 
-            const stats = data.stats.reduce((acc, stat) => {
+            const pokemonData = await pokemonResponse.json();
+
+            const speciesResponse = await fetch(
+                `https://pokeapi.co/api/v2/pokemon-species/${pokemon.id}`
+            );
+            if (!speciesResponse.ok) {
+                throw new Error("Failed to fetch Pokémon species details.");
+            }
+            const speciesData = await speciesResponse.json();
+
+            const descriptionEntry = speciesData.flavor_text_entries.find(
+                (entry) => entry.language.name === "ja"
+            );
+
+            const stats = pokemonData.stats.reduce((acc, stat) => {
                 acc[stat.stat.name] = stat.base_stat;
                 return acc;
             }, {});
@@ -64,9 +95,9 @@ const Pokedex = () => {
                 id: pokemon.id,
                 name: pokemon.name,
                 artwork: pokemon.artwork,
-                height: data.height / 10,
-                weight: data.weight / 10,
-                types: data.types.map((type) => ({
+                height: pokemonData.height / 10,
+                weight: pokemonData.weight / 10,
+                types: pokemonData.types.map((type) => ({
                     name: typeTranslation[type.type.name]?.name || type.type.name,
                 })),
                 stats: {
@@ -77,6 +108,7 @@ const Pokedex = () => {
                     specialDefense: stats["special-defense"],
                     speed: stats["speed"],
                 },
+                description: descriptionEntry?.flavor_text || "説明文が見つかりませんでした。",
             });
         } catch (error) {
             console.error("Error fetching Pokémon details:", error);
@@ -87,7 +119,6 @@ const Pokedex = () => {
 
     return (
         <div style={{ paddingTop: "120px" }}>
-            {/* ヘッダー */}
             <header
                 style={{
                     backgroundColor: "#FF0000",
@@ -99,33 +130,20 @@ const Pokedex = () => {
                     left: 0,
                     width: "100%",
                     zIndex: 1000,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
                 }}
             >
-                <div
-                    style={{
-                        position: "absolute",
-                        left: "20px",
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                    }}
-                >
-                    <Link href="/">
-                        <Image
-                            src="/images/gaming.gif"
-                            width={50}
-                            height={50}
-                            alt="ホームに戻る"
-                            style={{ cursor: "pointer" }}
-                        />
-                    </Link>
-                </div>
+                <Link href="/">
+                    <Image
+                        src="/images/gaming.gif"
+                        width={50}
+                        height={50}
+                        alt="ホームに戻る"
+                        style={{ position: "absolute", left: "20px", cursor: "pointer" }}
+                    />
+                </Link>
                 <h1 className="header-title">ポケモン図鑑</h1>
             </header>
-
-            <div style={{ marginBottom: "20px", textAlign: "center" }}>
+            <div style={{ textAlign: "center", margin: "20px 0" }}>
                 <input
                     type="text"
                     placeholder="ポケモン名を検索"
@@ -141,21 +159,20 @@ const Pokedex = () => {
                 />
             </div>
             <div style={{ display: "flex", gap: "20px" }}>
-                <div style={{ flex: 1 }}>
+                <div
+                    style={{
+                        flex: 1,
+                        height: "750px",
+                        overflowY: "auto",
+                        border: "1px solid #ccc",
+                        borderRadius: "5px",
+                        padding: "10px",
+                    }}
+                >
                     {loading ? (
                         <p>読み込み中...</p>
                     ) : (
-                        <ul
-                            style={{
-                                listStyle: "none",
-                                padding: 0,
-                                maxHeight: "500px",
-                                overflowY: "auto",
-                                border: "1px solid #ddd",
-                                borderRadius: "5px",
-                                padding: "10px",
-                            }}
-                        >
+                        <ul style={{ listStyle: "none", padding: 0 }}>
                             {pokemonList
                                 .filter((pokemon) =>
                                     pokemon.name.includes(searchTerm.toLowerCase())
@@ -165,7 +182,6 @@ const Pokedex = () => {
                                         key={pokemon.id}
                                         style={{
                                             padding: "10px",
-                                            borderBottom: "1px solid #f0f0f0",
                                             cursor: "pointer",
                                             display: "flex",
                                             alignItems: "center",
@@ -179,59 +195,67 @@ const Pokedex = () => {
                                             style={{ width: "40px", height: "40px" }}
                                         />
                                         <span style={{ fontWeight: "bold" }}>
-                                    #{pokemon.id.toString().padStart(3, "0")}
-                                </span>
+                                            #{pokemon.id.toString().padStart(3, "0")}
+                                        </span>
                                         <span>{pokemon.name}</span>
                                     </li>
                                 ))}
                         </ul>
                     )}
                 </div>
-                <div style={{ flex: 2 }}>
+                <div style={{ flex: 3 }}>
                     {selectedPokemon ? (
-                        <div
-                            style={{
-                                border: "1px solid #ddd",
-                                borderRadius: "5px",
-                                padding: "20px",
-                            }}
-                        >
-                            <h2>{selectedPokemon.name}</h2>
-                            <img
-                                src={
-                                    selectedPokemon.artwork ||
-                                    "https://via.placeholder.com/150"
-                                }
-                                alt={selectedPokemon.name}
-                                style={{ width: "150px", height: "150px" }}
-                            />
-                            <p>図鑑ナンバー: #{selectedPokemon.id}</p>
-                            <p>高さ: {selectedPokemon.height} m</p>
-                            <p>重さ: {selectedPokemon.weight} kg</p>
-                            <p>タイプ:</p>
-                            <div style={{ display: "flex", gap: "10px" }}>
-                                {selectedPokemon.types.map((type, index) => (
-                                    <div
-                                        key={index}
-                                        style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            gap: "5px",
-                                        }}
-                                    >
-                                        <span>{type.name}</span>
-                                    </div>
-                                ))}
+                        <div style={{ display: "flex", justifyContent: "space-between", padding: "10px" }}>
+                            <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
+                                <img
+                                    src={selectedPokemon.artwork || ""}
+                                    alt={selectedPokemon.name}
+                                    style={{ width: "350px", height: "350px", marginBottom: "10px" }}
+                                />
+                                <p>図鑑ナンバー: #{selectedPokemon.id}</p>
+                                <p>高さ: {selectedPokemon.height} m</p>
+                                <p>重さ: {selectedPokemon.weight} kg</p>
+                                <p>タイプ:</p>
+                                <ul>
+                                    {selectedPokemon.types.map((type, index) => (
+                                        <p key={index}>{type.name}</p>
+                                    ))}
+                                </ul>
+                                <p>説明: {selectedPokemon.description}</p>
                             </div>
-                            <h3>ステータス</h3>
-                            <ul>
-                                <li>HP: {selectedPokemon.stats.hp}</li>
-                                <li>攻撃: {selectedPokemon.stats.attack}</li>
-                                <li>防御: {selectedPokemon.stats.defense}</li>
-                                <li>特攻: {selectedPokemon.stats.specialAttack}</li>
-                                <li>特防: {selectedPokemon.stats.specialDefense}</li>
-                                <li>素早さ: {selectedPokemon.stats.speed}</li>
-                            </ul>
+                            <div style={{ flex: 1 }}>
+                                <Radar
+                                    data={{
+                                        labels: ["HP", "攻撃", "防御", "特攻", "特防", "素早さ"],
+                                        datasets: [
+                                            {
+                                                label: "ステータス",
+                                                data: [
+                                                    selectedPokemon.stats.hp,
+                                                    selectedPokemon.stats.attack,
+                                                    selectedPokemon.stats.defense,
+                                                    selectedPokemon.stats.specialAttack,
+                                                    selectedPokemon.stats.specialDefense,
+                                                    selectedPokemon.stats.speed,
+                                                ],
+                                                backgroundColor: "rgba(255, 99, 132, 0.2)",
+                                                borderColor: "rgba(255, 99, 132, 1)",
+                                                borderWidth: 1,
+                                            },
+                                        ],
+                                    }}
+                                    options={{
+                                        scales: {
+                                            r: {
+                                                beginAtZero: true,
+                                                min: 0,
+                                                max: 150,
+                                                ticks: { stepSize: 50 },
+                                            },
+                                        },
+                                    }}
+                                />
+                            </div>
                         </div>
                     ) : (
                         <p>ポケモンを選択してください。</p>
