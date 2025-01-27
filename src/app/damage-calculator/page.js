@@ -16,7 +16,6 @@ const DamageCalculatorPage = () => {
         iv: { atk: 31, spa: 31 },
         ev: { atk: 0, spa: 0 },
         level: 50,
-        stab: false, // タイプ一致補正を管理
     });
 
     const [defender, setDefender] = useState({
