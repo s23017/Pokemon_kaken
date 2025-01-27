@@ -1,5 +1,5 @@
 import typesEffectiveness from '../party-builder/data/typeEffectiveness.json';
-import japaneseName from "pg/lib/query"; // 相性データをここでインポート
+// import japaneseName from "pg/lib/query"; // 相性データをここでインポート
 import abilitiesData from "../party-builder/data/abilities.json";
 
 // ポケモンの詳細を取得する関数
@@ -12,6 +12,7 @@ export const fetchPokemonDetails = async (pokemonName) => {
             throw new Error(`Failed to fetch Pokemon details: ${response.statusText}`);
         }
         const data = await response.json();
+
         console.log("APIデータ:", data); // デバッグ用
 
         const statMapping = {
@@ -23,43 +24,37 @@ export const fetchPokemonDetails = async (pokemonName) => {
             speed: "spe",
         };
 
+        const stats = data.stats.map((stat) => ({
+            base_stat: stat.base_stat,
+            name: statMapping[stat.stat.name] || stat.stat.name,
+        }));
 
-        // const stats = data.stats.map((stat) => ({
-        //     base_stat: stat.base_stat,
-        //     name: statMapping[stat.stat.name] || stat.stat.name,
-        // }));
-        //
-        // const moves = await Promise.all(
-        //     data.moves.map(async (move) => {
-        //         const moveDetails = await fetch(move.move.url).then((res) => res.json());
-        //         return {
-        //             name: moveDetails.names.find((name) => name.language.name === "ja")?.name || moveDetails.name,
-        //             power: moveDetails.power || "不明",
-        //             type: moveDetails.type.name,
-        //             category: moveDetails.damage_class.name, // 技の分類
-        //         };
-        //     })
-        // );
-
-
-        // 特性を取得して統合
-        const abilities = await fetchPokemonAbilities(pokemonName);
+        const moves = await Promise.all(
+            data.moves.map(async (move) => {
+                const moveDetails = await fetch(move.move.url).then((res) => res.json());
+                return {
+                    name: moveDetails.names.find((name) => name.language.name === "ja")?.name || moveDetails.name,
+                    power: moveDetails.power || "不明",
+                    type: moveDetails.type.name,
+                    category: moveDetails.damage_class.name, // 技の分類
+                };
+            })
+        );
 
         return {
             name: data.name,
-            types: data.types.map(typeInfo => typeInfo.type.name),
-            stats: data.stats,
+            stats,
             sprite: data.sprites.front_default,
-            official_artwork: data.sprites.other['official-artwork'].front_default,
-            moves: data.moves.map(move => move.move.name),
-            abilities, // 特性を統合
-
+            official_artwork: data.sprites.other["official-artwork"].front_default,
+            moves,
         };
     } catch (error) {
         console.error(`Error fetching details for ${pokemonName}:`, error);
         return null;
     }
 };
+
+
 
 
 // ステータス名をAPIから取得する補助関数
@@ -302,4 +297,25 @@ const displayPokemonDetails = async () => {
 };
 
 displayPokemonDetails();
+
+
+export const calculateDamage = ({
+                                    attackerLevel,
+                                    attackStat,
+                                    defenseStat,
+                                    movePower,
+                                    effectiveness = 1.0,
+                                    critical = false,
+                                    randomFactor = true
+                                }) => {
+    const levelFactor = Math.floor((attackerLevel * 2) / 5 + 2);
+    const baseDamage = Math.floor(
+        ((levelFactor * movePower * attackStat) / defenseStat) / 50
+    );
+    const criticalFactor = critical ? 1.5 : 1.0;
+    const randomMultiplier = randomFactor ? (Math.random() * 0.15 + 0.85) : 1.0;
+
+    return Math.floor(baseDamage * criticalFactor * effectiveness * randomMultiplier);
+};
+
 

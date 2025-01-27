@@ -16,18 +16,16 @@ const DamageCalculatorPage = () => {
         iv: { atk: 31, spa: 31 },
         ev: { atk: 0, spa: 0 },
         level: 50,
-        types:[]
+        stab: false, // タイプ一致補正を管理
     });
 
     const [defender, setDefender] = useState({
         name: "",
         image: "",
-        moves: [],
         baseStats: {},
         iv: { hp: 31, def: 31, spd: 31 },
         ev: { hp: 0, def: 0, spd: 0 },
         level: 50,
-        types:[]
     });
 
     const [attackerSearchQuery, setAttackerSearchQuery] = useState("");
@@ -70,54 +68,12 @@ const DamageCalculatorPage = () => {
         }
     };
 
-
-    const handleSelectPokemon = (role, pokemon) => {
-        fetchPokemonDetails(pokemon.name.eng.toLowerCase()).then((details) => {
-            const statMapping = {
-                hp: "hp",
-                attack: "atk",
-                defense: "def",
-                "special-attack": "spa",
-                "special-defense": "spd",
-                speed: "spe",
-                types: "typeEffectiveness",
-                moves: "moves",
-            };
-
-            const baseStats = details.stats.reduce((acc, stat) => {
-                acc[statMapping[stat.stat.name]] = stat.base_stat;
-                return acc;
-            }, {});
-
-
-
-            if (role === "attacker") {
-                setAttacker({
-                    ...attacker,
-                    name: details.name,
-                    image: details.official_artwork,
-                    moves: details.moves,
-                    baseStats,
-                    types: details.types, // タイプ情報を設定
-                    level: 50,
-                });
-                setAttackerSearchQuery("");
-                setAttackerSearchResults([]);
-            } else {
-                setDefender({
-                    ...defender,
-                    name: details.name,
-                    image: details.official_artwork,
-                    baseStats,
-                    types: details.types, // タイプ情報を設定
-                    level: 50,
-                });
-                setDefenderSearchQuery("");
-                setDefenderSearchResults([]);
-            }
-        });
-    };
-
+    const handleSelectPokemon = async (role, pokemon) => {
+        const details = await fetchPokemonDetails(pokemon.name.eng.toLowerCase());
+        if (!details) {
+            alert("ポケモンの詳細を取得できませんでした。");
+            return;
+        }
 
         console.log("ポケモン詳細データ:", details); // デバッグ用
 
@@ -145,7 +101,6 @@ const DamageCalculatorPage = () => {
             });
         }
     };
-
 
     const handleInputChange = (role, type, stat, value) => {
         const updatedValue = Math.max(
@@ -193,6 +148,7 @@ const DamageCalculatorPage = () => {
 
         const move = attacker.selectedMove;
         const level = attacker.level;
+
         const power = move.power || 0;
 
         if (power === 0) {
@@ -215,14 +171,8 @@ const DamageCalculatorPage = () => {
 
         const hp = calculateHP(defender.baseStats.hp, defender.iv.hp, defender.ev.hp, defender.level);
 
-
+        // STAB (Same Type Attack Bonus)
         const stab = attacker.moves.some((m) => m.type === move.type) ? 1.5 : 1.0;
-        // タイプ相性計算
-        let typeEffectiveness = 1.0;
-        defender.types.forEach((defenderType) => {
-            typeEffectiveness *= typesEffectiveness[move.type]?.[defenderType] || 1.0;
-        });
-
 
         // タイプ相性
         const typeEffectiveness = (typesEffectiveness[move.type] || {})[defender.name] || 1.0;
@@ -248,27 +198,13 @@ const DamageCalculatorPage = () => {
 
         // 結果を設定
         setDamageResult({
-
-            damage: finalDamage,
-            hitsRequired: Math.ceil(hp / finalDamage),
-            typeEffectiveness,
-
+            minDamage,
+            maxDamage,
+            hitsRequiredMin: Math.ceil(hp / maxDamage),
+            hitsRequiredMax: Math.ceil(hp / minDamage),
         });
-
     };
-    fetch('https://pokeapi.co/api/v2/move/1/') // 例: 1番目のわざ（たきのぼり）の情報を取得
-        .then(response => response.json())
-        .then(data => {
-            console.log(data.name);  // わざの名前
-            console.log(data.power); // わざの威力
-            console.log(data.type.name); // わざのタイプ
-        });
 
-
-
-    const handleStabToggle = () => {
-        setAttacker((prev) => ({ ...prev, stab: !prev.stab }));
-    };
 
     return (
         <div>
@@ -283,15 +219,6 @@ const DamageCalculatorPage = () => {
                         onChange={(e) => handleSearchChange(e.target.value, "attacker")}
                         className="input-field"
                     />
-                    <div className="pokemon-types">
-                        <h3>タイプ</h3>
-                        {attacker.types.length > 0 ? (
-                            <p>{attacker.types.join(", ")}</p>
-                        ) : (
-                            <p>不明</p>
-                        )}
-                    </div>
-
                     {attackerSearchResults.length > 0 && (
                         <ul className="search-results compact">
                             {attackerSearchResults.map((pokemon) => (
@@ -320,14 +247,6 @@ const DamageCalculatorPage = () => {
                             <p>名前: {attacker.selectedMove.name}</p>
                             <p>威力: {attacker.selectedMove.power}</p>
                             <p>タイプ: {attacker.selectedMove.type}</p>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    checked={attacker.stab}
-                                    onChange={handleStabToggle}
-                                />
-                                タイプ一致
-                            </label>
                         </div>
                     )}
                     <div className="stat-section">
@@ -383,15 +302,6 @@ const DamageCalculatorPage = () => {
                         onChange={(e) => handleSearchChange(e.target.value, "defender")}
                         className="input-field"
                     />
-                    <div className="pokemon-types">
-                        <h3>タイプ</h3>
-                        {defender.types.length > 0 ? (
-                            <p>{defender.types.join(", ")}</p>
-                        ) : (
-                            <p>不明</p>
-                        )}
-                    </div>
-
                     {defenderSearchResults.length > 0 && (
                         <ul className="search-results compact">
                             {defenderSearchResults.map((pokemon) => (
@@ -414,11 +324,11 @@ const DamageCalculatorPage = () => {
                     <div className="stat-section">
                         <h3>種族値</h3>
                         <p>
-                            HP: {defender.baseStats.hp || "不明"} <br/>
-                            攻撃: {defender.baseStats.atk || "不明"} <br/>
-                            防御: {defender.baseStats.def || "不明"} <br/>
-                            特攻: {defender.baseStats.spa || "不明"} <br/>
-                            特防: {defender.baseStats.spd || "不明"} <br/>
+                            HP: {defender.baseStats.hp || "不明"} <br />
+                            攻撃: {defender.baseStats.atk || "不明"} <br />
+                            防御: {defender.baseStats.def || "不明"} <br />
+                            特攻: {defender.baseStats.spa || "不明"} <br />
+                            特防: {defender.baseStats.spd || "不明"} <br />
                             素早さ: {defender.baseStats.spe || "不明"}
                         </p>
                         <h3>努力値 (EV)</h3>
@@ -456,7 +366,7 @@ const DamageCalculatorPage = () => {
                                 level: defender.level
                             });
                             return calculateHP(defender.baseStats.hp || 100, defender.iv.hp, defender.ev.hp, defender.level);
-                        })()}<br/>
+                        })()}<br />
                             防御実数値: {(() => {
                             console.log("防御計算データ:", {
                                 base: defender.baseStats.def,
@@ -465,7 +375,7 @@ const DamageCalculatorPage = () => {
                                 level: defender.level
                             });
                             return calculateStat(defender.baseStats.def || 100, defender.iv.def, defender.ev.def, defender.level);
-                        })()}<br/>
+                        })()}<br />
                             特防実数値: {(() => {
                             console.log("特防計算データ:", {
                                 base: defender.baseStats.spd,
@@ -492,7 +402,6 @@ const DamageCalculatorPage = () => {
                             ? "確定1発"
                             : `${damageResult.hitsRequiredMin} ～ ${damageResult.hitsRequiredMax}回`}
                     </p>
-                    <p>タイプ相性倍率: {damageResult.typeEffectiveness}</p>
                 </div>
             )}
             {showMoveModal && (
@@ -508,7 +417,6 @@ const DamageCalculatorPage = () => {
                             </li>
                         ))}
                     </ul>
-
                     <button onClick={() => setShowMoveModal(false)} className="button">
                         閉じる
                     </button>
