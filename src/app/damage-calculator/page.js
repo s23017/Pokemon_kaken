@@ -171,7 +171,7 @@ const DamageCalculatorPage = () => {
         const hp = calculateHP(defender.baseStats.hp, defender.iv.hp, defender.ev.hp, defender.level);
 
         // STAB (Same Type Attack Bonus)
-        const stab = attacker.moves.some((m) => m.type === move.type) ? 1.5 : 1.0;
+        const stab = attacker.stab ? 1.5 : 1.0;
 
         // タイプ相性
         const typeEffectiveness = (typesEffectiveness[move.type] || {})[defender.name] || 1.0;
@@ -204,6 +204,9 @@ const DamageCalculatorPage = () => {
         });
     };
 
+    const handleStabToggle = () => {
+        setAttacker((prev) => ({ ...prev, stab: !prev.stab }));
+    };
 
     return (
         <div>
@@ -246,6 +249,14 @@ const DamageCalculatorPage = () => {
                             <p>名前: {attacker.selectedMove.name}</p>
                             <p>威力: {attacker.selectedMove.power}</p>
                             <p>タイプ: {attacker.selectedMove.type}</p>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={attacker.stab}
+                                    onChange={handleStabToggle}
+                                />
+                                タイプ一致
+                            </label>
                         </div>
                     )}
                     <div className="stat-section">
