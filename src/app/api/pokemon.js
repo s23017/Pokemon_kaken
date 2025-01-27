@@ -1,7 +1,6 @@
 import typesEffectiveness from '../party-builder/data/typeEffectiveness.json';
 // import japaneseName from "pg/lib/query"; // 相性データをここでインポート
 import abilitiesData from "../party-builder/data/abilities.json";
-
 // ポケモンの詳細を取得する関数
 // ポケモンの詳細を取得する関数
 export const fetchPokemonDetails = async (pokemonName) => {
@@ -12,9 +11,7 @@ export const fetchPokemonDetails = async (pokemonName) => {
             throw new Error(`Failed to fetch Pokemon details: ${response.statusText}`);
         }
         const data = await response.json();
-
         console.log("APIデータ:", data); // デバッグ用
-
         const statMapping = {
             hp: "hp",
             attack: "atk",
@@ -23,47 +20,44 @@ export const fetchPokemonDetails = async (pokemonName) => {
             "special-defense": "spd",
             speed: "spe",
         };
-
-        const stats = data.stats.map((stat) => ({
-            base_stat: stat.base_stat,
-            name: statMapping[stat.stat.name] || stat.stat.name,
-        }));
-
-        const moves = await Promise.all(
-            data.moves.map(async (move) => {
-                const moveDetails = await fetch(move.move.url).then((res) => res.json());
-                return {
-                    name: moveDetails.names.find((name) => name.language.name === "ja")?.name || moveDetails.name,
-                    power: moveDetails.power || "不明",
-                    type: moveDetails.type.name,
-                    category: moveDetails.damage_class.name, // 技の分類
-                };
-            })
-        );
-
+        // const stats = data.stats.map((stat) => ({
+        //     base_stat: stat.base_stat,
+        //     name: statMapping[stat.stat.name] || stat.stat.name,
+        // }));
+        //
+        // const moves = await Promise.all(
+        //     data.moves.map(async (move) => {
+        //         const moveDetails = await fetch(move.move.url).then((res) => res.json());
+        //         return {
+        //             name: moveDetails.names.find((name) => name.language.name === "ja")?.name || moveDetails.name,
+        //             power: moveDetails.power || "不明",
+        //             type: moveDetails.type.name,
+        //             category: moveDetails.damage_class.name, // 技の分類
+        //         };
+        //     })
+        // );
+        // 特性を取得して統合
+        const abilities = await fetchPokemonAbilities(pokemonName);
         return {
             name: data.name,
-            stats,
+            types: data.types.map(typeInfo => typeInfo.type.name),
+            stats: data.stats,
             sprite: data.sprites.front_default,
-            official_artwork: data.sprites.other["official-artwork"].front_default,
-            moves,
+            official_artwork: data.sprites.other['official-artwork'].front_default,
+            moves: data.moves.map(move => move.move.name),
+            abilities, // 特性を統合
         };
     } catch (error) {
         console.error(`Error fetching details for ${pokemonName}:`, error);
         return null;
     }
 };
-
-
-
-
 // ステータス名をAPIから取得する補助関数
 // ステータス名を日本語で取得する補助関数
 // ステータス名を日本語で取得する補助関数
 const fetchStatNames = async () => {
     const statIds = [1, 2, 3, 4, 5, 6]; // ステータスID (1: HP, 2: 攻撃, ...)
     const statNames = {};
-
     // 各ステータスの日本語名を取得
     await Promise.all(
         statIds.map(async (id) => {
@@ -74,7 +68,6 @@ const fetchStatNames = async () => {
                     throw new Error(`Failed to fetch stat ${id}: ${response.statusText}`);
                 }
                 const data = await response.json();
-
                 // 日本語名を取得
                 const japaneseName = data.names.find(
                     (nameEntry) => nameEntry.language.name === 'ja'
@@ -85,40 +78,30 @@ const fetchStatNames = async () => {
             }
         })
     );
-
     return statNames;
 };
-
-
 // ポケモンの種族値を取得する関数
 export const fetchPokemonBaseStats = async (pokemonName) => {
     const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`;
     try {
         // 日本語ステータス名を取得
         const statNames = await fetchStatNames();
-
         const response = await fetch(url);
         if (!response.ok) {
             throw new Error(`Failed to fetch Pokemon details: ${response.statusText}`);
         }
         const data = await response.json();
-
         // 種族値を抽出し、日本語化された名前を含める
         const baseStats = data.stats.map(stat => ({
             name: statNames[stat.stat.name] || stat.stat.name, // 日本語名 or デフォルト英語名
             base_stat: stat.base_stat, // 種族値
         }));
-
         return baseStats;
     } catch (error) {
         console.error(`Error fetching base stats for ${pokemonName}:`, error);
         return null; // エラー時は null を返す
     }
 };
-
-
-
-
 export const fetchMoveDetails = async (moveName) => {
     const url = `https://pokeapi.co/api/v2/move/${moveName}`;
     try {
@@ -127,12 +110,10 @@ export const fetchMoveDetails = async (moveName) => {
             throw new Error(`Failed to fetch move details: ${response.statusText}`);
         }
         const data = await response.json();
-
         // 技の日本語名を取得
         const japaneseName = data.names.find(
             (nameEntry) => nameEntry.language.name === "ja"
         );
-
         // 必要な情報を返す
         return {
             name: japaneseName ? japaneseName.name : moveName, // 日本語名または英語名
@@ -153,7 +134,6 @@ export const fetchMoveDetails = async (moveName) => {
 };
 const moveDetails = await fetchMoveDetails("flamethrower");
 console.log(moveDetails);
-
 /*
 {
     name: "かえんほうしゃ",
@@ -195,11 +175,8 @@ const fetchPokemonAbilities = (pokemonName) => {
             )
         );
 };
-
-
 const abilities = await fetchPokemonAbilities("pikachu");
 console.log(abilities);
-
 // 特性取得テスト
 /*
 [
@@ -207,10 +184,6 @@ console.log(abilities);
     { name: "ひらいしん", isHidden: true, effect: "電気技を吸収して...", shortEffect: "電気技を吸収" }
 ]
 */
-
-
-
-
 // タイプの相性を計算する関数
 export const findAdvantageousType = (opponentTypes, myType) => {
     const type1 = opponentTypes[0];
@@ -219,7 +192,6 @@ export const findAdvantageousType = (opponentTypes, myType) => {
     const effectiveness2 = typesEffectiveness[type2]?.[myType] || 1.0;
     return effectiveness1 * effectiveness2;
 };
-
 // 有利なタイプのポケモンを取得する関数
 export const fetchAdvantageousPokemons = async (type) => {
     const url = `https://pokeapi.co/api/v2/type/${type}`;
@@ -234,7 +206,6 @@ export const fetchAdvantageousPokemons = async (type) => {
         return [];
     }
 };
-
 // 種族値470以上かつ特定の条件を満たさないポケモンをフィルタリング
 export const filterByStats = async (pokemons) => {
     try {
@@ -244,7 +215,6 @@ export const filterByStats = async (pokemons) => {
             const totalStats = calculateTotalStats(pokemonDetails.stats);
             return { details: pokemonDetails, totalStats };
         });
-
         const allDetails = await Promise.all(detailsPromises);
         return allDetails
             .filter(({ totalStats, details }) =>
@@ -286,7 +256,6 @@ export const filterByStats = async (pokemons) => {
         return [];
     }
 };
-
 // 合計種族値を計算する関数
 export const calculateTotalStats = (stats) => {
     return stats.reduce((total, stat) => total + stat.base_stat, 0);
@@ -295,27 +264,4 @@ const displayPokemonDetails = async () => {
     const details = await fetchPokemonDetails("pikachu");
     console.log(details);
 };
-
 displayPokemonDetails();
-
-
-export const calculateDamage = ({
-                                    attackerLevel,
-                                    attackStat,
-                                    defenseStat,
-                                    movePower,
-                                    effectiveness = 1.0,
-                                    critical = false,
-                                    randomFactor = true
-                                }) => {
-    const levelFactor = Math.floor((attackerLevel * 2) / 5 + 2);
-    const baseDamage = Math.floor(
-        ((levelFactor * movePower * attackStat) / defenseStat) / 50
-    );
-    const criticalFactor = critical ? 1.5 : 1.0;
-    const randomMultiplier = randomFactor ? (Math.random() * 0.15 + 0.85) : 1.0;
-
-    return Math.floor(baseDamage * criticalFactor * effectiveness * randomMultiplier);
-};
-
-
