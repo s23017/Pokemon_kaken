@@ -16,12 +16,14 @@ const DamageCalculatorPage = () => {
         iv: { atk: 31, spa: 31 },
         ev: { atk: 0, spa: 0 },
         level: 50,
+        stab: false, // タイプ一致補正を管理
     });
 
     const [defender, setDefender] = useState({
         name: "",
         image: "",
         baseStats: {},
+        types: [], //防御側タイプ
         iv: { hp: 31, def: 31, spd: 31 },
         ev: { hp: 0, def: 0, spd: 0 },
         level: 50,
@@ -81,6 +83,10 @@ const DamageCalculatorPage = () => {
             return acc;
         }, {});
 
+        const pokemonTypes = details.types
+            ? details.types.map((type) => type.type.name)
+            : []; // 存在しない場合は空配列を返す
+
         if (role === "attacker") {
             setAttacker({
                 ...attacker,
@@ -96,6 +102,7 @@ const DamageCalculatorPage = () => {
                 name: details.name,
                 image: details.official_artwork,
                 baseStats,
+                types: pokemonTypes,//タイプを取得
                 level: 50,
             });
         }
@@ -174,7 +181,9 @@ const DamageCalculatorPage = () => {
         const stab = attacker.stab ? 1.5 : 1.0;
 
         // タイプ相性
-        const typeEffectiveness = (typesEffectiveness[move.type] || {})[defender.name] || 1.0;
+        const typeEffectiveness = defender.types.reduce((effectiveness, type) => {
+            return effectiveness * (typesEffectiveness[move.type]?.[type] || 1.0);
+        }, 1.0);
 
         // ランダム係数 (85%～100%)
         const randomFactorMin = 0.85; // 最小値
@@ -204,9 +213,6 @@ const DamageCalculatorPage = () => {
         });
     };
 
-    const handleStabToggle = () => {
-        setAttacker((prev) => ({ ...prev, stab: !prev.stab }));
-    };
 
     return (
         <div>
@@ -249,14 +255,6 @@ const DamageCalculatorPage = () => {
                             <p>名前: {attacker.selectedMove.name}</p>
                             <p>威力: {attacker.selectedMove.power}</p>
                             <p>タイプ: {attacker.selectedMove.type}</p>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    checked={attacker.stab}
-                                    onChange={handleStabToggle}
-                                />
-                                タイプ一致
-                            </label>
                         </div>
                     )}
                     <div className="stat-section">
