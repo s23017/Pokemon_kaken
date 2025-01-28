@@ -66,24 +66,38 @@ const displayPokemonDetails = async () => {
 
 displayPokemonDetails();
 
+const typeTranslations = {
+    normal: "ノーマル",
+    fire: "ほのお",
+    water: "みず",
+    grass: "くさ",
+    electric: "でんき",
+    ice: "こおり",
+    fighting: "かくとう",
+    poison: "どく",
+    ground: "じめん",
+    flying: "ひこう",
+    psychic: "エスパー",
+    bug: "むし",
+    rock: "いわ",
+    ghost: "ゴースト",
+    dragon: "ドラゴン",
+    dark: "あく",
+    steel: "はがね",
+    fairy: "フェアリー",
+};
+// タイプを日本語に変換する関数
+const getTranslatedType = (type) => {
+    return typeTranslations[type] || "不明";
+};
 
-export const calculateDamage = ({
-                                    attackerLevel,
-                                    attackStat,
-                                    defenseStat,
-                                    movePower,
-                                    effectiveness = 1.0,
-                                    critical = false,
-                                    randomFactor = true
-                                }) => {
-    const levelFactor = Math.floor((attackerLevel * 2) / 5 + 2);
-    const baseDamage = Math.floor(
-        ((levelFactor * movePower * attackStat) / defenseStat) / 50
+// JSX部分
+const MoveDetails = ({ attacker }) => {
+    return (
+        <div>
+            <p>タイプ: {getTranslatedType(attacker.selectedMove.type)}</p>
+        </div>
     );
-    const criticalFactor = critical ? 1.5 : 1.0;
-    const randomMultiplier = randomFactor ? (Math.random() * 0.15 + 0.85) : 1.0;
-
-    return Math.floor(baseDamage * criticalFactor * effectiveness * randomMultiplier);
 };
 
 
@@ -340,7 +354,7 @@ const DamageCalculatorPage = () => {
                             <h3>選択された技:</h3>
                             <p>名前: {attacker.selectedMove.name}</p>
                             <p>威力: {attacker.selectedMove.power}</p>
-                            <p>タイプ: {attacker.selectedMove.type}</p>
+                            <p>タイプ: {getTranslatedType(attacker.selectedMove.type)}</p>
                             <label>
                                 <input
                                     type="checkbox"
@@ -514,7 +528,7 @@ const DamageCalculatorPage = () => {
                             <li key={index} onClick={() => handleMoveSelection(move)}>
                                 <p>名前: {move.name}</p>
                                 <p>威力: {move.power}</p>
-                                <p>タイプ: {move.type}</p>
+                                <p>タイプ: {getTranslatedType(move.type)}</p>
                                 <p>分類: {move.category === "physical" ? "物理" : "特殊"}</p>
                             </li>
                         ))}
