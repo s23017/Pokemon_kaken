@@ -529,12 +529,19 @@ const DamageCalculatorPage = () => {
                                 <p>名前: {move.name}</p>
                                 <p>威力: {move.power}</p>
                                 <p>タイプ: {getTranslatedType(move.type)}</p>
-                                <p>分類: {move.category === "physical" ? "物理" : "特殊"}</p>
+                                <p>
+                                    分類: {move.category === "physical"
+                                    ? "物理"
+                                    : move.category === "special"
+                                        ? "特殊"
+                                        : "変化"}
+                                </p>
+
                             </li>
                         ))}
                     </ul>
                     <button onClick={() => setShowMoveModal(false)} className="button">
-                        閉じる
+                    閉じる
                     </button>
                 </div>
             )}
