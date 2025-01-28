@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import pokemonData from "../party-builder/data/Pokemon.json";
 import typesEffectiveness from "../party-builder/data/typeEffectiveness.json";
 import "./styles.css";
+import Link from "next/link";
+import Image from "next/image";
 
 // ポケモンの詳細を取得する関数
 // ポケモンの詳細を取得する関数
@@ -316,237 +318,268 @@ const DamageCalculatorPage = () => {
 
     return (
         <div>
-            <h1>ダメージ計算ツール</h1>
-            <div className="container">
-                <div className="pokemon-section">
-                    <h2>攻撃側</h2>
-                    <input
-                        type="text"
-                        placeholder="ポケモン名を入力"
-                        value={attackerSearchQuery}
-                        onChange={(e) => handleSearchChange(e.target.value, "attacker")}
-                        className="input-field"
+            <header
+                style={{
+                    backgroundColor: "#FF0000",
+                    color: "white",
+                    textAlign: "center",
+                    padding: "10px 0",
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "75px", // ヘッダーの高さを指定
+                    zIndex: 1000,
+                }}
+            >
+                <Link href="/">
+                    <Image
+                        src="/images/gaming.gif"
+                        width={50}
+                        height={50}
+                        alt="ホームに戻る"
+                        style={{position: "absolute", left: "20px", cursor: "pointer"}}
                     />
-                    {attackerSearchResults.length > 0 && (
-                        <ul className="search-results compact">
-                            {attackerSearchResults.map((pokemon) => (
-                                <li
-                                    key={pokemon.id}
-                                    onClick={() => handleSelectPokemon("attacker", pokemon)}
-                                >
-                                    {pokemon.name.jpn} ({pokemon.name.eng})
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                    {attacker.image && (
-                        <img
-                            src={attacker.image}
-                            alt={attacker.name}
-                            className="pokemon-image"
+                </Link>
+                <h1>ダメージ計算ツール</h1>
+            </header>
+            <div
+                style={{
+                    paddingTop: "80px", // ヘッダーの高さ分の余白を追加
+                }}
+            >
+                <div className="container">
+                    <div className="pokemon-section">
+                        <h2>攻撃側</h2>
+                        <input
+                            type="text"
+                            placeholder="ポケモン名を入力"
+                            value={attackerSearchQuery}
+                            onChange={(e) => handleSearchChange(e.target.value, "attacker")}
+                            className="input-field"
                         />
-                    )}
-                    <button onClick={handleOpenMoveModal} className="button">
-                        技を選択
-                    </button>
-                    {attacker.selectedMove && (
-                        <div>
-                            <h3>選択された技:</h3>
-                            <p>名前: {attacker.selectedMove.name}</p>
-                            <p>威力: {attacker.selectedMove.power}</p>
-                            <p>タイプ: {getTranslatedType(attacker.selectedMove.type)}</p>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    checked={attacker.stab}
-                                    onChange={handleStabToggle}
-                                />
-                                タイプ一致
-                            </label>
+                        {attackerSearchResults.length > 0 && (
+                            <ul className="search-results compact">
+                                {attackerSearchResults.map((pokemon) => (
+                                    <li
+                                        key={pokemon.id}
+                                        onClick={() => handleSelectPokemon("attacker", pokemon)}
+                                    >
+                                        {pokemon.name.jpn} ({pokemon.name.eng})
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                        {attacker.image && (
+                            <img
+                                src={attacker.image}
+                                alt={attacker.name}
+                                className="pokemon-image"
+                            />
+                        )}
+                        <button onClick={handleOpenMoveModal} className="button">
+                            技を選択
+                        </button>
+                        {attacker.selectedMove && (
+                            <div>
+                                <h3>選択された技:</h3>
+                                <p>名前: {attacker.selectedMove.name}</p>
+                                <p>威力: {attacker.selectedMove.power}</p>
+                                <p>タイプ: {getTranslatedType(attacker.selectedMove.type)}</p>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        checked={attacker.stab}
+                                        onChange={handleStabToggle}
+                                    />
+                                    タイプ一致
+                                </label>
+                            </div>
+                        )}
+                        <div className="stat-section">
+                            <h3>種族値</h3>
+                            <p>
+                                HP: {attacker.baseStats.hp || "不明"} <br/>
+                                攻撃: {attacker.baseStats.atk || "不明"} <br/>
+                                防御: {attacker.baseStats.def || "不明"} <br/>
+                                特攻: {attacker.baseStats.spa || "不明"} <br/>
+                                特防: {attacker.baseStats.spd || "不明"} <br/>
+                                素早さ: {attacker.baseStats.spe || "不明"}
+                            </p>
+
+                            <h3>努力値 (EV)</h3>
+                            {["atk", "spa"].map((stat) => (
+                                <div key={stat} className="stat-input">
+                                    <label>{statLabels[stat]}: </label>
+                                    <input
+                                        type="number"
+                                        value={attacker.ev[stat]}
+                                        onChange={(e) =>
+                                            handleInputChange("attacker", "ev", stat, e.target.value)
+                                        }
+                                    />
+                                </div>
+                            ))}
+                            <h3>個体値 (IV)</h3>
+                            {["atk", "spa"].map((stat) => (
+                                <div key={stat} className="stat-input">
+                                    <label>{statLabels[stat]}: </label>
+                                    <input
+                                        type="number"
+                                        value={attacker.iv[stat]}
+                                        onChange={(e) =>
+                                            handleInputChange("attacker", "iv", stat, e.target.value)
+                                        }
+                                    />
+                                </div>
+                            ))}
+                            <h3>実数値</h3>
+                            <p>
+                                攻撃実数値: {calculateStat(attacker.baseStats.atk || 100, attacker.iv.atk, attacker.ev.atk, attacker.level)}<br/>
+                                特攻実数値: {calculateStat(attacker.baseStats.spa || 100, attacker.iv.spa, attacker.ev.spa, attacker.level)}
+                            </p>
                         </div>
-                    )}
-                    <div className="stat-section">
-                        <h3>種族値</h3>
-                        <p>
-                            HP: {attacker.baseStats.hp || "不明"} <br/>
-                            攻撃: {attacker.baseStats.atk || "不明"} <br/>
-                            防御: {attacker.baseStats.def || "不明"} <br/>
-                            特攻: {attacker.baseStats.spa || "不明"} <br/>
-                            特防: {attacker.baseStats.spd || "不明"} <br/>
-                            素早さ: {attacker.baseStats.spe || "不明"}
-                        </p>
-
-                        <h3>努力値 (EV)</h3>
-                        {["atk", "spa"].map((stat) => (
-                            <div key={stat} className="stat-input">
-                                <label>{statLabels[stat]}: </label>
-                                <input
-                                    type="number"
-                                    value={attacker.ev[stat]}
-                                    onChange={(e) =>
-                                        handleInputChange("attacker", "ev", stat, e.target.value)
-                                    }
-                                />
-                            </div>
-                        ))}
-                        <h3>個体値 (IV)</h3>
-                        {["atk", "spa"].map((stat) => (
-                            <div key={stat} className="stat-input">
-                                <label>{statLabels[stat]}: </label>
-                                <input
-                                    type="number"
-                                    value={attacker.iv[stat]}
-                                    onChange={(e) =>
-                                        handleInputChange("attacker", "iv", stat, e.target.value)
-                                    }
-                                />
-                            </div>
-                        ))}
-                        <h3>実数値</h3>
-                        <p>
-                            攻撃実数値: {calculateStat(attacker.baseStats.atk || 100, attacker.iv.atk, attacker.ev.atk, attacker.level)}<br/>
-                            特攻実数値: {calculateStat(attacker.baseStats.spa || 100, attacker.iv.spa, attacker.ev.spa, attacker.level)}
-                        </p>
+                    </div>
+                    <div className="pokemon-section">
+                        <h2>防御側</h2>
+                        <input
+                            type="text"
+                            placeholder="ポケモン名を入力"
+                            value={defenderSearchQuery}
+                            onChange={(e) => handleSearchChange(e.target.value, "defender")}
+                            className="input-field"
+                        />
+                        {defenderSearchResults.length > 0 && (
+                            <ul className="search-results compact">
+                                {defenderSearchResults.map((pokemon) => (
+                                    <li
+                                        key={pokemon.id}
+                                        onClick={() => handleSelectPokemon("defender", pokemon)}
+                                    >
+                                        {pokemon.name.jpn} ({pokemon.name.eng})
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                        {defender.image && (
+                            <img
+                                src={defender.image}
+                                alt={defender.name}
+                                className="pokemon-image"
+                            />
+                        )}
+                        <div className="stat-section">
+                            <h3>種族値</h3>
+                            <p>
+                                HP: {defender.baseStats.hp || "不明"} <br/>
+                                攻撃: {defender.baseStats.atk || "不明"} <br/>
+                                防御: {defender.baseStats.def || "不明"} <br/>
+                                特攻: {defender.baseStats.spa || "不明"} <br/>
+                                特防: {defender.baseStats.spd || "不明"} <br/>
+                                素早さ: {defender.baseStats.spe || "不明"}
+                            </p>
+                            <h3>努力値 (EV)</h3>
+                            {["hp", "def", "spd"].map((stat) => (
+                                <div key={stat} className="stat-input">
+                                    <label>{statLabels[stat]}: </label>
+                                    <input
+                                        type="number"
+                                        value={defender.ev[stat]}
+                                        onChange={(e) =>
+                                            handleInputChange("defender", "ev", stat, e.target.value)
+                                        }
+                                    />
+                                </div>
+                            ))}
+                            <h3>個体値 (IV)</h3>
+                            {["hp", "def", "spd"].map((stat) => (
+                                <div key={stat} className="stat-input">
+                                    <label>{statLabels[stat]}: </label>
+                                    <input
+                                        type="number"
+                                        value={defender.iv[stat]}
+                                        onChange={(e) =>
+                                            handleInputChange("defender", "iv", stat, e.target.value)
+                                        }
+                                    />
+                                </div>
+                            ))}
+                            <p>
+                                HP実数値: {(() => {
+                                console.log("HP計算データ:", {
+                                    base: defender.baseStats.hp,
+                                    iv: defender.iv.hp,
+                                    ev: defender.ev.hp,
+                                    level: defender.level
+                                });
+                                return calculateHP(defender.baseStats.hp || 100, defender.iv.hp, defender.ev.hp, defender.level);
+                            })()}<br/>
+                                防御実数値: {(() => {
+                                console.log("防御計算データ:", {
+                                    base: defender.baseStats.def,
+                                    iv: defender.iv.def,
+                                    ev: defender.ev.def,
+                                    level: defender.level
+                                });
+                                return calculateStat(defender.baseStats.def || 100, defender.iv.def, defender.ev.def, defender.level);
+                            })()}<br/>
+                                特防実数値: {(() => {
+                                console.log("特防計算データ:", {
+                                    base: defender.baseStats.spd,
+                                    iv: defender.iv.spd,
+                                    ev: defender.ev.spd,
+                                    level: defender.level
+                                });
+                                return calculateStat(defender.baseStats.spd || 100, defender.iv.spd, defender.ev.spd, defender.level);
+                            })()}
+                            </p>
+                        </div>
                     </div>
                 </div>
-                <div className="pokemon-section">
-                    <h2>防御側</h2>
-                    <input
-                        type="text"
-                        placeholder="ポケモン名を入力"
-                        value={defenderSearchQuery}
-                        onChange={(e) => handleSearchChange(e.target.value, "defender")}
-                        className="input-field"
-                    />
-                    {defenderSearchResults.length > 0 && (
-                        <ul className="search-results compact">
-                            {defenderSearchResults.map((pokemon) => (
-                                <li
-                                    key={pokemon.id}
-                                    onClick={() => handleSelectPokemon("defender", pokemon)}
-                                >
-                                    {pokemon.name.jpn} ({pokemon.name.eng})
+                <button onClick={calculateDamage} className="button">
+                    ダメージ計算
+                </button>
+                {damageResult && (
+                    <div>
+                        <h2>計算結果</h2>
+                        <p>与えるダメージ: {damageResult.minDamage} ～ {damageResult.maxDamage}</p>
+                        <p>
+                            必要な攻撃回数:{" "}
+                            {damageResult.hitsRequiredMin === 1
+                                ? "確定1発"
+                                : `${damageResult.hitsRequiredMin} ～ ${damageResult.hitsRequiredMax}回`}
+                        </p>
+                    </div>
+                )}
+                {showMoveModal && (
+                    <div className="modal">
+                        <h2>技を選択</h2>
+                        <ul>
+                            {attacker.moves.map((move, index) => (
+                                <li key={index} onClick={() => handleMoveSelection(move)}>
+                                    <p>名前: {move.name}</p>
+                                    <p>威力: {move.power}</p>
+                                    <p>タイプ: {getTranslatedType(move.type)}</p>
+                                    <p>
+                                        分類: {move.category === "physical"
+                                        ? "物理"
+                                        : move.category === "special"
+                                            ? "特殊"
+                                            : "変化"}
+                                    </p>
+
                                 </li>
                             ))}
                         </ul>
-                    )}
-                    {defender.image && (
-                        <img
-                            src={defender.image}
-                            alt={defender.name}
-                            className="pokemon-image"
-                        />
-                    )}
-                    <div className="stat-section">
-                        <h3>種族値</h3>
-                        <p>
-                            HP: {defender.baseStats.hp || "不明"} <br />
-                            攻撃: {defender.baseStats.atk || "不明"} <br />
-                            防御: {defender.baseStats.def || "不明"} <br />
-                            特攻: {defender.baseStats.spa || "不明"} <br />
-                            特防: {defender.baseStats.spd || "不明"} <br />
-                            素早さ: {defender.baseStats.spe || "不明"}
-                        </p>
-                        <h3>努力値 (EV)</h3>
-                        {["hp", "def", "spd"].map((stat) => (
-                            <div key={stat} className="stat-input">
-                                <label>{statLabels[stat]}: </label>
-                                <input
-                                    type="number"
-                                    value={defender.ev[stat]}
-                                    onChange={(e) =>
-                                        handleInputChange("defender", "ev", stat, e.target.value)
-                                    }
-                                />
-                            </div>
-                        ))}
-                        <h3>個体値 (IV)</h3>
-                        {["hp", "def", "spd"].map((stat) => (
-                            <div key={stat} className="stat-input">
-                                <label>{statLabels[stat]}: </label>
-                                <input
-                                    type="number"
-                                    value={defender.iv[stat]}
-                                    onChange={(e) =>
-                                        handleInputChange("defender", "iv", stat, e.target.value)
-                                    }
-                                />
-                            </div>
-                        ))}
-                        <p>
-                            HP実数値: {(() => {
-                            console.log("HP計算データ:", {
-                                base: defender.baseStats.hp,
-                                iv: defender.iv.hp,
-                                ev: defender.ev.hp,
-                                level: defender.level
-                            });
-                            return calculateHP(defender.baseStats.hp || 100, defender.iv.hp, defender.ev.hp, defender.level);
-                        })()}<br />
-                            防御実数値: {(() => {
-                            console.log("防御計算データ:", {
-                                base: defender.baseStats.def,
-                                iv: defender.iv.def,
-                                ev: defender.ev.def,
-                                level: defender.level
-                            });
-                            return calculateStat(defender.baseStats.def || 100, defender.iv.def, defender.ev.def, defender.level);
-                        })()}<br />
-                            特防実数値: {(() => {
-                            console.log("特防計算データ:", {
-                                base: defender.baseStats.spd,
-                                iv: defender.iv.spd,
-                                ev: defender.ev.spd,
-                                level: defender.level
-                            });
-                            return calculateStat(defender.baseStats.spd || 100, defender.iv.spd, defender.ev.spd, defender.level);
-                        })()}
-                        </p>
+                        <button onClick={() => setShowMoveModal(false)} className="button">
+                            閉じる
+                        </button>
                     </div>
-                </div>
+                )}
             </div>
-            <button onClick={calculateDamage} className="button">
-                ダメージ計算
-            </button>
-            {damageResult && (
-                <div>
-                    <h2>計算結果</h2>
-                    <p>与えるダメージ: {damageResult.minDamage} ～ {damageResult.maxDamage}</p>
-                    <p>
-                        必要な攻撃回数:{" "}
-                        {damageResult.hitsRequiredMin === 1
-                            ? "確定1発"
-                            : `${damageResult.hitsRequiredMin} ～ ${damageResult.hitsRequiredMax}回`}
-                    </p>
-                </div>
-            )}
-            {showMoveModal && (
-                <div className="modal">
-                    <h2>技を選択</h2>
-                    <ul>
-                        {attacker.moves.map((move, index) => (
-                            <li key={index} onClick={() => handleMoveSelection(move)}>
-                                <p>名前: {move.name}</p>
-                                <p>威力: {move.power}</p>
-                                <p>タイプ: {getTranslatedType(move.type)}</p>
-                                <p>
-                                    分類: {move.category === "physical"
-                                    ? "物理"
-                                    : move.category === "special"
-                                        ? "特殊"
-                                        : "変化"}
-                                </p>
-
-                            </li>
-                        ))}
-                    </ul>
-                    <button onClick={() => setShowMoveModal(false)} className="button">
-                    閉じる
-                    </button>
-                </div>
-            )}
         </div>
-    );
-};
 
-export default DamageCalculatorPage;
+            );
+            };
+
+            export default DamageCalculatorPage;
