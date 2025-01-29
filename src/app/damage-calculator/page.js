@@ -288,7 +288,7 @@ const DamageCalculatorPage = () => {
         const stab = attacker.stab ? 1.5 : 1.0;
 
         // タイプ相性
-        const typeEffectiveness = (typesEffectiveness[move.type] || {})[defender.name] || 1.0;
+        const typeEffectiveness = (typesEffectiveness[move.type] || {})[defender.name] || 0.5;
 
         // ランダム係数 (85%～100%)
         const randomFactorMin = 0.85; // 最小値
