@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from "firebase/app";
+import Cookies from "js-cookie";  // js-cookieをインポート
 
 const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -25,6 +26,14 @@ export default function LoginPage() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
+    useEffect(() => {
+        // ページロード時にcookieをチェックして自動ログインを試みる
+        const userCookie = Cookies.get("user");  // cookieからユーザー情報を取得
+        if (userCookie) {
+            window.location.href = "/sns/post";  // ログイン済みなら投稿ページにリダイレクト
+        }
+    }, []);
+
     const handleLogin = async (e) => {
         e.preventDefault();
         setError(""); // エラーをリセット
@@ -39,6 +48,7 @@ export default function LoginPage() {
             console.log("ログイン成功", userCredential.user);
             alert("ログイン成功！");
             setError(""); // エラーをリセット
+            Cookies.set("user", JSON.stringify(userCredential.user), { expires: 7 }); // ユーザー情報をcookieに保存
             window.location.href = "/sns/post"; // リダイレクト
         } catch (error) {
             console.error("ログイン失敗", error);
@@ -46,17 +56,24 @@ export default function LoginPage() {
         }
     };
 
-
     const handleGoogleLogin = async () => {
         try {
             const result = await signInWithPopup(auth, provider);
             console.log("Googleログイン成功", result.user);
             alert("Googleログイン成功！");
+            Cookies.set("user", JSON.stringify(result.user), { expires: 7 }); // ユーザー情報をcookieに保存
             window.location.href = "/sns/post"; // リダイレクト
         } catch (error) {
             console.error("Googleログイン失敗", error);
             setError("Googleログインに失敗しました。");
         }
+    };
+
+    const handleLogout = () => {
+        auth.signOut().then(() => {
+            Cookies.remove("user"); // cookieからユーザー情報を削除
+            window.location.href = "/"; // ログアウト後、ホームページにリダイレクト
+        });
     };
 
     return (

@@ -366,16 +366,21 @@ export default function PostDetailPage() {
                                         {comment.username || "匿名"}:
                                     </strong>
                                 </p>
-                                <p>{comment.content}</p>
-                                {auth.currentUser?.uid === comment.userId && (
-                                    <div>
-                                        <button
-                                            onClick={() => {
-                                                setEditingComment(comment.id);
-                                                setUpdatedCommentContent(
-                                                    comment.content
-                                                );
+                                {/* コメント編集 */}
+                                {editingComment === comment.id ? (
+                                    <>
+                                        <textarea
+                                            value={updatedCommentContent}
+                                            onChange={(e) => setUpdatedCommentContent(e.target.value)}
+                                            placeholder="コメントを編集"
+                                            rows="3"
+                                            style={{
+                                                width: "100%",
+                                                marginBottom: "10px",
                                             }}
+                                        />
+                                        <button
+                                            onClick={() => handleCommentEdit(comment.id, comment.userId)}
                                             style={{
                                                 padding: "5px 10px",
                                                 backgroundColor: "#4CAF50",
@@ -385,15 +390,10 @@ export default function PostDetailPage() {
                                                 cursor: "pointer",
                                             }}
                                         >
-                                            編集
+                                            更新
                                         </button>
                                         <button
-                                            onClick={() =>
-                                                handleCommentDelete(
-                                                    comment.id,
-                                                    comment.userId
-                                                )
-                                            }
+                                            onClick={() => setEditingComment(null)}
                                             style={{
                                                 padding: "5px 10px",
                                                 backgroundColor: "#f44336",
@@ -404,9 +404,49 @@ export default function PostDetailPage() {
                                                 marginLeft: "10px",
                                             }}
                                         >
-                                            削除
+                                            キャンセル
                                         </button>
-                                    </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <p>{comment.content}</p>
+                                        {auth.currentUser?.uid === comment.userId && (
+                                            <div>
+                                                <button
+                                                    onClick={() => {
+                                                        setEditingComment(comment.id);
+                                                        setUpdatedCommentContent(comment.content);
+                                                    }}
+                                                    style={{
+                                                        padding: "5px 10px",
+                                                        backgroundColor: "#4CAF50",
+                                                        color: "white",
+                                                        border: "none",
+                                                        borderRadius: "5px",
+                                                        cursor: "pointer",
+                                                    }}
+                                                >
+                                                    編集
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        handleCommentDelete(comment.id, comment.userId)
+                                                    }
+                                                    style={{
+                                                        padding: "5px 10px",
+                                                        backgroundColor: "#f44336",
+                                                        color: "white",
+                                                        border: "none",
+                                                        borderRadius: "5px",
+                                                        cursor: "pointer",
+                                                        marginLeft: "10px",
+                                                    }}
+                                                >
+                                                    削除
+                                                </button>
+                                            </div>
+                                        )}
+                                    </>
                                 )}
                             </div>
                         ))}
