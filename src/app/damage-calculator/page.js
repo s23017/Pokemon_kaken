@@ -47,6 +47,7 @@ export const fetchPokemonDetails = async (pokemonName) => {
         );
 
         return {
+            type: data.types,
             name: data.name,
             stats,
             sprite: data.sprites.front_default,
@@ -116,9 +117,11 @@ const MoveDetails = ({ attacker }) => {
 
 const DamageCalculatorPage = () => {
     const [attacker, setAttacker] = useState({
+
         name: "",
         image: "",
         moves: [],
+        types: [],
         selectedMove: null,
         baseStats: {},
         iv: { atk: 31, spa: 31 },
@@ -129,6 +132,7 @@ const DamageCalculatorPage = () => {
     const [defender, setDefender] = useState({
         name: "",
         image: "",
+        types:[],
         baseStats: {},
         iv: { hp: 31, def: 31, spd: 31 },
         ev: { hp: 0, def: 0, spd: 0 },
@@ -192,6 +196,7 @@ const DamageCalculatorPage = () => {
         if (role === "attacker") {
             setAttacker({
                 ...attacker,
+                types: details.types,
                 name: details.name,
                 image: details.official_artwork,
                 moves: details.moves,
@@ -201,6 +206,7 @@ const DamageCalculatorPage = () => {
         } else {
             setDefender({
                 ...defender,
+                types: details.types,
                 name: details.name,
                 image: details.official_artwork,
                 baseStats,
@@ -516,6 +522,7 @@ const DamageCalculatorPage = () => {
                             })()}<br/>
                                 防御実数値: {(() => {
                                 console.log("防御計算データ:", {
+                                    type: defender.type,
                                     base: defender.baseStats.def,
                                     iv: defender.iv.def,
                                     ev: defender.ev.def,
