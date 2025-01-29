@@ -363,6 +363,7 @@ export default function PostPage() {
 
                                 {/* 投稿一覧 */}
                                 <div style={{marginTop: "20px"}}>
+
                                     <h2>投稿一覧</h2>
                                     {posts.map((post) => (
                                         <div
@@ -388,6 +389,13 @@ export default function PostPage() {
                                                 <strong>{post.title}</strong>
                                             </p>
                                             <p>{post.content}</p>
+                                            {post.imageUrl && (
+                                                <img
+                                                    src={post.imageUrl}
+                                                    alt="投稿画像"
+                                                    style={{ width: "10%", marginTop: "10px" }}
+                                                />
+                                            )}
                                             <div ref={cardContainerRef} style={styles.gridContainer}>
                                                 {post.partyDetails && post.partyDetails.map((party, index) => (
                                                     <div key={index} style={styles.card}>
@@ -584,5 +592,3 @@ const styles = {
         color: "#555",
     },
 };
-
-
