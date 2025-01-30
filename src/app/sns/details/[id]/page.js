@@ -28,6 +28,66 @@ const firebaseConfig = {
     appId: process.env.NEXT_PUBLIC_APP_ID,
     measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
+const typeMapping = {
+    "ノーマル": "normal",
+    "ほのお": "fire",
+    "みず": "water",
+    "でんき": "electric",
+    "くさ": "grass",
+    "こおり": "ice",
+    "かくとう": "fighting",
+    "どく": "poison",
+    "じめん": "ground",
+    "ひこう": "flying",
+    "エスパー": "psychic",
+    "むし": "bug",
+    "いわ": "rock",
+    "ゴースト": "ghost",
+    "ドラゴン": "dragon",
+    "あく": "dark",
+    "はがね": "steel",
+    "フェアリー": "fairy",
+    "ステラ": "sutera",
+};
+const typeColors = {
+    normal: "rgba(168, 168, 120, 0.8)",
+    fire: "rgba(240, 128, 48, 0.8)",
+    water: "rgba(104, 144, 240, 0.8)",
+    electric: "rgba(248, 208, 48, 0.8)",
+    grass: "rgba(120, 200, 80, 0.8)",
+    ice: "rgba(152, 216, 216, 0.8)",
+    fighting: "rgba(192, 48, 40, 0.8)",
+    poison: "rgba(160, 64, 160, 0.8)",
+    ground: "rgba(224, 192, 104, 0.8)",
+    flying: "rgba(168, 144, 240, 0.8)",
+    psychic: "rgba(248, 88, 136, 0.8)",
+    bug: "rgba(168, 184, 32, 0.8)",
+    rock: "rgba(184, 160, 56, 0.8)",
+    ghost: "rgba(112, 88, 152, 0.8)",
+    dragon: "rgba(112, 56, 248, 0.8)",
+    dark: "rgba(112, 88, 72, 0.8)",
+    steel: "rgba(184, 184, 208, 0.8)",
+    fairy: "rgba(238, 153, 172, 0.8)"
+};
+
+const getTypeColor = (type) => {
+    if (!type || type.length === 0) return "rgba(255, 255, 255, 0.8)"; // デフォルトの透明な白色
+
+    const colors = type.map((t) => typeColors[t] || "rgba(255, 255, 255, 0.8)"); // タイプの色を取得
+
+    // 単一タイプの場合
+    if (colors.length === 1) {
+        return colors[0];
+    }
+
+    // 複合タイプの場合（ぼかしを追加）
+    if (colors.length === 2) {
+        return `linear-gradient(90deg, ${colors[0]} 30%, ${colors[1]} 70%)`;
+    }
+
+    // 想定外の場合
+    return "rgba(255, 255, 255, 0.8)";
+};
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -37,12 +97,19 @@ export default function PostDetailPage() {
     const { id } = useParams();
     const router = useRouter();
     const [post, setPost] = useState(null);
-    const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState("");
-    const [editingPost, setEditingPost] = useState(false);
-    const [updatedPostContent, setUpdatedPostContent] = useState("");
+    const [comments, setComments] = useState([]);
     const [editingComment, setEditingComment] = useState(null);
     const [updatedCommentContent, setUpdatedCommentContent] = useState("");
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+            setUser(currentUser);
+        });
+
+        return () => unsubscribe();
+    }, []);
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -50,16 +117,12 @@ export default function PostDetailPage() {
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
                 setPost(docSnap.data());
-                setUpdatedPostContent(docSnap.data().content);
             }
         };
 
         fetchPost();
 
-        const q = query(
-            collection(db, `posts/${id}/comments`),
-            orderBy("timestamp", "desc")
-        );
+        const q = query(collection(db, `posts/${id}/comments`), orderBy("timestamp", "desc"));
         const unsubscribe = onSnapshot(q, (snapshot) => {
             const commentsData = snapshot.docs.map((doc) => ({
                 id: doc.id,
@@ -74,9 +137,7 @@ export default function PostDetailPage() {
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
         if (!newComment.trim()) return;
-
-        const user = auth.currentUser;
-        if (!user) return;
+        if (!user) return alert("ログインが必要です！");
 
         await addDoc(collection(db, `posts/${id}/comments`), {
             content: newComment,
@@ -88,36 +149,9 @@ export default function PostDetailPage() {
         setNewComment("");
     };
 
-    const handlePostDelete = async () => {
-        const user = auth.currentUser;
-        if (!user || post.userId !== user.uid) {
-            alert("削除権限がありません！");
-            return;
-        }
-
-        const confirmed = window.confirm("この投稿を削除しますか？");
-        if (confirmed) {
-            await deleteDoc(doc(db, "posts", id));
-            alert("投稿を削除しました！");
-            router.push("/sns/post");
-        }
-    };
-
-    const handlePostEdit = async () => {
-        const user = auth.currentUser;
-        if (!user || post.userId !== user.uid) {
-            alert("編集権限がありません！");
-            return;
-        }
-
-        await updateDoc(doc(db, "posts", id), { content: updatedPostContent });
-        setEditingPost(false);
-        alert("投稿を編集しました！");
-    };
-
+    // コメント削除
     const handleCommentDelete = async (commentId, commentUserId) => {
-        const user = auth.currentUser;
-        if (!user || commentUserId !== user.uid) {
+        if (!user || user.uid !== commentUserId) {
             alert("削除権限がありません！");
             return;
         }
@@ -129,9 +163,9 @@ export default function PostDetailPage() {
         }
     };
 
+    // コメント編集
     const handleCommentEdit = async (commentId, commentUserId) => {
-        const user = auth.currentUser;
-        if (!user || commentUserId !== user.uid) {
+        if (!user || user.uid !== commentUserId) {
             alert("編集権限がありません！");
             return;
         }
@@ -139,320 +173,276 @@ export default function PostDetailPage() {
         await updateDoc(doc(db, `posts/${id}/comments`, commentId), {
             content: updatedCommentContent,
         });
+
         setEditingComment(null);
         alert("コメントを編集しました！");
     };
 
     return (
         <div>
-            <header
-                style={{
-                    backgroundColor: "#FF0000",
-                    color: "white",
-                    textAlign: "center",
-                    padding: "20px 0",
-                    position: "fixed",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    zIndex: 1000,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-            >
-                <div
-                    style={{
-                        position: "absolute",
-                        left: "20px",
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        zIndex: 1001,  // 優先度を上げる
-                    }}
-                >
+            {/* ヘッダー */}
+            <header style={styles.header}>
+                <div style={styles.backButton}>
                     <Link href="/sns/post">
-                        <Image
-                            src="/images/gaming.gif"
-                            width={50}
-                            height={50}
-                            alt="戻る"
-                            style={{ cursor: "pointer" }}
-                        />
+                        <Image src="/images/gaming.gif" width={50} height={50} alt="戻る" style={{ cursor: "pointer" }} />
                     </Link>
                 </div>
                 <h1 className="header-title">投稿詳細</h1>
             </header>
 
+            {/* 投稿の詳細情報 */}
             <div style={{ padding: "100px 20px 20px" }}>
                 {post && (
                     <>
                         <h1>{post.title}</h1>
-                        {post.partyImages && post.partyImages.length > 0 && (
-                            <div
-                                style={{
-                                    display: "flex",
-                                    flexWrap: "wrap",
-                                    gap: "10px",
-                                    marginBottom: "20px",
-                                }}
-                            >
-                                {post.partyImages.map((url, index) => (
-                                    <img
-                                        key={index}
-                                        src={url}
-                                        alt={`ポケモン${index + 1}`}
-                                        style={{
-                                            width: "120px",
-                                            height: "120px",
-                                            objectFit: "contain",
-                                            border: "1px solid #ccc",
-                                            borderRadius: "10px",
-                                        }}
-                                    />
+                        <p><strong>投稿者:</strong> {post.username}</p>
+                        <p>{post.content}</p>
+
+                        {post.imageUrl && (
+                            <img src={post.imageUrl} alt="投稿画像" style={styles.postImage} />
+                        )}
+
+                        {/* パーティーデータ表示 */}
+                        {post.partyDetails && post.partyDetails.length > 0 && (
+                            <div style={styles.gridContainer}>
+                                {post.partyDetails.map((pokemon, index) => (
+                                    <div key={index} style={styles.container}>
+                                        <div style={styles.imageContainer}>
+                                            <div style={styles.imageBox}>
+                                                <img src={pokemon.imageUrl} alt="ポケモンの画像" style={styles.image} />
+                                            </div>
+                                            {pokemon.selectedTerastal ? (
+                                                <div style={styles.terastalContainer}>
+                                                    <img
+                                                        src={`/images/terastals/${typeMapping[pokemon.selectedTerastal] || "unknown"}.png`}
+                                                        alt={`テラスタル ${pokemon.selectedTerastal}`}
+                                                        style={styles.terastalImage}
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <p>テラスタル未選択</p>
+                                            )}
+                                        </div>
+                                        <div style={styles.infoContainer}>
+                                            <div style={styles.infoRow}>
+                                                <span style={styles.label}>性格</span>
+                                                <span style={styles.value}>{pokemon.selectedNature}</span>
+                                            </div>
+                                            <div style={styles.infoRow}>
+                                                <span style={styles.label}>持ち物</span>
+                                                <span style={styles.value}>{pokemon.selectedItem}</span>
+                                            </div>
+                                            <div style={styles.infoRow}>
+                                                <span style={styles.label}>特性</span>
+                                                <span style={styles.value}>{pokemon.selectedAbility}</span>
+                                            </div>
+                                            <div style={styles.infoRow}>
+                                                <span style={styles.label}>努力値</span>
+                                                <span style={styles.value}>
+                                                    {Object.entries(pokemon.effortValues || {})
+                                                        .filter(([_, value]) => value !== 0)
+                                                        .map(([stat, value]) => `${stat}: ${value}`)
+                                                        .join(", ")}
+                                                </span>
+                                            </div>
+                                            {pokemon.selectedMoves.map((move, moveIndex) => (
+                                                <div style={styles.infoRow} key={moveIndex}>
+                                                    <span style={styles.label}>わざ {moveIndex + 1}</span>
+                                                    <span style={styles.value}>{move}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
                                 ))}
                             </div>
                         )}
-
-                        <p>
-                            <strong>ユーザー名:</strong> {post.username}
-                        </p>
-                        {editingPost ? (
-                            <>
+                        {/* コメント入力フォーム */}
+                        {user && (
+                            <form onSubmit={handleCommentSubmit} style={{ marginTop: "20px" }}>
                                 <textarea
-                                    value={updatedPostContent}
-                                    onChange={(e) =>
-                                        setUpdatedPostContent(e.target.value)
-                                    }
+                                    value={newComment}
+                                    onChange={(e) => setNewComment(e.target.value)}
+                                    placeholder="コメントを入力"
                                     rows="3"
                                     style={{
                                         width: "100%",
-                                        marginBottom: "10px",
+                                        padding: "10px",
+                                        borderRadius: "5px",
+                                        border: "1px solid #ccc"
                                     }}
                                 />
-                                <button
-                                    onClick={handlePostEdit}
-                                    style={{
-                                        padding: "5px 10px",
-                                        backgroundColor: "#4CAF50",
-                                        color: "white",
-                                        border: "none",
-                                        borderRadius: "5px",
-                                        cursor: "pointer",
-                                    }}
-                                >
-                                    更新
+                                <button type="submit" style={styles.buttonPrimary}>
+                                    コメントを投稿
                                 </button>
-                                <button
-                                    onClick={() => setEditingPost(false)}
-                                    style={{
-                                        padding: "5px 10px",
-                                        backgroundColor: "#f44336",
-                                        color: "white",
-                                        border: "none",
-                                        borderRadius: "5px",
-                                        cursor: "pointer",
-                                        marginLeft: "10px",
-                                    }}
-                                >
-                                    キャンセル
-                                </button>
-                            </>
-                        ) : (
-                            <>
-                                <p>{post.content}</p>
-                                {auth.currentUser?.uid === post.userId && (
-                                    <div>
-                                        <button
-                                            onClick={() => setEditingPost(true)}
-                                            style={{
-                                                padding: "5px 10px",
-                                                backgroundColor: "#4CAF50",
-                                                color: "white",
-                                                border: "none",
-                                                borderRadius: "5px",
-                                                cursor: "pointer",
-                                            }}
-                                        >
-                                            編集
-                                        </button>
-                                        <button
-                                            onClick={handlePostDelete}
-                                            style={{
-                                                padding: "5px 10px",
-                                                backgroundColor: "#f44336",
-                                                color: "white",
-                                                border: "none",
-                                                borderRadius: "5px",
-                                                cursor: "pointer",
-                                                marginLeft: "10px",
-                                            }}
-                                        >
-                                            削除
-                                        </button>
-                                    </div>
-                                )}
-                            </>
+                            </form>
                         )}
+
+                        {/* コメント表示 */}
+                        <div style={{ marginTop: "20px" }}>
+                            <h2>コメント</h2>
+                            {comments.length > 0 ? (
+                                comments.map((comment) => (
+                                    <div key={comment.id} style={styles.commentBox}>
+                                        <p><strong>{comment.username}:</strong></p>
+
+                                        {editingComment === comment.id ? (
+                                            <>
+                                                <textarea
+                                                    value={updatedCommentContent}
+                                                    onChange={(e) => setUpdatedCommentContent(e.target.value)}
+                                                    placeholder="コメントを編集"
+                                                    rows="3"
+                                                    style={styles.textArea}
+                                                />
+                                                <button onClick={() => handleCommentEdit(comment.id, comment.userId)} style={styles.buttonPrimary}>更新</button>
+                                                <button onClick={() => setEditingComment(null)} style={styles.buttonSecondary}>キャンセル</button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <p>{comment.content}</p>
+                                                {user?.uid === comment.userId && (
+                                                    <div>
+                                                        <button onClick={() => {
+                                                            setEditingComment(comment.id);
+                                                            setUpdatedCommentContent(comment.content);
+                                                        }} style={styles.buttonEdit}>編集</button>
+                                                        <button onClick={() => handleCommentDelete(comment.id, comment.userId)} style={styles.buttonDelete}>削除</button>
+                                                    </div>
+                                                )}
+                                            </>
+                                        )}
+                                    </div>
+                                ))
+                            ) : (
+                                <p>コメントはまだありません。</p>
+                            )}
+                        </div>
                     </>
                 )}
-
-                <div style={{ marginTop: "20px" }}>
-                    <h2>コメント</h2>
-
-                    {post?.partyImages?.length > 0 && (
-                        <div
-                            style={{
-                                display: "flex",
-                                flexWrap: "wrap",
-                                gap: "10px",
-                                marginBottom: "20px",
-                            }}
-                        >
-                            {post.partyImages.map((url, index) => (
-                                <img
-                                    key={index}
-                                    src={url}
-                                    alt={`投稿主画像${index + 1}`}
-                                    style={{
-                                        width: "100px",
-                                        height: "100px",
-                                        objectFit: "contain",
-                                        border: "1px solid #ccc",
-                                        borderRadius: "5px",
-                                    }}
-                                />
-                            ))}
-                        </div>
-                    )}
-
-                    <form onSubmit={handleCommentSubmit}>
-                        <textarea
-                            value={newComment}
-                            onChange={(e) => setNewComment(e.target.value)}
-                            placeholder="コメントを入力"
-                            rows="3"
-                            style={{
-                                width: "100%",
-                                marginBottom: "10px",
-                            }}
-                        />
-                        <button
-                            type="submit"
-                            style={{
-                                padding: "5px 10px",
-                                backgroundColor: "#4CAF50",
-                                color: "white",
-                                border: "none",
-                                borderRadius: "5px",
-                                cursor: "pointer",
-                            }}
-                        >
-                            投稿
-                        </button>
-                    </form>
-
-                    <div style={{ marginTop: "10px" }}>
-                        {comments.map((comment) => (
-                            <div
-                                key={comment.id}
-                                style={{
-                                    border: "1px solid #ccc",
-                                    marginBottom: "10px",
-                                    padding: "10px",
-                                }}
-                            >
-                                <p>
-                                    <strong>
-                                        {comment.username || "匿名"}:
-                                    </strong>
-                                </p>
-                                {/* コメント編集 */}
-                                {editingComment === comment.id ? (
-                                    <>
-                                        <textarea
-                                            value={updatedCommentContent}
-                                            onChange={(e) => setUpdatedCommentContent(e.target.value)}
-                                            placeholder="コメントを編集"
-                                            rows="3"
-                                            style={{
-                                                width: "100%",
-                                                marginBottom: "10px",
-                                            }}
-                                        />
-                                        <button
-                                            onClick={() => handleCommentEdit(comment.id, comment.userId)}
-                                            style={{
-                                                padding: "5px 10px",
-                                                backgroundColor: "#4CAF50",
-                                                color: "white",
-                                                border: "none",
-                                                borderRadius: "5px",
-                                                cursor: "pointer",
-                                            }}
-                                        >
-                                            更新
-                                        </button>
-                                        <button
-                                            onClick={() => setEditingComment(null)}
-                                            style={{
-                                                padding: "5px 10px",
-                                                backgroundColor: "#f44336",
-                                                color: "white",
-                                                border: "none",
-                                                borderRadius: "5px",
-                                                cursor: "pointer",
-                                                marginLeft: "10px",
-                                            }}
-                                        >
-                                            キャンセル
-                                        </button>
-                                    </>
-                                ) : (
-                                    <>
-                                        <p>{comment.content}</p>
-                                        {auth.currentUser?.uid === comment.userId && (
-                                            <div>
-                                                <button
-                                                    onClick={() => {
-                                                        setEditingComment(comment.id);
-                                                        setUpdatedCommentContent(comment.content);
-                                                    }}
-                                                    style={{
-                                                        padding: "5px 10px",
-                                                        backgroundColor: "#4CAF50",
-                                                        color: "white",
-                                                        border: "none",
-                                                        borderRadius: "5px",
-                                                        cursor: "pointer",
-                                                    }}
-                                                >
-                                                    編集
-                                                </button>
-                                                <button
-                                                    onClick={() =>
-                                                        handleCommentDelete(comment.id, comment.userId)
-                                                    }
-                                                    style={{
-                                                        padding: "5px 10px",
-                                                        backgroundColor: "#f44336",
-                                                        color: "white",
-                                                        border: "none",
-                                                        borderRadius: "5px",
-                                                        cursor: "pointer",
-                                                        marginLeft: "10px",
-                                                    }}
-                                                >
-                                                    削除
-                                                </button>
-                                            </div>
-                                        )}
-                                    </>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                </div>
             </div>
         </div>
     );
 }
+
+const styles = {
+    header: {
+        backgroundColor: "#FF0000",
+        color: "white",
+        textAlign: "center",
+        padding: "20px 0",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100%",
+        zIndex: 1000,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    backButton: {
+        position: "absolute",
+        left: "20px",
+        top: "50%",
+        transform: "translateY(-50%)",
+    },
+    postImage: {
+        width: "100%",
+        maxHeight: "400px",
+        objectFit: "contain",
+        marginTop: "10px",
+        borderRadius: "10px",
+    },
+    gridContainer: {
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+        gap: "10px",
+        marginTop: "20px",
+    },
+    container: {
+        border: "1px solid #ccc",
+        padding: "10px",
+        borderRadius: "10px",
+        backgroundColor: "#f9f9f9",
+        textAlign: "center",
+    },
+    imageContainer: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+    },
+    imageBox: {
+        width: "100px",
+        height: "100px",
+        backgroundColor: "#ddd",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: "10px",
+    },
+    image: {
+        maxWidth: "100%",
+        maxHeight: "100%",
+        borderRadius: "10px",
+    },
+    terastalContainer: {
+        marginTop: "10px",
+    },
+    terastalImage: {
+        width: "40px",
+        height: "40px",
+    },
+    infoContainer: {
+        marginTop: "10px",
+    },
+    infoRow: {
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        backgroundColor: "#eee",
+        padding: "5px",
+        borderRadius: "5px",
+        fontSize: "12px",
+    },
+    label: {
+        fontWeight: "bold",
+        color: "#333",
+    },
+    value: {
+        color: "#555",
+    },
+    buttonPrimary: {
+        padding: "10px",
+        fontSize: "16px",
+        backgroundColor: "#4CAF50",
+        color: "white",
+        border: "none",
+        borderRadius: "5px",
+        cursor: "pointer",
+        marginTop: "10px",
+    },
+    buttonSecondary: {
+        padding: "10px",
+        fontSize: "16px",
+        backgroundColor: "#888",
+        color: "white",
+        border: "none",
+        borderRadius: "5px",
+        cursor: "pointer",
+        marginLeft: "10px",
+    },
+    buttonEdit: {
+        backgroundColor: "#4CAF50",
+        color: "white",
+    },
+    buttonDelete: {
+        backgroundColor: "#f44336",
+        color: "white",
+        marginLeft: "10px",
+    },
+    commentBox: {
+        border: "1px solid #ccc",
+        padding: "10px",
+        borderRadius: "5px",
+        marginBottom: "10px",
+    },
+};
