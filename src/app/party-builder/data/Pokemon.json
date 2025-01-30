@@ -8287,6 +8287,14 @@
         "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10018.png"
     },
     {
+        "id":10019,
+        "name": {
+            "jpn": "トルネロス(れいじゅうフォルム)",
+            "eng": "tornadus-therian"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10019.png"
+    },
+    {
         "id":10020,
         "name": {
             "jpn": "ボルトロス(れいじゅうフォルム)",
@@ -9095,54 +9103,6 @@
         "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10240.png"
     },
     {
-        "id": 641,
-        "name": {
-            "jpn": "トルネロス(化身)",
-            "eng": "tornadus-incarnate"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/641.png"
-    },
-    {
-        "id": 10019,
-        "name": {
-            "jpn": "トルネロス(霊獣)",
-            "eng": "tornadus-therian"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10019.png"
-    },
-    {
-        "id": 642,
-        "name": {
-            "jpn": "ボルトロス(化身)",
-            "eng": "thundurus-incarnate"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/642.png"
-    },
-    {
-        "id": 10020,
-        "name": {
-            "jpn": "ボルトロス(霊獣)",
-            "eng": "thundurus-therian"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10020.png"
-    },
-    {
-        "id": 645,
-        "name": {
-            "jpn": "ランドロス(化身)",
-            "eng": "landorus-incarnate"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/645.png"
-    },
-    {
-        "id": 10021,
-        "name": {
-            "jpn": "ランドロス(霊獣)",
-            "eng": "landorus-therian"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10021.png"
-    },
-    {
         "id": 648,
         "name": {
             "jpn": "メロエッタ(ボイス)",
@@ -9585,7 +9545,7 @@
     {
         "id": 10230,
         "name": {
-            "jpn": "ウィンディ(ヒスイのすがた)",
+            "jpn": "ウインディ(ヒスイのすがた)",
             "eng": "arcanine-hisui"
         },
         "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10230.png"
