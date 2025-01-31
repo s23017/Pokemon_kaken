@@ -7,32 +7,33 @@ import Link from "next/link";
 import Image from "next/image";
 
 const TOTAL_QUESTIONS = 10;
-const RANKING_LIMIT = 10; // ランキングに表示する上位スコアの数
+const RANKING_LIMIT = 5;
 
-const MiniBreakout = () => {
+const MiniBreakout = ({ onClose }) => {
     const canvasRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [showCloseButton, setShowCloseButton] = useState(false);
 
     useEffect(() => {
+        if (isPlaying) {
+            const timer = setTimeout(() => {
+                setShowCloseButton(true);
+            }, 10000);
+            return () => clearTimeout(timer);
+        }
+    }, [isPlaying]);
+
+    useEffect(() => {
+        if (!isPlaying) return;
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
-
-        const width = 200;
-        const height = 150;
+        const width = 200, height = 150;
         canvas.width = width;
         canvas.height = height;
 
-        let ballRadius = 5;
-        let x = width / 2;
-        let y = height - 30;
-        let dx = 2;
-        let dy = -2;
-
-        const paddleHeight = 10;
-        const paddleWidth = 50;
-        let paddleX = (width - paddleWidth) / 2;
-        let rightPressed = false;
-        let leftPressed = false;
+        let ballRadius = 5, x = width / 2, y = height - 30, dx = 2, dy = -2;
+        const paddleHeight = 10, paddleWidth = 50;
+        let paddleX = (width - paddleWidth) / 2, rightPressed = false, leftPressed = false;
 
         document.addEventListener("keydown", keyDownHandler);
         document.addEventListener("keyup", keyUpHandler);
@@ -87,7 +88,7 @@ const MiniBreakout = () => {
             requestAnimationFrame(draw);
         }
 
-        if (isPlaying) draw();
+        draw();
 
         return () => {
             document.removeEventListener("keydown", keyDownHandler);
@@ -96,17 +97,12 @@ const MiniBreakout = () => {
     }, [isPlaying]);
 
     return (
-        <div
-            style={{
-                position: "fixed",
-                bottom: "10px",
-                left: "10px",
-                background: "#fff",
-                border: "2px solid black",
-                padding: "5px",
-                zIndex: 1000,
-            }}
-        >
+        <div style={{ position: "fixed", bottom: "10px", left: "10px", background: "#fff", border: "2px solid black", padding: "5px", zIndex: 1000 }}>
+            {showCloseButton && (
+                <button onClick={onClose} style={{ position: "absolute", top: "-10px", right: "-10px", background: "red", color: "white", border: "none", cursor: "pointer", padding: "2px 6px", fontSize: "14px", borderRadius: "50%" }}>
+                    ✖
+                </button>
+            )}
             <canvas ref={canvasRef}></canvas>
             {!isPlaying && <button onClick={() => setIsPlaying(true)}>ゲーム開始</button>}
         </div>
@@ -114,6 +110,7 @@ const MiniBreakout = () => {
 };
 
 const SilhouetteQuiz = () => {
+    const [showBreakout, setShowBreakout] = useState(true);
     const [username, setUsername] = useState("");
     const [isUsernameSet, setIsUsernameSet] = useState(false);
     const [currentPokemon, setCurrentPokemon] = useState(null);
@@ -124,13 +121,19 @@ const SilhouetteQuiz = () => {
     const [inputSuggestions, setInputSuggestions] = useState([]);
     const [questionCount, setQuestionCount] = useState(1);
     const [gameOver, setGameOver] = useState(false);
-    const [imageLoaded, setImageLoaded] = useState(false);
     const [ranking, setRanking] = useState([]);
 
     useEffect(() => {
-        if (isUsernameSet) pickRandomPokemon(false);
-        loadRanking();
+        if (isUsernameSet) {
+            pickRandomPokemon(false);
+            loadRanking();
+        }
     }, [isUsernameSet]);
+
+    const loadRanking = () => {
+        const storedRanking = JSON.parse(localStorage.getItem("pokemon_quiz_ranking")) || [];
+        setRanking(storedRanking);
+    };
 
     const pickRandomPokemon = (incrementCount = true) => {
         if (questionCount > TOTAL_QUESTIONS) {
@@ -142,9 +145,10 @@ const SilhouetteQuiz = () => {
         setCurrentPokemon(pokemonData[randomIndex]);
         setShowAnswer(false);
         setUserInput("");
-        setImageLoaded(false);
         if (incrementCount) setQuestionCount(prev => prev + 1);
     };
+
+    const handleChange = (e) => setUserInput(e.target.value);
 
     const checkAnswer = () => {
         if (userInput === currentPokemon.name.jpn) {
@@ -158,9 +162,16 @@ const SilhouetteQuiz = () => {
         setTimeout(() => pickRandomPokemon(true), 2000);
     };
 
-    const loadRanking = () => {
-        const storedRanking = JSON.parse(localStorage.getItem("pokemon_quiz_ranking")) || [];
-        setRanking(storedRanking);
+    const skipQuestion = () => {
+        setShowAnswer(true);
+        setStreak(0);
+        setTimeout(() => pickRandomPokemon(true), 2000);
+    };
+
+    const handleUsernameSubmit = () => {
+        if (username.trim()) {
+            setIsUsernameSet(true);
+        }
     };
 
     const updateRanking = () => {
@@ -182,7 +193,23 @@ const SilhouetteQuiz = () => {
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="ユーザーネーム"
                 />
-                <button onClick={() => setIsUsernameSet(true)}>スタート</button>
+                <button onClick={handleUsernameSubmit}>スタート</button>
+            </div>
+        );
+    }
+
+    if (gameOver) {
+        return (
+            <div className="quiz-container">
+                <h1>クイズ終了！</h1>
+                <p>{username} の最終スコア: {score}</p>
+                <h2>ランキング</h2>
+                <ul>
+                    {ranking.map((entry, index) => (
+                        <li key={index}>{index + 1}. {entry.name} - {entry.score}点</li>
+                    ))}
+                </ul>
+                <button onClick={() => window.location.reload()}>再挑戦</button>
             </div>
         );
     }
@@ -195,16 +222,42 @@ const SilhouetteQuiz = () => {
                 </Link>
                 <h1 className="header-title">ポケモンシルエットクイズ</h1>
             </header>
+
             <div className="quiz-container">
                 <h1>ポケモンシルエットクイズ</h1>
                 <p>{username} のスコア: {score}（連続正解ボーナス: {streak}）</p>
+                <p>問題: {questionCount} / {TOTAL_QUESTIONS}</p>
                 <div className="silhouette-wrapper">
-                    {currentPokemon && <img src={currentPokemon.official_artwork} alt="pokemon silhouette" className={`silhouette ${showAnswer ? "reveal" : ""}`} onLoad={() => setImageLoaded(true)} style={{ visibility: imageLoaded ? "visible" : "hidden" }} />}
+                    {currentPokemon && (
+                        <img
+                            src={currentPokemon.official_artwork}
+                            alt="pokemon silhouette"
+                            className={`silhouette ${showAnswer ? "reveal" : ""}`}
+                            style={{ maxWidth: "300px" }}
+                        />
+                    )}
                 </div>
+                {showAnswer && currentPokemon && <p>正解: {currentPokemon.name.jpn}</p>}
+                <input
+                    type="text"
+                    value={userInput}
+                    onChange={handleChange}
+                    placeholder="ポケモンの名前を入力"
+                />
+                {inputSuggestions.length > 0 && (
+                    <ul className="suggestions">
+                        {inputSuggestions.map((suggestion, index) => (
+                            <li key={index} onClick={() => setUserInput(suggestion)}>
+                                {suggestion}
+                            </li>
+                        ))}
+                    </ul>
+                )}
                 <button onClick={checkAnswer}>答える</button>
+                <button onClick={skipQuestion}>スキップ</button>
             </div>
 
-            <MiniBreakout />
+            <MiniBreakout onClose={() => setShowBreakout(false)} />
         </div>
     );
 };
