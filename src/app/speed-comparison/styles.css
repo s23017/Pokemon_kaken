@@ -1,0 +1,53 @@
+.quiz-container {
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.silhouette-wrapper {
+    width: 200px;
+    height: 200px;
+    margin: 20px auto;
+}
+
+.silhouette {
+    width: 100%;
+    height: 100%;
+    filter: brightness(0); /* シルエット（黒くする） */
+    transition: filter 1s ease-in-out;
+}
+
+.silhouette.reveal {
+    filter: brightness(1); /* 正解時に元の色に戻す */
+}
+
+input {
+    padding: 10px;
+    font-size: 18px;
+    text-align: center;
+    width: 200px;
+    margin: 10px;
+}
+
+button {
+    padding: 10px 15px;
+    margin: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.suggestions {
+    list-style: none;
+    padding: 0;
+    margin: 10px;
+}
+
+.suggestions li {
+    background: #ddd;
+    padding: 5px;
+    cursor: pointer;
+    margin: 2px;
+}
+
+.suggestions li:hover {
+    background: #bbb;
+}
