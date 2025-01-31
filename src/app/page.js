@@ -1,19 +1,49 @@
-"use client"; // クライアントコンポーネントとして宣言
+"use client";
 
 import Link from "next/link";
 import Image from "next/image";
 
 const TopPage = () => {
     return (
-        <div>
-            {/* ヘッダー */}
+        <div
+            style={{
+                backgroundImage: 'url("/images/background.webp")',
+                backgroundSize: "auto", // 画像サイズをそのままに
+                backgroundRepeat: "repeat", // 繰り返して表示
+                backgroundPosition: "top left", // 背景の位置を調整
+                minHeight: "100vh",
+                padding: "0",
+                position: "relative", // 背景画像を親要素に合わせて配置
+            }}
+        >
+
+            {/* 背景画像を全体に適用 */}
+            <div
+                style={{
+                    backgroundImage: 'url("/images/background.png")',
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    zIndex: -1, // 背景として表示するため
+                }}
+            ></div>
+
+            {/* ヘッダーを固定表示 */}
             <header
                 style={{
                     backgroundColor: "#FF0000",
                     color: "white",
                     textAlign: "center",
                     padding: "20px 0",
-                    position: "relative",
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100vw",
+                    zIndex: 1000,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -28,26 +58,30 @@ const TopPage = () => {
                     }}
                 >
                     <Link href="/">
-                        <Image
-                            src="/images/gaming.gif"
-                            width={50}
-                            height={50}
-                            alt="s.png"
-                            style={{
-                                cursor: "pointer",
-                            }}
-                        />
+                        <div>
+                            <Image
+                                src="/images/gaming.gif"
+                                width={50}
+                                height={50}
+                                alt="s.png"
+                                style={{
+                                    cursor: "pointer",
+                                }}
+                            />
+                        </div>
                     </Link>
                 </div>
                 <h1 className="header-title">ポケモンSNSアプリ</h1>
             </header>
 
             {/* メインコンテンツ */}
-            <div
+            <main
                 style={{
                     textAlign: "center",
                     padding: "40px 20px",
-                    marginTop: "150px",
+                    paddingTop: "180px",  // ヘッダーの高さ分だけ余白を追加                       paddingTop: "80px",
+                    position: "relative",
+                    zIndex: 1,
                 }}
             >
                 <p style={{marginBottom: "40px", fontSize: "18px", fontWeight: "bold"}}>
@@ -72,12 +106,10 @@ const TopPage = () => {
                         <div key={index} style={{textAlign: "center"}}>
                             <Link href={href}>
                                 <div style={{display: "inline-block", position: "relative"}}>
-                                    {/* モンスターボール */}
                                     <div className="pokeball">
                                         <div className="pokeball__top"/>
                                         <div className="pokeball__bottom"/>
                                         <div className="pokeball__button"/>
-                                        {/* 隠された画像 */}
                                         <div className="pokeball__content">
                                             <Image
                                                 src={img}
@@ -97,10 +129,9 @@ const TopPage = () => {
                         </div>
                     ))}
                 </div>
-            </div>
+            </main>
 
             <style jsx>{`
-
                 @font-face {
                     font-family: "PokemonGB";
                     src: url("/font/pokemon-gb-font/pkmn_s.ttf") format("truetype");
@@ -108,16 +139,19 @@ const TopPage = () => {
                     font-style: normal;
                 }
 
-                //@font-face {
-                //    font-family: "PokemonGB";
-                //    src: url("/font/pokemon-gb-font/PokemonUnownGb-YAWa.ttf") format("truetype");
-                //    font-weight: normal;
-                //    font-style: normal;
-                //}
-
-                /* すべての要素にフォントを適用 */
                 * {
-                    font-family: "pokemon-gb-font", sans-serif;
+                    font-family: "PokemonGB", sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+
+                html, body {
+                    margin: 0;
+                    padding: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    overflow-x: hidden;
                 }
 
                 .header-title {
@@ -155,7 +189,7 @@ const TopPage = () => {
                 .pokeball__bottom {
                     width: 100%;
                     height: 50%;
-                    background-color: #000;
+                    background-color: #ffffff;
                     border-bottom-left-radius: 50%;
                     border-bottom-right-radius: 50%;
                     position: absolute;
@@ -185,16 +219,15 @@ const TopPage = () => {
                     top: 0;
                     left: 0;
                     z-index: 3;
-                    opacity: 0; /* 最初は非表示 */
+                    opacity: 0;
                     pointer-events: none;
                     transition: opacity 0.3s ease;
                 }
 
                 .pokeball:hover .pokeball__content {
-                    opacity: 1; /* ホバー時に画像を表示 */
+                    opacity: 1;
                 }
             `}</style>
-
         </div>
     );
 };
