@@ -199,6 +199,8 @@ const DamageCalculatorPage = () => {
                 level: 50,
                 types, // **タイプもセット**
             }));
+            setAttackerSearchQuery(""); // ✅ 検索ボックスをクリア
+            setAttackerSearchResults([]); // ✅ 検索結果をリセット
         } else {
             setDefender(prev => ({
                 ...prev,
@@ -208,10 +210,10 @@ const DamageCalculatorPage = () => {
                 level: 50,
                 types, // **タイプもセット**
             }));
+            setDefenderSearchQuery(""); // ✅ 検索ボックスをクリア
+            setDefenderSearchResults([]); // ✅ 検索結果をリセット
         }
     };
-
-
 
 
     const handleInputChange = (role, type, stat, value) => {
