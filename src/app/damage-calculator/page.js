@@ -8,7 +8,6 @@ import Link from "next/link";
 import Image from "next/image";
 
 // ポケモンの詳細を取得する関数
-// ポケモンの詳細を取得する関数
 export const fetchPokemonDetails = async (pokemonName) => {
     const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`;
     try {
