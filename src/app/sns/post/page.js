@@ -1,7 +1,7 @@
 "use client";
 
-import React, {useEffect, useRef, useState} from "react";
-import { initializeApp } from "firebase/app";
+import React, {useEffect, useRef, useState, Suspense} from "react";
+import {initializeApp} from "firebase/app";
 import {
     getFirestore,
     collection,
@@ -18,8 +18,8 @@ import {
     uploadBytes,
     getDownloadURL,
 } from "firebase/storage";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { useRouter, useSearchParams } from "next/navigation";
+import {getAuth, onAuthStateChanged, signOut} from "firebase/auth";
+import {useRouter, useSearchParams} from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -40,6 +40,14 @@ const storage = getStorage(app);
 const auth = getAuth(app);
 
 export default function PostPage() {
+    return (
+        <Suspense fallback={<p>Loading...</p>}>
+            <PostContent/>
+        </Suspense>
+    );
+}
+
+function PostContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [posts, setPosts] = useState([]);
@@ -124,7 +132,7 @@ export default function PostPage() {
                 userId: user.uid,
                 username,
             });
-            console.log("投稿が成功しました:", { title, content, imageUrl });
+            console.log("投稿が成功しました:", {title, content, imageUrl});
         } catch (error) {
             console.error("投稿エラー:", error);
             alert("投稿に失敗しました。");
@@ -152,6 +160,7 @@ export default function PostPage() {
             setPartyDetails(decodedParty);
         }
     }, [searchParams]);
+
     const typeMapping = {
         "ノーマル": "normal",
         "ほのお": "fire",
@@ -214,10 +223,6 @@ export default function PostPage() {
     };
 
 
-
-
-
-
     return (
         <div>
             {/* ヘッダー */}
@@ -245,13 +250,14 @@ export default function PostPage() {
                         transform: "translateY(-50%)",
                     }}
                 >
+
                     <Link href="/">
                         <Image
                             src="/images/gaming.gif"
                             width={50}
                             height={50}
                             alt="ホームに戻る"
-                            style={{ cursor: "pointer" }}
+                            style={{cursor: "pointer"}}
                         />
                     </Link>
                 </div>
@@ -275,11 +281,12 @@ export default function PostPage() {
             </header>
 
             {/* メインコンテンツ */}
-            <div style={{ padding: "100px 20px 20px" }}>
+            <div style={{padding: "100px 20px 20px"}}>
                 {/* パーティーデータ表示 */}
                 <div ref={cardContainerRef} style={styles.gridContainer}>
                     {partyDetails.map((pokemon, index) => (
-                        <div key={index} style={{...styles.container,
+                        <div key={index} style={{
+                            ...styles.container,
                             background: getTypeColor(pokemon.type),
                         }}>
                             <div style={styles.imageContainer}>
@@ -335,141 +342,140 @@ export default function PostPage() {
                 </div>
 
 
+                {/* 投稿フォーム */}
+                <form onSubmit={handlePostSubmit}>
+                    <input
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        placeholder="タイトルを入力"
+                        style={{width: "100%", marginBottom: "10px", padding: "10px"}}
+                        required
+                    />
+                    <textarea
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        placeholder="投稿内容を記入"
+                        rows="3"
+                        style={{width: "100%", marginBottom: "10px"}}
+                    />
+                    <input
+                        type="file"
+                        onChange={(e) => setImage(e.target.files[0])}
+                        style={{display: "block", marginBottom: "10px"}}
+                    />
+                    <button type="submit">投稿する</button>
+                </form>
 
-                                {/* 投稿フォーム */}
-                                <form onSubmit={handlePostSubmit}>
-                                    <input
-                                        type="text"
-                                        value={title}
-                                        onChange={(e) => setTitle(e.target.value)}
-                                        placeholder="タイトルを入力"
-                                        style={{width: "100%", marginBottom: "10px", padding: "10px"}}
-                                        required
-                                    />
-                                    <textarea
-                                        value={content}
-                                        onChange={(e) => setContent(e.target.value)}
-                                        placeholder="投稿内容を記入"
-                                        rows="3"
-                                        style={{width: "100%", marginBottom: "10px"}}
-                                    />
-                                    <input
-                                        type="file"
-                                        onChange={(e) => setImage(e.target.files[0])}
-                                        style={{display: "block", marginBottom: "10px"}}
-                                    />
-                                    <button type="submit">投稿する</button>
-                                </form>
+                {/* 投稿一覧 */}
+                <div style={{marginTop: "20px"}}>
 
-                                {/* 投稿一覧 */}
-                                <div style={{marginTop: "20px"}}>
+                    <h2>投稿一覧</h2>
+                    {posts.map((post) => (
+                        <div
+                            key={post.id}
+                            style={{
+                                border: "1px solid #ccc",
+                                marginBottom: "10px",
+                                padding: "10px",
+                            }}
+                        >
+                            <p>
+                                <strong>投稿者:</strong> {post.username}
+                            </p>
 
-                                    <h2>投稿一覧</h2>
-                                    {posts.map((post) => (
-                                        <div
-                                            key={post.id}
-                                            style={{
-                                                border: "1px solid #ccc",
-                                                marginBottom: "10px",
-                                                padding: "10px",
-                                            }}
-                                        >
-                                            <p>
-                                                <strong>投稿者:</strong> {post.username}
-                                            </p>
-
-                                            <p
-                                                style={{
-                                                    color: "black",
-                                                    cursor: "pointer",
-                                                    fontSize: "35px",
-                                                }}
-                                                onClick={() => router.push(`/sns/details/${post.id}`)}
-                                            >
-                                                <strong>{post.title}</strong>
-                                            </p>
-                                            <p>{post.content}</p>
-                                            {post.imageUrl && (
+                            <p
+                                style={{
+                                    color: "black",
+                                    cursor: "pointer",
+                                    fontSize: "35px",
+                                }}
+                                onClick={() => router.push(`/sns/details/${post.id}`)}
+                            >
+                                <strong>{post.title}</strong>
+                            </p>
+                            <p>{post.content}</p>
+                            {post.imageUrl && (
+                                <img
+                                    src={post.imageUrl}
+                                    alt="投稿画像"
+                                    style={{width: "10%", marginTop: "10px"}}
+                                />
+                            )}
+                            <div ref={cardContainerRef} style={styles.gridContainer}>
+                                {post.partyDetails && post.partyDetails.map((party, index) => (
+                                    <div key={index} style={styles.card}>
+                                        <div style={styles.imageContainer2}>
+                                            <div style={styles.imageBox2}>
                                                 <img
-                                                    src={post.imageUrl}
-                                                    alt="投稿画像"
-                                                    style={{ width: "10%", marginTop: "10px" }}
+                                                    src={party.imageUrl}
+                                                    alt={`${party.name}の画像`}
+                                                    style={styles.image}
                                                 />
+                                            </div>
+                                            {party.selectedTerastal ? (
+                                                <div style={styles.terastalContainer}>
+                                                    <img
+                                                        src={`/images/terastals/${typeMapping[party.selectedTerastal] || "unknown"}.png`}
+                                                        alt={`テラスタル ${party.selectedTerastal}`}
+                                                        style={styles.terastalImage}
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <p>テラスタル未選択</p>
                                             )}
-                                            <div ref={cardContainerRef} style={styles.gridContainer}>
-                                                {post.partyDetails && post.partyDetails.map((party, index) => (
-                                                    <div key={index} style={styles.card}>
-                                                        <div style={styles.imageContainer2}>
-                                                            <div style={styles.imageBox2}>
-                                                                <img
-                                                                    src={party.imageUrl}
-                                                                    alt={`${party.name}の画像`}
-                                                                    style={styles.image}
-                                                                />
-                                                            </div>
-                                                            {party.selectedTerastal ? (
-                                                                <div style={styles.terastalContainer}>
-                                                                    <img
-                                                                        src={`/images/terastals/${typeMapping[party.selectedTerastal] || "unknown"}.png`}
-                                                                        alt={`テラスタル ${party.selectedTerastal}`}
-                                                                        style={styles.terastalImage}
-                                                                    />
-                                                                </div>
-                                                            ) : (
-                                                                <p>テラスタル未選択</p>
-                                                            )}
-                                                        <div style={styles.infoContainer}>
-                                                            <div style={styles.infoRow}>
-                                                                <span style={styles.label}>性格</span>
-                                                                <span style={styles.value}>{party.selectedNature}</span>
-                                                            </div>
-                                                            <div style={styles.infoRow}>
-                                                                <span style={styles.label}>持ち物</span>
-                                                                <span style={styles.value}>{party.selectedItem}</span>
-                                                            </div>
-                                                            <div style={styles.infoRow}>
-                                                                <span style={styles.label}>特性</span>
-                                                                <span
-                                                                    style={styles.value}>{party.selectedAbility}</span>
-                                                            </div>
-                                                            <div style={styles.infoRow}>
-                                                                <span style={styles.label}>努力値</span>
-                                                                <span style={styles.value}>
+                                            <div style={styles.infoContainer}>
+                                                <div style={styles.infoRow}>
+                                                    <span style={styles.label}>性格</span>
+                                                    <span style={styles.value}>{party.selectedNature}</span>
+                                                </div>
+                                                <div style={styles.infoRow}>
+                                                    <span style={styles.label}>持ち物</span>
+                                                    <span style={styles.value}>{party.selectedItem}</span>
+                                                </div>
+                                                <div style={styles.infoRow}>
+                                                    <span style={styles.label}>特性</span>
+                                                    <span
+                                                        style={styles.value}>{party.selectedAbility}</span>
+                                                </div>
+                                                <div style={styles.infoRow}>
+                                                    <span style={styles.label}>努力値</span>
+                                                    <span style={styles.value}>
                         {Object.entries(party.effortValues || {})
                             .filter(([_, value]) => value !== 0)
                             .map(([stat, value]) => `${stat}: ${value}`)
                             .join(", ")}
                     </span>
-                                                            </div>
-                                                            <div style={styles.infoRow}>
-                                                                <span style={styles.label}>わざ1</span>
-                                                                <span
-                                                                    style={styles.value}>{party.selectedMoves?.[0] || "未選択"}</span>
-                                                            </div>
-                                                            <div style={styles.infoRow}>
-                                                                <span style={styles.label}>わざ2</span>
-                                                                <span
-                                                                    style={styles.value}>{party.selectedMoves?.[1] || "未選択"}</span>
-                                                            </div>
-                                                            <div style={styles.infoRow}>
-                                                                <span style={styles.label}>わざ3</span>
-                                                                <span
-                                                                    style={styles.value}>{party.selectedMoves?.[2] || "未選択"}</span>
-                                                            </div>
-                                                            <div style={styles.infoRow}>
-                                                                <span style={styles.label}>わざ4</span>
-                                                                <span
-                                                                    style={styles.value}>{party.selectedMoves?.[3] || "未選択"}</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    </div>
-                                                ))}
+                                                </div>
+                                                <div style={styles.infoRow}>
+                                                    <span style={styles.label}>わざ1</span>
+                                                    <span
+                                                        style={styles.value}>{party.selectedMoves?.[0] || "未選択"}</span>
+                                                </div>
+                                                <div style={styles.infoRow}>
+                                                    <span style={styles.label}>わざ2</span>
+                                                    <span
+                                                        style={styles.value}>{party.selectedMoves?.[1] || "未選択"}</span>
+                                                </div>
+                                                <div style={styles.infoRow}>
+                                                    <span style={styles.label}>わざ3</span>
+                                                    <span
+                                                        style={styles.value}>{party.selectedMoves?.[2] || "未選択"}</span>
+                                                </div>
+                                                <div style={styles.infoRow}>
+                                                    <span style={styles.label}>わざ4</span>
+                                                    <span
+                                                        style={styles.value}>{party.selectedMoves?.[3] || "未選択"}</span>
+                                                </div>
                                             </div>
-
                                         </div>
-                                    ))}
-                                </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );
