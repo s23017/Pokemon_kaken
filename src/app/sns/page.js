@@ -71,7 +71,7 @@ export default function LoginPage() {
             const result = await signInWithPopup(auth, provider);
             alert("Googleログイン成功！");
             Cookies.set("user", JSON.stringify(result.user), { expires: 7 });
-            window.location.href = "/sns/post";
+            window.location.href = "https://pokemon-kaken.vercel.app/sns/post";
         } catch (error) {
             console.error("Googleログイン失敗", error);
             setError("Googleログインに失敗しました。");
