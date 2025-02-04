@@ -120,7 +120,7 @@ function PostContent() {
         }
 
         const userDoc = await getDoc(doc(db, "users", user.uid));
-        const username = userDoc.exists() ? userDoc.data().username : "匿名";
+        const username = userDoc.exists() ? userDoc.data().username: user.displayName || "匿名";
 
         try {
             await addDoc(collection(db, "posts"), {
