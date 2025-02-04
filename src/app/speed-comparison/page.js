@@ -184,8 +184,12 @@ const SilhouetteQuiz = () => {
 
     if (!isUsernameSet) {
         return (
+                <header style={{ backgroundColor: "#FF0000", color: "white", textAlign: "center", padding: "20px 0", position: "fixed", top: 0, left: 0, width: "100%", zIndex: 1000 }}>
+                <Link href="/">
+                    <Image src="/images/gaming.gif" width={50} height={50} alt="ホームに戻る" style={{ position: "absolute", left: "20px", cursor: "pointer" }} />
+                </Link>
             <div className="quiz-container">
-                <h1>ポケモンシルエットクイズ</h1>
+                <h1 className="header-title">ポケモンシルエットクイズ</h1>
                 <p>プレイヤー名を入力してください</p>
                 <input
                     type="text"
@@ -195,6 +199,8 @@ const SilhouetteQuiz = () => {
                 />
                 <button onClick={handleUsernameSubmit}>スタート</button>
             </div>
+            </header>
+
         );
     }
 
