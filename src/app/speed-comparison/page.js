@@ -164,10 +164,32 @@ const SilhouetteQuiz = () => {
         setCurrentPokemon(pokemonData[randomIndex]);
         setShowAnswer(false);
         setUserInput("");
+        setInputSuggestions([]); // ✨ 予測変換リストをクリア
         if (incrementCount) setQuestionCount(prev => prev + 1);
     };
 
-    const handleChange = (e) => setUserInput(e.target.value);
+
+    const handleChange = (e) => {
+        const value = e.target.value.trim();
+        setUserInput(value);
+
+        if (value.length === 0) {
+            setInputSuggestions([]);
+            return;
+        }
+
+        console.log("入力値:", value); // 🔍 デバッグ用ログ
+
+        // ポケモンの名前で前方一致検索
+        const filteredSuggestions = pokemonData
+            .filter(pokemon => pokemon.name.jpn.startsWith(value))
+            .map(pokemon => pokemon.name.jpn);
+
+        console.log("予測変換候補:", filteredSuggestions); // 🔍 デバッグ用ログ
+
+        setInputSuggestions(filteredSuggestions.slice(0, 5)); // 上位5件のみ表示
+    };
+
 
     const checkAnswer = () => {
         if (userInput === currentPokemon.name.jpn) {
@@ -314,12 +336,19 @@ const SilhouetteQuiz = () => {
                 {inputSuggestions.length > 0 && (
                     <ul className="suggestions">
                         {inputSuggestions.map((suggestion, index) => (
-                            <li key={index} onClick={() => setUserInput(suggestion)}>
+                            <li
+                                key={index}
+                                onClick={() => {
+                                    setUserInput(suggestion);
+                                    setInputSuggestions([]); // ✨ クリックしたらリストを消す
+                                }}
+                            >
                                 {suggestion}
                             </li>
                         ))}
                     </ul>
                 )}
+
                 <button onClick={checkAnswer}>答える</button>
                 <button onClick={skipQuestion}>スキップ</button>
             </div>
