@@ -183,7 +183,7 @@ export default function PostDetailPage() {
             {/* ヘッダー */}
             <header style={styles.header}>
                 <div style={styles.backButton}>
-                    <Link href="/sns/post">
+                    <Link href="/sns/postfirebase">
                         <Image src="/images/gaming.gif" width={50} height={50} alt="戻る" style={{ cursor: "pointer" }} />
                     </Link>
                 </div>
