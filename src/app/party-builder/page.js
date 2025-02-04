@@ -196,7 +196,7 @@ const Home = () => {
         const queryString = `party=${encodeURIComponent(JSON.stringify(partyData))}`;
 
         // URLの作成
-        const shareUrl = `http://localhost:3000/sns/post?${queryString}`;
+        const shareUrl = `https://pokemon-kaken.vercel.app/sns/post?${queryString}`;
 
         // 共有先に遷移
         window.location.href = shareUrl;
