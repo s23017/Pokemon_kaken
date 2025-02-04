@@ -404,7 +404,10 @@ function PostContent() {
                             )}
                             <div ref={cardContainerRef} style={styles.gridContainer}>
                                 {post.partyDetails && post.partyDetails.map((party, index) => (
-                                    <div key={index} style={styles.card}>
+                                    <div key={index} style={{
+                                        ...styles.card,
+                                        background: getTypeColor(party.type) // ここで背景色を適用
+                                    }}>
                                         <div style={styles.imageContainer2}>
                                             <div style={styles.imageBox2}>
                                                 <img
@@ -435,43 +438,30 @@ function PostContent() {
                                                 </div>
                                                 <div style={styles.infoRow}>
                                                     <span style={styles.label}>特性</span>
-                                                    <span
-                                                        style={styles.value}>{party.selectedAbility}</span>
+                                                    <span style={styles.value}>{party.selectedAbility}</span>
                                                 </div>
                                                 <div style={styles.infoRow}>
                                                     <span style={styles.label}>努力値</span>
                                                     <span style={styles.value}>
-                        {Object.entries(party.effortValues || {})
-                            .filter(([_, value]) => value !== 0)
-                            .map(([stat, value]) => `${stat}: ${value}`)
-                            .join(", ")}
-                    </span>
+                            {Object.entries(party.effortValues || {})
+                                .filter(([_, value]) => value !== 0)
+                                .map(([stat, value]) => `${stat}: ${value}`)
+                                .join(", ")}
+                        </span>
                                                 </div>
-                                                <div style={styles.infoRow}>
-                                                    <span style={styles.label}>わざ1</span>
-                                                    <span
-                                                        style={styles.value}>{party.selectedMoves?.[0] || "未選択"}</span>
-                                                </div>
-                                                <div style={styles.infoRow}>
-                                                    <span style={styles.label}>わざ2</span>
-                                                    <span
-                                                        style={styles.value}>{party.selectedMoves?.[1] || "未選択"}</span>
-                                                </div>
-                                                <div style={styles.infoRow}>
-                                                    <span style={styles.label}>わざ3</span>
-                                                    <span
-                                                        style={styles.value}>{party.selectedMoves?.[2] || "未選択"}</span>
-                                                </div>
-                                                <div style={styles.infoRow}>
-                                                    <span style={styles.label}>わざ4</span>
-                                                    <span
-                                                        style={styles.value}>{party.selectedMoves?.[3] || "未選択"}</span>
-                                                </div>
+                                                {[...Array(4)].map((_, i) => (
+                                                    <div style={styles.infoRow} key={i}>
+                                                        <span style={styles.label}>わざ{i + 1}</span>
+                                                        <span
+                                                            style={styles.value}>{party.selectedMoves?.[i] || "未選択"}</span>
+                                                    </div>
+                                                ))}
                                             </div>
                                         </div>
                                     </div>
                                 ))}
                             </div>
+
 
                         </div>
                     ))}
