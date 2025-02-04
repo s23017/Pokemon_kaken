@@ -132,6 +132,26 @@ const Home = () => {
     const handleAddToParty = async (pokemon) => {
         console.log("[INFO] 選択されたポケモン:", pokemon);
         try {
+            const handleConfirmMove = async (move) => {
+                if (party.length >= 6) {
+                    alert("パーティーには最大6体のポケモンしか追加できません");
+                    return;
+                }
+                if (party.some((p) => p.name === selectedPokemon.name)) {
+                    alert("このポケモンはすでにパーティーに存在します");
+                    return;
+                }
+
+                try {
+                    const japaneseMove = await fetchMoveDetails(move); // 技名を日本語に変換
+                    const updatedPokemon = { ...selectedPokemon, selectedMove: japaneseMove };
+                    setParty((prev) => [...prev, updatedPokemon]);
+                    handleCloseModal();
+                } catch (error) {
+                    console.error("技名変換エラー:", error);
+                    alert("技名を選択できませんでした。再試行してください。");
+                }
+            };
             // 技名を日本語に変換
             const movesInJapanese = await Promise.all(
                 pokemon.moves.map(async (move) => {
