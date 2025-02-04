@@ -164,8 +164,10 @@ const SilhouetteQuiz = () => {
         setCurrentPokemon(pokemonData[randomIndex]);
         setShowAnswer(false);
         setUserInput("");
+        setInputSuggestions([]); // ✨ 予測変換リストをクリア
         if (incrementCount) setQuestionCount(prev => prev + 1);
     };
+
 
     const handleChange = (e) => {
         const value = e.target.value.trim();
@@ -187,6 +189,7 @@ const SilhouetteQuiz = () => {
 
         setInputSuggestions(filteredSuggestions.slice(0, 5)); // 上位5件のみ表示
     };
+
 
     const checkAnswer = () => {
         if (userInput === currentPokemon.name.jpn) {
@@ -333,12 +336,19 @@ const SilhouetteQuiz = () => {
                 {inputSuggestions.length > 0 && (
                     <ul className="suggestions">
                         {inputSuggestions.map((suggestion, index) => (
-                            <li key={index} onClick={() => setUserInput(suggestion)}>
+                            <li
+                                key={index}
+                                onClick={() => {
+                                    setUserInput(suggestion);
+                                    setInputSuggestions([]); // ✨ クリックしたらリストを消す
+                                }}
+                            >
                                 {suggestion}
                             </li>
                         ))}
                     </ul>
                 )}
+
                 <button onClick={checkAnswer}>答える</button>
                 <button onClick={skipQuestion}>スキップ</button>
             </div>
