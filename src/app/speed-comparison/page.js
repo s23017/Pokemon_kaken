@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, {useState, useEffect, useRef} from "react";
 import pokemonData from "../party-builder/data/Pokemon.json";
 import "./styles.css";
 import Link from "next/link";
@@ -9,7 +9,7 @@ import Image from "next/image";
 const TOTAL_QUESTIONS = 10;
 const RANKING_LIMIT = 5;
 
-const MiniBreakout = ({ onClose }) => {
+const MiniBreakout = ({onClose}) => {
     const canvasRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [showCloseButton, setShowCloseButton] = useState(false);
@@ -97,9 +97,28 @@ const MiniBreakout = ({ onClose }) => {
     }, [isPlaying]);
 
     return (
-        <div style={{ position: "fixed", bottom: "10px", left: "10px", background: "#fff", border: "2px solid black", padding: "5px", zIndex: 1000 }}>
+        <div style={{
+            position: "fixed",
+            bottom: "10px",
+            left: "10px",
+            background: "#fff",
+            border: "2px solid black",
+            padding: "5px",
+            zIndex: 1000
+        }}>
             {showCloseButton && (
-                <button onClick={onClose} style={{ position: "absolute", top: "-10px", right: "-10px", background: "red", color: "white", border: "none", cursor: "pointer", padding: "2px 6px", fontSize: "14px", borderRadius: "50%" }}>
+                <button onClick={onClose} style={{
+                    position: "absolute",
+                    top: "-10px",
+                    right: "-10px",
+                    background: "red",
+                    color: "white",
+                    border: "none",
+                    cursor: "pointer",
+                    padding: "2px 6px",
+                    fontSize: "14px",
+                    borderRadius: "50%"
+                }}>
                     ✖
                 </button>
             )}
@@ -175,7 +194,7 @@ const SilhouetteQuiz = () => {
     };
 
     const updateRanking = () => {
-        const newRanking = [...ranking, { name: username, score }]
+        const newRanking = [...ranking, {name: username, score}]
             .sort((a, b) => b.score - a.score)
             .slice(0, RANKING_LIMIT);
         setRanking(newRanking);
@@ -184,53 +203,95 @@ const SilhouetteQuiz = () => {
 
     if (!isUsernameSet) {
         return (
-                <header style={{ backgroundColor: "#FF0000", color: "white", textAlign: "center", padding: "20px 0", position: "fixed", top: 0, left: 0, width: "100%", zIndex: 1000 }}>
-                <Link href="/">
-                    <Image src="/images/gaming.gif" width={50} height={50} alt="ホームに戻る" style={{ position: "absolute", left: "20px", cursor: "pointer" }} />
-                </Link>
-            <div className="quiz-container">
-                <h1 className="header-title">ポケモンシルエットクイズ</h1>
-                <p>プレイヤー名を入力してください</p>
-                <input
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="ユーザーネーム"
-                />
-                <button onClick={handleUsernameSubmit}>スタート</button>
+            <div style={{paddingTop: "120px"}}>
+                <header style={{
+                    backgroundColor: "#FF0000",
+                    color: "white",
+                    textAlign: "center",
+                    padding: "20px 0",
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    zIndex: 1000
+                }}>
+                    <Link href="/">
+                        <Image src="/images/gaming.gif" width={50} height={50} alt="ホームに戻る"
+                               style={{position: "absolute", left: "20px", cursor: "pointer"}}/>
+                    </Link>
+                    <h1 className="header-title">ポケモンシルエットクイズ</h1>
+                </header>
+                <div className="quiz-container">
+                    <p>プレイヤー名を入力してください</p>
+                    <input
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="ユーザーネーム"
+                    />
+                    <button onClick={handleUsernameSubmit}>スタート</button>
+                </div>
             </div>
-            </header>
-
         );
     }
 
     if (gameOver) {
         return (
-            <div className="quiz-container">
-                <h1>クイズ終了！</h1>
-                <p>{username} の最終スコア: {score}</p>
-                <h2>ランキング</h2>
-                <ul>
-                    {ranking.map((entry, index) => (
-                        <li key={index}>{index + 1}. {entry.name} - {entry.score}点</li>
-                    ))}
-                </ul>
-                <button onClick={() => window.location.reload()}>再挑戦</button>
+            <div style={{paddingTop: "120px"}}>
+                <header style={{
+                    backgroundColor: "#FF0000",
+                    color: "white",
+                    textAlign: "center",
+                    padding: "20px 0",
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    zIndex: 1000
+                }}>
+                    <Link href="/">
+                        <Image src="/images/gaming.gif" width={50} height={50} alt="ホームに戻る"
+                               style={{position: "absolute", left: "20px", cursor: "pointer"}}/>
+                    </Link>
+                    <h1 className="header-title">ポケモンシルエットクイズ</h1>
+                </header>
+                <div className="quiz-container">
+                    <h1>クイズ終了！</h1>
+                    <p>{username} の最終スコア: {score}</p>
+                    <h2>ランキング</h2>
+                    <ul>
+                        {ranking.map((entry, index) => (
+                            <li key={index}>{index + 1}. {entry.name} - {entry.score}点</li>
+                        ))}
+                    </ul>
+                    <button onClick={() => window.location.reload()}>再挑戦</button>
+                </div>
             </div>
         );
     }
 
     return (
-        <div style={{ paddingTop: "120px" }}>
-            <header style={{ backgroundColor: "#FF0000", color: "white", textAlign: "center", padding: "20px 0", position: "fixed", top: 0, left: 0, width: "100%", zIndex: 1000 }}>
+        <div style={{paddingTop: "120px"}}>
+            <header style={{
+                backgroundColor: "#FF0000",
+                color: "white",
+                textAlign: "center",
+                padding: "20px 0",
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100%",
+                zIndex: 1000
+            }}>
                 <Link href="/">
-                    <Image src="/images/gaming.gif" width={50} height={50} alt="ホームに戻る" style={{ position: "absolute", left: "20px", cursor: "pointer" }} />
+                    <Image src="/images/gaming.gif" width={50} height={50} alt="ホームに戻る"
+                           style={{position: "absolute", left: "20px", cursor: "pointer"}}/>
                 </Link>
                 <h1 className="header-title">ポケモンシルエットクイズ</h1>
             </header>
 
             <div className="quiz-container">
-                <h1>ポケモンシルエットクイズ</h1>
+                <h1>答えろ</h1>
                 <p>{username} のスコア: {score}（連続正解ボーナス: {streak}）</p>
                 <p>問題: {questionCount} / {TOTAL_QUESTIONS}</p>
                 <div className="silhouette-wrapper">
@@ -239,7 +300,7 @@ const SilhouetteQuiz = () => {
                             src={currentPokemon.official_artwork}
                             alt="pokemon silhouette"
                             className={`silhouette ${showAnswer ? "reveal" : ""}`}
-                            style={{ maxWidth: "300px" }}
+                            style={{maxWidth: "300px"}}
                         />
                     )}
                 </div>
@@ -263,7 +324,7 @@ const SilhouetteQuiz = () => {
                 <button onClick={skipQuestion}>スキップ</button>
             </div>
 
-            <MiniBreakout onClose={() => setShowBreakout(false)} />
+            <MiniBreakout onClose={() => setShowBreakout(false)}/>
         </div>
     );
 };
