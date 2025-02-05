@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import pokemonData from "../party-builder/data/Pokemon.json";
-import "./styles.css";
+import "./styles.css"; // アニメーション用CSS
 import Link from "next/link";
 import Image from "next/image";
 import MiniBreakout from "./MiniBreakout";
@@ -17,6 +17,7 @@ const SilhouetteQuiz = () => {
     const [isUsernameSet, setIsUsernameSet] = useState(false);
     const [currentPokemon, setCurrentPokemon] = useState(null);
     const [userInput, setUserInput] = useState("");
+    const [inputSuggestions, setInputSuggestions] = useState([]);
     const [score, setScore] = useState(0);
     const [streak, setStreak] = useState(0);
     const [showAnswer, setShowAnswer] = useState(false);
@@ -48,6 +49,7 @@ const SilhouetteQuiz = () => {
         setCurrentPokemon(pokemonData[randomIndex]);
         setShowAnswer(false);
         setUserInput("");
+        setInputSuggestions([]);
         if (incrementCount) setQuestionCount(prev => prev + 1);
     };
 
@@ -61,135 +63,88 @@ const SilhouetteQuiz = () => {
             setStreak(0);
             setLives(prev => prev - 1);
         }
-        setTimeout(() => pickRandomPokemon(true), 2000);
+        setTimeout(() => pickRandomPokemon(true), 3000); // 3秒後に次の問題へ
     };
 
     const skipQuestion = () => {
         setShowAnswer(true);
         setStreak(0);
-        setTimeout(() => pickRandomPokemon(true), 2000);
+        setTimeout(() => pickRandomPokemon(true), 3000);
     };
 
-    const handleUsernameSubmit = () => {
-        if (username.trim()) {
-            setIsUsernameSet(true);
+    const handleChange = (e) => {
+        const value = e.target.value.trim();
+        setUserInput(value);
+
+        if (value.length === 0) {
+            setInputSuggestions([]);
+            return;
         }
-    };
 
-    const updateRanking = () => {
-        const newRanking = [...ranking, { name: username, score }]
-            .sort((a, b) => b.score - a.score)
-            .slice(0, RANKING_LIMIT);
-        setRanking(newRanking);
-        localStorage.setItem("pokemon_quiz_ranking", JSON.stringify(newRanking));
-    };
+        const filteredSuggestions = pokemonData
+            .filter(pokemon => pokemon.name.jpn.startsWith(value))
+            .map(pokemon => pokemon.name.jpn);
 
-    const watchAdToRecoverLife = () => {
-        setIsWatchingAd(true);
-        setTimeout(() => {
-            setIsWatchingAd(false);
-            setLives(prev => Math.min(prev + 1, MAX_LIVES));
-        }, 5000);
-    };
-
-    const handleRestart = () => {
-        if (lives > 1) {
-            setLives(lives - 1);
-            setScore(0);
-            setStreak(0);
-            setQuestionCount(1);
-            setGameOver(false);
-            pickRandomPokemon(false);
-        } else {
-            setLives(0);
-        }
+        setInputSuggestions(filteredSuggestions.slice(0, 5));
     };
 
     if (gameOver) {
         return (
-            <div style={{ paddingTop: "120px" }}>
-                <header style={{
-                    backgroundColor: "#FF0000",
-                    color: "white",
-                    textAlign: "center",
-                    padding: "20px 0",
-                    position: "fixed",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    zIndex: 1000
-                }}>
-                    <Link href="/">
-                        <Image src="/images/gaming.gif" width={50} height={50} alt="ホームに戻る"
-                               style={{ position: "absolute", left: "20px", cursor: "pointer" }} />
-                    </Link>
-                    <h1 className="header-title">ポケモンシルエットクイズ</h1>
-                </header>
-
-                <div className="quiz-container">
-                    <h1>クイズ終了！</h1>
-                    <p>{username} の最終スコア: {score}</p>
-                    <h2>ランキング</h2>
-                    <ul>
-                        {ranking.map((entry, index) => (
-                            <li key={index}>{index + 1}. {entry.name} - {entry.score}点</li>
-                        ))}
-                    </ul>
-                    {lives > 1 ? (
-                        <button onClick={handleRestart}>再挑戦（ライフ -1）</button>
-                    ) : (
-                        <button onClick={watchAdToRecoverLife}>広告を見て回復</button>
-                    )}
-                </div>
+            <div className="quiz-container">
+                <h1>クイズ終了！</h1>
+                <p>{username} の最終スコア: {score}</p>
+                <h2>ランキング</h2>
+                <ul>
+                    {ranking.map((entry, index) => (
+                        <li key={index}>{index + 1}. {entry.name} - {entry.score}点</li>
+                    ))}
+                </ul>
+                {lives > 1 ? (
+                    <button onClick={() => setLives(lives - 1)}>再挑戦（ライフ -1）</button>
+                ) : (
+                    <button onClick={() => setIsWatchingAd(true)}>広告を見て回復</button>
+                )}
+                {isWatchingAd && <MiniBreakout onClose={() => setIsWatchingAd(false)} />}
             </div>
         );
     }
 
     return (
-        <div style={{ paddingTop: "120px" }}>
-            <header style={{
-                backgroundColor: "#FF0000",
-                color: "white",
-                textAlign: "center",
-                padding: "20px 0",
-                position: "fixed",
-                top: 0,
-                left: 0,
-                width: "100%",
-                zIndex: 1000
-            }}>
-                <Link href="/">
-                    <Image src="/images/gaming.gif" width={50} height={50} alt="ホームに戻る"
-                           style={{ position: "absolute", left: "20px", cursor: "pointer" }} />
-                </Link>
-                <h1 className="header-title">ポケモンシルエットクイズ</h1>
-            </header>
-
-            <div className="quiz-container">
-                <h1>答えろ</h1>
-                <p>{username} のスコア: {score}（連続正解ボーナス: {streak}）</p>
-                <p>ライフ: {lives} / {MAX_LIVES} ❤️</p>
-                <p>問題: {questionCount} / {TOTAL_QUESTIONS}</p>
-                <div className="silhouette-wrapper">
-                    {currentPokemon && (
+        <div className="quiz-container">
+            <h1>ポケモンシルエットクイズ</h1>
+            <p>{username} のスコア: {score}（連続正解ボーナス: {streak}）</p>
+            <p>ライフ: {lives} / {MAX_LIVES} ❤️</p>
+            <p>問題: {questionCount} / {TOTAL_QUESTIONS}</p>
+            <div className="silhouette-wrapper">
+                {currentPokemon && (
+                    <div className={`silhouette-container ${showAnswer ? "reveal" : ""}`}>
                         <img
                             src={currentPokemon.official_artwork}
                             alt="pokemon silhouette"
-                            className={`silhouette ${showAnswer ? "reveal" : ""}`}
+                            className="pokemon-image"
                             style={{ maxWidth: "300px" }}
                         />
-                    )}
-                </div>
-                {showAnswer && currentPokemon && <p>正解: {currentPokemon.name.jpn}</p>}
-                <input
-                    type="text"
-                    value={userInput}
-                    onChange={(e) => setUserInput(e.target.value)}
-                    placeholder="ポケモンの名前を入力"
-                />
-                <button onClick={checkAnswer}>答える</button>
-                <button onClick={skipQuestion}>スキップ</button>
+                    </div>
+                )}
             </div>
+            {showAnswer && currentPokemon && <p className="answer-text">正解: {currentPokemon.name.jpn}</p>}
+            <input
+                type="text"
+                value={userInput}
+                onChange={handleChange}
+                placeholder="ポケモンの名前を入力"
+            />
+            {inputSuggestions.length > 0 && (
+                <ul className="suggestions">
+                    {inputSuggestions.map((suggestion, index) => (
+                        <li key={index} onClick={() => setUserInput(suggestion)}>
+                            {suggestion}
+                        </li>
+                    ))}
+                </ul>
+            )}
+            <button onClick={checkAnswer}>答える</button>
+            <button onClick={skipQuestion}>スキップ</button>
 
             <MiniBreakout onClose={() => setShowBreakout(false)} />
         </div>
