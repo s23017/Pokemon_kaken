@@ -456,6 +456,8 @@ const Home = () => {
                                 <button type="submit" style={styles.button}>
                                     検索
                                 </button>
+
+
                                 {searchBars.length > 1 && (
                                     <button
                                         type="button"
