@@ -120,7 +120,7 @@ const Pokedex = () => {
                     zIndex: 1000,
                 }}
             >
-                <Link href="/">
+                <Link href="/top">
                     <Image
                         src="/images/gaming.gif"
                         width={50}

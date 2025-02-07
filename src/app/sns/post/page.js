@@ -144,14 +144,14 @@ function PostContent() {
     };
 
     // ログアウト処理
-    const handleLogout = async () => {
-        try {
-            await signOut(auth);
-            router.push("/sns"); // ログアウト後ログインページへリダイレクト
-        } catch (error) {
-            console.error("ログアウト失敗:", error);
-        }
-    };
+    // const handleLogout = async () => {
+    //     try {
+    //         await signOut(auth);
+    //         router.push("/sns"); // ログアウト後ログインページへリダイレクト
+    //     } catch (error) {
+    //         console.error("ログアウト失敗:", error);
+    //     }
+    // };
     useEffect(() => {
         const partyData = searchParams.get("party");
         if (partyData) {
@@ -251,7 +251,7 @@ function PostContent() {
                     }}
                 >
 
-                    <Link href="/">
+                    <Link href="/top">
                         <Image
                             src="/images/gaming.gif"
                             width={50}
@@ -262,22 +262,22 @@ function PostContent() {
                     </Link>
                 </div>
                 <h1 className="header-title">投稿</h1>
-                <button
-                    onClick={handleLogout}
-                    style={{
-                        position: "absolute",
-                        right: "20px",
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        backgroundColor: "transparent",
-                        border: "none",
-                        color: "white",
-                        cursor: "pointer",
-                        fontSize: "16px",
-                    }}
-                >
-                    ログアウト
-                </button>
+                {/*<button*/}
+                {/*    onClick={handleLogout}*/}
+                {/*    style={{*/}
+                {/*        position: "absolute",*/}
+                {/*        right: "20px",*/}
+                {/*        top: "50%",*/}
+                {/*        transform: "translateY(-50%)",*/}
+                {/*        backgroundColor: "transparent",*/}
+                {/*        border: "none",*/}
+                {/*        color: "white",*/}
+                {/*        cursor: "pointer",*/}
+                {/*        fontSize: "16px",*/}
+                {/*    }}*/}
+                {/*>*/}
+                {/*    ログアウト*/}
+                {/*</button>*/}
             </header>
 
             {/* メインコンテンツ */}

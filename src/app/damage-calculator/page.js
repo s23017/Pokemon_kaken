@@ -590,7 +590,7 @@ const DamageCalculatorPage = () => {
             </div>
         </div>
 
-            );
-            };
+    );
+};
 
-            export default DamageCalculatorPage;
+export default DamageCalculatorPage;

@@ -12,125 +12,6 @@ const TOTAL_QUESTIONS = 10;
 const MAX_LIVES = 3;
 const RANKING_LIMIT = 5;
 
-// const MiniBreakout = ({onClose}) => {
-//     const canvasRef = useRef(null);
-//     const [isPlaying, setIsPlaying] = useState(false);
-//     const [showCloseButton, setShowCloseButton] = useState(false);
-//
-//     useEffect(() => {
-//         if (isPlaying) {
-//             const timer = setTimeout(() => {
-//                 setShowCloseButton(true);
-//             }, 10000);
-//             return () => clearTimeout(timer);
-//         }
-//     }, [isPlaying]);
-//
-//     useEffect(() => {
-//         if (!isPlaying) return;
-//         const canvas = canvasRef.current;
-//         const ctx = canvas.getContext("2d");
-//         const width = 200, height = 150;
-//         canvas.width = width;
-//         canvas.height = height;
-//
-//         let ballRadius = 5, x = width / 2, y = height - 30, dx = 2, dy = -2;
-//         const paddleHeight = 10, paddleWidth = 50;
-//         let paddleX = (width - paddleWidth) / 2, rightPressed = false, leftPressed = false;
-//
-//         document.addEventListener("keydown", keyDownHandler);
-//         document.addEventListener("keyup", keyUpHandler);
-//
-//         function keyDownHandler(e) {
-//             if (e.key === "Right" || e.key === "ArrowRight") rightPressed = true;
-//             else if (e.key === "Left" || e.key === "ArrowLeft") leftPressed = true;
-//         }
-//
-//         function keyUpHandler(e) {
-//             if (e.key === "Right" || e.key === "ArrowRight") rightPressed = false;
-//             else if (e.key === "Left" || e.key === "ArrowLeft") leftPressed = false;
-//         }
-//
-//         function drawBall() {
-//             ctx.beginPath();
-//             ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-//             ctx.fillStyle = "#0095DD";
-//             ctx.fill();
-//             ctx.closePath();
-//         }
-//
-//         function drawPaddle() {
-//             ctx.beginPath();
-//             ctx.rect(paddleX, height - paddleHeight, paddleWidth, paddleHeight);
-//             ctx.fillStyle = "#0095DD";
-//             ctx.fill();
-//             ctx.closePath();
-//         }
-//
-//         function draw() {
-//             ctx.clearRect(0, 0, width, height);
-//             drawBall();
-//             drawPaddle();
-//
-//             if (x + dx > width - ballRadius || x + dx < ballRadius) dx = -dx;
-//             if (y + dy < ballRadius) dy = -dy;
-//             else if (y + dy > height - ballRadius) {
-//                 if (x > paddleX && x < paddleX + paddleWidth) dy = -dy;
-//                 else {
-//                     setIsPlaying(false);
-//                     return;
-//                 }
-//             }
-//
-//             x += dx;
-//             y += dy;
-//
-//             if (rightPressed && paddleX < width - paddleWidth) paddleX += 3;
-//             else if (leftPressed && paddleX > 0) paddleX -= 3;
-//
-//             requestAnimationFrame(draw);
-//         }
-//
-//         draw();
-//
-//         return () => {
-//             document.removeEventListener("keydown", keyDownHandler);
-//             document.removeEventListener("keyup", keyUpHandler);
-//         };
-//     }, [isPlaying]);
-//
-//     return (
-//         <div style={{
-//             position: "fixed",
-//             bottom: "10px",
-//             left: "10px",
-//             background: "#fff",
-//             border: "2px solid black",
-//             padding: "5px",
-//             zIndex: 1000
-//         }}>
-//             {showCloseButton && (
-//                 <button onClick={onClose} style={{
-//                     position: "absolute",
-//                     top: "-10px",
-//                     right: "-10px",
-//                     background: "red",
-//                     color: "white",
-//                     border: "none",
-//                     cursor: "pointer",
-//                     padding: "2px 6px",
-//                     fontSize: "14px",
-//                     borderRadius: "50%"
-//                 }}>
-//                     ✖
-//                 </button>
-//             )}
-//             <canvas ref={canvasRef}></canvas>
-//             {!isPlaying && <button onClick={() => setIsPlaying(true)}>ゲーム開始</button>}
-//         </div>
-//     );
-// };
-
 const SilhouetteQuiz = () => {
     const [showBreakout, setShowBreakout] = useState(true);
     const [username, setUsername] = useState("");
@@ -269,7 +150,7 @@ const SilhouetteQuiz = () => {
                     width: "100%",
                     zIndex: 1000
                 }}>
-                    <Link href="/">
+                    <Link href="/top">
                         <Image src="/images/gaming.gif" width={50} height={50} alt="ホームに戻る"
                                style={{position: "absolute", left: "20px", cursor: "pointer"}}/>
                     </Link>
@@ -303,7 +184,7 @@ const SilhouetteQuiz = () => {
                     width: "100%",
                     zIndex: 1000
                 }}>
-                    <Link href="/">
+                    <Link href="/top">
                         <Image src="/images/gaming.gif" width={50} height={50} alt="ホームに戻る"
                                style={{ position: "absolute", left: "20px", cursor: "pointer" }} />
                     </Link>
@@ -342,7 +223,7 @@ const SilhouetteQuiz = () => {
                 width: "100%",
                 zIndex: 1000
             }}>
-                <Link href="/">
+                <Link href="/top">
                     <Image src="/images/gaming.gif" width={50} height={50} alt="ホームに戻る"
                            style={{position: "absolute", left: "20px", cursor: "pointer"}}/>
                 </Link>
