@@ -1,6 +1,6 @@
 const styles = {
     container: {
-        marginTop: "80px",
+        paddingTop: "80px",
         display: "flex",
         flexDirection: "column",
     },
@@ -31,13 +31,13 @@ const styles = {
     mainContainer: {
         flex: 3,
         textAlign: "center",
-        marginBottom: "500px",
+        paddingBottom: "500px",
     },
     title: {
-        marginBottom: "20px",
+        paddingBottom: "20px",
     },
     searchContainer: {
-        marginBottom: "20px",
+        paddingBottom: "20px",
     },
     searchBar: {
         display: "flex",
@@ -83,17 +83,19 @@ const styles = {
         flexWrap: "wrap",
         justifyContent: "center",
         gap: "15px",
+
     },
     pokemonCard: {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        border: "1px solid #ccc",
+        border: "10px solid #black",
         borderRadius: "5px",
         padding: "10px",
         minWidth: "200px",
         wordWrap: "break-word",
         textAlign: "center",
+        backgroundColor:"white",
     },
     pokemonName: {
         fontSize: "14px",
@@ -105,9 +107,9 @@ const styles = {
         bottom: 0,
         left: 0,
         width: "100%",
-        backgroundColor: "white",
+        backgroundColor: "rgba(255, 255, 255, 0.5)", // 透明度50%の白
         borderTop: "1px solid #ccc",
-        padding: "8px",
+
         display: "flex",
         justifyContent: "center",
         zIndex: 1000,
