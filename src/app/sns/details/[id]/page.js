@@ -183,7 +183,7 @@ export default function PostDetailPage() {
             {/* ヘッダー */}
             <header style={styles.header}>
                 <div style={styles.backButton}>
-                    <Link href="/sns/postfirebase">
+                    <Link href="/sns/post">
                         <Image src="/images/gaming.gif" width={50} height={50} alt="戻る" style={{ cursor: "pointer" }} />
                     </Link>
                 </div>
@@ -206,7 +206,10 @@ export default function PostDetailPage() {
                         {post.partyDetails && post.partyDetails.length > 0 && (
                             <div style={styles.gridContainer}>
                                 {post.partyDetails.map((pokemon, index) => (
-                                    <div key={index} style={styles.container}>
+                                    <div key={index} style={{
+                                        ...styles.container,
+                                        background: getTypeColor(pokemon.type) // タイプに応じた背景色を設定
+                                    }}>
                                         <div style={styles.imageContainer}>
                                             <div style={styles.imageBox}>
                                                 <img src={pokemon.imageUrl} alt="ポケモンの画像" style={styles.image} />
@@ -239,11 +242,11 @@ export default function PostDetailPage() {
                                             <div style={styles.infoRow}>
                                                 <span style={styles.label}>努力値</span>
                                                 <span style={styles.value}>
-                                                    {Object.entries(pokemon.effortValues || {})
-                                                        .filter(([_, value]) => value !== 0)
-                                                        .map(([stat, value]) => `${stat}: ${value}`)
-                                                        .join(", ")}
-                                                </span>
+                            {Object.entries(pokemon.effortValues || {})
+                                .filter(([_, value]) => value !== 0)
+                                .map(([stat, value]) => `${stat}: ${value}`)
+                                .join(", ")}
+                        </span>
                                             </div>
                                             {pokemon.selectedMoves.map((move, moveIndex) => (
                                                 <div style={styles.infoRow} key={moveIndex}>
@@ -256,6 +259,7 @@ export default function PostDetailPage() {
                                 ))}
                             </div>
                         )}
+
                         {/* コメント入力フォーム */}
                         {user && (
                             <form onSubmit={handleCommentSubmit} style={{ marginTop: "20px" }}>
@@ -399,10 +403,12 @@ const styles = {
         justifyContent: "space-between",
         alignItems: "center",
         backgroundColor: "#eee",
-        padding: "5px",
+        padding: "5px", // 5pxから8pxに変更（余白を増やす）
         borderRadius: "5px",
         fontSize: "12px",
+        marginBottom: "6px", // 各項目の間隔を少し広げる
     },
+
     label: {
         fontWeight: "bold",
         color: "#333",
