@@ -377,16 +377,6 @@ const Home = () => {
         setIsPartyVisible((prev) => !prev);
     };
 
-
-
-
-
-
-
-
-
-
-
     return (
         <div style={styles.container}>
             <header style={styles.header}>
