@@ -8,6 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 // ポケモンの詳細を取得する関数
+// ポケモンの詳細を取得する関数
 export const fetchPokemonDetails = async (pokemonName) => {
     const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`;
     try {
@@ -17,7 +18,7 @@ export const fetchPokemonDetails = async (pokemonName) => {
         }
         const data = await response.json();
 
-        console.log("📡 APIデータ:", data); // デバッグ用
+        console.log("APIデータ:", data); // デバッグ用
 
         const statMapping = {
             hp: "hp",
@@ -33,7 +34,6 @@ export const fetchPokemonDetails = async (pokemonName) => {
             name: statMapping[stat.stat.name] || stat.stat.name,
         }));
 
-        // **技情報の取得（型を揃える）**
         const moves = await Promise.all(
             data.moves.map(async (move) => {
                 const moveDetails = await fetch(move.move.url).then((res) => res.json());
@@ -41,28 +41,24 @@ export const fetchPokemonDetails = async (pokemonName) => {
                     name: moveDetails.names.find((name) => name.language.name === "ja")?.name || moveDetails.name,
                     power: moveDetails.power || "不明",
                     type: moveDetails.type.name,
-                    category: moveDetails.damage_class.name, // 物理/特殊
+                    category: moveDetails.damage_class.name, // 技の分類
                 };
             })
         );
 
-        const types = data.types.map((typeInfo) => typeInfo.type.name); // **タイプ取得**
-        console.log(`🛡 取得したタイプ: ${types}`); // デバッグ用
-
         return {
+            type: data.types,
             name: data.name,
             stats,
             sprite: data.sprites.front_default,
             official_artwork: data.sprites.other["official-artwork"].front_default,
-            moves, // **技情報を修正**
-            types, // **タイプも保持**
+            moves,
         };
     } catch (error) {
         console.error(`Error fetching details for ${pokemonName}:`, error);
         return null;
     }
 };
-
 export const calculateTotalStats = (stats) => {
     return stats.reduce((total, stat) => total + stat.base_stat, 0);
 };
@@ -106,6 +102,18 @@ const MoveDetails = ({ attacker }) => {
         </div>
     );
 };
+
+
+
+
+
+
+
+
+
+
+
+
 
 const DamageCalculatorPage = () => {
     const [attacker, setAttacker] = useState({
@@ -178,42 +186,34 @@ const DamageCalculatorPage = () => {
             return;
         }
 
-        console.log("🐉 ポケモン詳細データ:", details);
+        console.log("ポケモン詳細データ:", details); // デバッグ用
 
         const baseStats = details.stats.reduce((acc, stat) => {
             acc[stat.name] = stat.base_stat;
             return acc;
         }, {});
 
-        const types = details.types || [];
-        console.log(`🔍 ${pokemon.name.jpn} のタイプ: ${types}`);
-
         if (role === "attacker") {
-            setAttacker(prev => ({
-                ...prev,
+            setAttacker({
+                ...attacker,
+                types: details.types,
                 name: details.name,
                 image: details.official_artwork,
-                moves: details.moves, // **技情報を追加**
+                moves: details.moves,
                 baseStats,
                 level: 50,
-                types, // **タイプもセット**
-            }));
-            setAttackerSearchQuery(""); // ✅ 検索ボックスをクリア
-            setAttackerSearchResults([]); // ✅ 検索結果をリセット
+            });
         } else {
-            setDefender(prev => ({
-                ...prev,
+            setDefender({
+                ...defender,
+                types: details.types,
                 name: details.name,
                 image: details.official_artwork,
                 baseStats,
                 level: 50,
-                types, // **タイプもセット**
-            }));
-            setDefenderSearchQuery(""); // ✅ 検索ボックスをクリア
-            setDefenderSearchResults([]); // ✅ 検索結果をリセット
+            });
         }
     };
-
 
     const handleInputChange = (role, type, stat, value) => {
         const updatedValue = Math.max(
@@ -263,63 +263,53 @@ const DamageCalculatorPage = () => {
         const level = attacker.level;
 
         const power = move.power || 0;
+
         if (power === 0) {
             alert("選択された技に威力が設定されていません。");
             return;
         }
 
-        // **技の物理/特殊判定**
+        // 技の物理/特殊判定
         const isPhysical = move.category === "physical";
 
-        // **攻撃側の実数値**
+        // 攻撃側の実数値
         const attackStat = isPhysical
             ? calculateStat(attacker.baseStats.atk, attacker.iv.atk, attacker.ev.atk, level)
             : calculateStat(attacker.baseStats.spa, attacker.iv.spa, attacker.ev.spa, level);
 
-        // **防御側の実数値**
+        // 防御側の実数値
         const defenseStat = isPhysical
             ? calculateStat(defender.baseStats.def, defender.iv.def, defender.ev.def, defender.level)
             : calculateStat(defender.baseStats.spd, defender.iv.spd, defender.ev.spd, defender.level);
 
         const hp = calculateHP(defender.baseStats.hp, defender.iv.hp, defender.ev.hp, defender.level);
 
-        // **STAB (Same Type Attack Bonus) を自動計算**
-        const stab = attacker.types.includes(move.type) ? 1.5 : 1.0;
+        // STAB (Same Type Attack Bonus)
+        const stab = attacker.stab ? 1.5 : 1.0;
 
-        // **🔍 タイプ相性計算**
-        const moveType = move.type;
-        const defenderTypes = defender.types || [];
+        // タイプ相性
+        const typeEffectiveness = (typesEffectiveness[move.type] || {})[defender.name] || 0.5;
 
-        const typeEffectiveness = defenderTypes.reduce((effect, defenderType) => {
-            return effect * (typesEffectiveness[defenderType]?.[moveType] ?? 1.0);
-        }, 1.0);
+        // ランダム係数 (85%～100%)
+        const randomFactorMin = 0.85; // 最小値
+        const randomFactorMax = 1.0;  // 最大値
 
-        console.log(`🎯 攻撃技のタイプ: ${moveType}, 🛡 防御側のタイプ: ${defenderTypes}`);
-        console.log(`⚖ タイプ相性補正: ${typeEffectiveness}`);
-
-        // **最終倍率**
-        const finalMultiplier = stab * typeEffectiveness;
-
-        // **ランダム係数 (85%～100%)**
-        const randomFactorMin = 0.85;
-        const randomFactorMax = 1.0;
-
-        // **基本ダメージ計算式**
+        // 基本ダメージ計算式
         const baseDamage = Math.floor(
             ((((2 * level) / 5 + 2) * power * attackStat) / defenseStat) / 50 + 2
         );
 
-        // **最小ダメージ**
+        // 最小ダメージ
         const minDamage = Math.floor(
-            baseDamage * finalMultiplier * randomFactorMin
+            baseDamage * stab * typeEffectiveness * randomFactorMin
         );
 
-        // **最大ダメージ**
+        // 最大ダメージ
         const maxDamage = Math.floor(
-            baseDamage * finalMultiplier * randomFactorMax
+            baseDamage * stab * typeEffectiveness * randomFactorMax
         );
 
-        // **結果を設定**
+        // 結果を設定
         setDamageResult({
             minDamage,
             maxDamage,
@@ -327,8 +317,6 @@ const DamageCalculatorPage = () => {
             hitsRequiredMax: Math.ceil(hp / minDamage),
         });
     };
-
-
 
     const handleStabToggle = () => {
         setAttacker((prev) => ({ ...prev, stab: !prev.stab }));
@@ -350,7 +338,7 @@ const DamageCalculatorPage = () => {
                     zIndex: 1000,
                 }}
             >
-                <Link href="/">
+                <Link href="/top">
                     <Image
                         src="/images/gaming.gif"
                         width={50}
@@ -404,6 +392,14 @@ const DamageCalculatorPage = () => {
                                 <p>名前: {attacker.selectedMove.name}</p>
                                 <p>威力: {attacker.selectedMove.power}</p>
                                 <p>タイプ: {getTranslatedType(attacker.selectedMove.type)}</p>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        checked={attacker.stab}
+                                        onChange={handleStabToggle}
+                                    />
+                                    タイプ一致
+                                </label>
                             </div>
                         )}
                         <div className="stat-section">
