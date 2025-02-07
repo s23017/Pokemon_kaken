@@ -93,13 +93,20 @@ const SilhouetteQuiz = () => {
         } else {
             setShowAnswer(true);
             setStreak(0);
-            setLives((prev) => Math.max(prev - 1, 0)); // ライフ減少
+            setLives((prev) => {
+                const newLives = Math.max(prev - 1, 0);
+                if (newLives === 0) {
+                    setTimeout(() => setGameOver(true), 1000); // 1秒後にゲームオーバー画面へ
+                }
+                return newLives;
+            });
         }
         setTimeout(() => {
             pickRandomPokemon(true);
             setInputSuggestions([]);
         }, 2000);
     };
+
 
     const skipQuestion = () => {
         setShowAnswer(true);
@@ -111,12 +118,14 @@ const SilhouetteQuiz = () => {
     };
 
     const updateRanking = () => {
+        if (!gameOver) return; // ゲームオーバー時のみランキングを更新
         const newRanking = [...ranking, { name: username, score }]
             .sort((a, b) => b.score - a.score)
             .slice(0, RANKING_LIMIT);
         setRanking(newRanking);
         localStorage.setItem("pokemon_quiz_ranking", JSON.stringify(newRanking));
     };
+
 
     const watchAdToRecoverLife = () => {
         setTimeout(() => {
@@ -125,10 +134,14 @@ const SilhouetteQuiz = () => {
     };
 
     const handleRestart = () => {
+        if (lives === 0) {
+            alert("ライフがありません。広告を見て回復してください。");
+            return;
+        }
+        setGameOver(false); // ゲームオーバー状態を解除
         setScore(0);
         setStreak(0);
         setQuestionCount(1);
-        setGameOver(false);
         pickRandomPokemon(false);
     };
 
