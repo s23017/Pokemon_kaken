@@ -224,367 +224,396 @@ function PostContent() {
 
 
     return (
-        <div>
-            {/* ヘッダー */}
-            <header
+        <div
+            style={{
+                backgroundImage: 'url("/images/background.webp")',
+                backgroundSize: "auto", // 画像サイズをそのままに
+                backgroundRepeat: "repeat", // 繰り返して表示
+                backgroundPosition: "top left", // 背景の位置を調整
+                minHeight: "100vh",
+                padding: "0",
+                position: "relative", // 背景画像を親要素に合わせて配置
+            }}
+        >
+
+            {/* 背景画像を全体に適用 */}
+            <div
                 style={{
-                    backgroundColor: "#FF0000",
-                    color: "white",
-                    textAlign: "center",
-                    padding: "20px 0",
-                    position: "fixed",
+                    backgroundImage: 'url("/images/background.png")',
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    position: "absolute",
                     top: 0,
                     left: 0,
                     width: "100%",
-                    zIndex: 1000,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    height: "100%",
+                    zIndex: -1, // 背景として表示するため
                 }}
-            >
-                <div
+            ></div>
+            <div>
+                {/* ヘッダー */}
+                <header
                     style={{
-                        position: "absolute",
-                        left: "20px",
-                        top: "50%",
-                        transform: "translateY(-50%)",
+                        backgroundColor: "#FF0000",
+                        color: "white",
+                        textAlign: "center",
+                        padding: "20px 0",
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        zIndex: 1000,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                     }}
                 >
+                    <div
+                        style={{
+                            position: "absolute",
+                            left: "20px",
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                        }}
+                    >
 
-                    <Link href="/top">
-                        <Image
-                            src="/images/gaming.gif"
-                            width={50}
-                            height={50}
-                            alt="ホームに戻る"
-                            style={{cursor: "pointer"}}
-                        />
-                    </Link>
-                </div>
-                <h1 className="header-title">投稿</h1>
-                {/*<button*/}
-                {/*    onClick={handleLogout}*/}
-                {/*    style={{*/}
-                {/*        position: "absolute",*/}
-                {/*        right: "20px",*/}
-                {/*        top: "50%",*/}
-                {/*        transform: "translateY(-50%)",*/}
-                {/*        backgroundColor: "transparent",*/}
-                {/*        border: "none",*/}
-                {/*        color: "white",*/}
-                {/*        cursor: "pointer",*/}
-                {/*        fontSize: "16px",*/}
-                {/*    }}*/}
-                {/*>*/}
-                {/*    ログアウト*/}
-                {/*</button>*/}
-            </header>
+                        <Link href="/top">
+                            <Image
+                                src="/images/gaming.gif"
+                                width={50}
+                                height={50}
+                                alt="ホームに戻る"
+                                style={{cursor: "pointer"}}
+                            />
+                        </Link>
+                    </div>
+                    <h1 className="header-title">投稿</h1>
+                    {/*<button*/}
+                    {/*    onClick={handleLogout}*/}
+                    {/*    style={{*/}
+                    {/*        position: "absolute",*/}
+                    {/*        right: "20px",*/}
+                    {/*        top: "50%",*/}
+                    {/*        transform: "translateY(-50%)",*/}
+                    {/*        backgroundColor: "transparent",*/}
+                    {/*        border: "none",*/}
+                    {/*        color: "white",*/}
+                    {/*        cursor: "pointer",*/}
+                    {/*        fontSize: "16px",*/}
+                    {/*    }}*/}
+                    {/*>*/}
+                    {/*    ログアウト*/}
+                    {/*</button>*/}
+                </header>
 
-            {/* メインコンテンツ */}
-            <div style={{padding: "100px 20px 20px"}}>
-                {/* パーティーデータ表示 */}
-                <div ref={cardContainerRef} style={styles.gridContainer}>
-                    {partyDetails.map((pokemon, index) => (
-                        <div key={index} style={{
-                            ...styles.container,
-                            background: getTypeColor(pokemon.type),
-                        }}>
-                            <div style={styles.imageContainer}>
-                                <div style={styles.imageBox}>
-                                    <img
-                                        src={pokemon.imageUrl}
-                                        alt="ポケモンの画像"
-                                        style={styles.image}
-                                    />
-                                </div>
-                                {pokemon.selectedTerastal ? (
-                                    <div style={styles.terastalContainer}>
+                {/* メインコンテンツ */}
+                <div style={{padding: "100px 20px 20px"}}>
+                    {/* パーティーデータ表示 */}
+                    <div ref={cardContainerRef} style={styles.gridContainer}>
+                        {partyDetails.map((pokemon, index) => (
+                            <div key={index} style={{
+                                ...styles.container,
+                                background: getTypeColor(pokemon.type),
+                            }}>
+                                <div style={styles.imageContainer}>
+                                    <div style={styles.imageBox}>
                                         <img
-                                            src={`/images/terastals/${typeMapping[pokemon.selectedTerastal] || "unknown"}.png`}
-                                            alt={`テラスタル ${pokemon.selectedTerastal}`}
-                                            style={styles.terastalImage}
+                                            src={pokemon.imageUrl}
+                                            alt="ポケモンの画像"
+                                            style={styles.image}
                                         />
                                     </div>
-                                ) : (
-                                    <p>テラスタル未選択</p>
-                                )}
-                            </div>
-                            <div style={styles.infoContainer}>
-                                <div style={styles.infoRow}>
-                                    <span style={styles.label}>性格</span>
-                                    <span style={styles.value}>{pokemon.selectedNature}</span>
+                                    {pokemon.selectedTerastal ? (
+                                        <div style={styles.terastalContainer}>
+                                            <img
+                                                src={`/images/terastals/${typeMapping[pokemon.selectedTerastal] || "unknown"}.png`}
+                                                alt={`テラスタル ${pokemon.selectedTerastal}`}
+                                                style={styles.terastalImage}
+                                            />
+                                        </div>
+                                    ) : (
+                                        <p>テラスタル未選択</p>
+                                    )}
                                 </div>
-                                <div style={styles.infoRow}>
-                                    <span style={styles.label}>持ち物</span>
-                                    <span style={styles.value}>{pokemon.selectedItem}</span>
-                                </div>
-                                <div style={styles.infoRow}>
-                                    <span style={styles.label}>特性</span>
-                                    <span style={styles.value}>{pokemon.selectedAbility}</span>
-                                </div>
-                                <div style={styles.infoRow}>
-                                    <span style={styles.label}>努力値</span>
-                                    <span style={styles.value}>{Object.entries(pokemon.effortValues || {})
-                                        .filter(([_, value]) => value !== 0) // 0をフィルタリング
-                                        .map(([stat, value]) => `${stat}: ${value}`)
-                                        .join(", ")}
-                                    </span>
-                                </div>
-                                {pokemon.selectedMoves.map((move, moveIndex) => (
-                                    <div style={styles.infoRow} key={moveIndex}>
-                                        <span style={styles.label}>わざ {moveIndex + 1}</span>
-                                        <span style={styles.value}>{move}</span>
+                                <div style={styles.infoContainer}>
+                                    <div style={styles.infoRow}>
+                                        <span style={styles.label}>性格</span>
+                                        <span style={styles.value}>{pokemon.selectedNature}</span>
                                     </div>
-                                ))}
+                                    <div style={styles.infoRow}>
+                                        <span style={styles.label}>持ち物</span>
+                                        <span style={styles.value}>{pokemon.selectedItem}</span>
+                                    </div>
+                                    <div style={styles.infoRow}>
+                                        <span style={styles.label}>特性</span>
+                                        <span style={styles.value}>{pokemon.selectedAbility}</span>
+                                    </div>
+                                    <div style={styles.infoRow}>
+                                        <span style={styles.label}>努力値</span>
+                                        <span style={styles.value}>{Object.entries(pokemon.effortValues || {})
+                                            .filter(([_, value]) => value !== 0) // 0をフィルタリング
+                                            .map(([stat, value]) => `${stat}: ${value}`)
+                                            .join(", ")}
+                                    </span>
+                                    </div>
+                                    {pokemon.selectedMoves.map((move, moveIndex) => (
+                                        <div style={styles.infoRow} key={moveIndex}>
+                                            <span style={styles.label}>わざ {moveIndex + 1}</span>
+                                            <span style={styles.value}>{move}</span>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
 
 
-                {/* 投稿フォーム */}
-                <form onSubmit={handlePostSubmit}>
-                    <input
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        placeholder="タイトルを入力"
-                        style={{width: "100%", marginBottom: "10px", padding: "10px"}}
-                        required
-                    />
-                    <textarea
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        placeholder="投稿内容を記入"
-                        rows="3"
-                        style={{width: "100%", marginBottom: "10px"}}
-                    />
-                    <input
-                        type="file"
-                        onChange={(e) => setImage(e.target.files[0])}
-                        style={{display: "block", marginBottom: "10px"}}
-                    />
-                    <button type="submit">投稿する</button>
-                </form>
+                    {/* 投稿フォーム */}
+                    <form onSubmit={handlePostSubmit}>
+                        <input
+                            type="text"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            placeholder="タイトルを入力"
+                            style={{width: "100%", marginBottom: "10px", padding: "10px"}}
+                            required
+                        />
+                        <textarea
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}
+                            placeholder="投稿内容を記入"
+                            rows="3"
+                            style={{width: "100%", marginBottom: "10px"}}
+                        />
+                        <input
+                            type="file"
+                            onChange={(e) => setImage(e.target.files[0])}
+                            style={{display: "block", marginBottom: "10px"}}
+                        />
+                        <button type="submit">投稿する</button>
+                    </form>
 
-                {/* 投稿一覧 */}
-                <div style={{marginTop: "20px"}}>
+                    {/* 投稿一覧 */}
+                    <div style={{marginTop: "20px"}}>
 
-                    <h2>投稿一覧</h2>
-                    {posts.map((post) => (
-                        <div
-                            key={post.id}
-                            style={{
-                                border: "1px solid #ccc",
-                                marginBottom: "10px",
-                                padding: "10px",
-                            }}
-                        >
-                            <p>
-                                <strong>投稿者:</strong> {post.username}
-                            </p>
-
-                            <p
+                        <h2>投稿一覧</h2>
+                        {posts.map((post) => (
+                            <div
+                                key={post.id}
                                 style={{
-                                    color: "black",
-                                    cursor: "pointer",
-                                    fontSize: "35px",
+                                    border: "1px solid #000000",
+                                    marginBottom: "100px",
+                                    padding: "10px",
+                                    backgroundColor: "rgba(255, 255, 255, 0.5)", // 透明度50%の白
                                 }}
-                                onClick={() => router.push(`/sns/details/${post.id}`)}
+
                             >
-                                <strong>{post.title}</strong>
-                            </p>
-                            <p>{post.content}</p>
-                            {post.imageUrl && (
-                                <img
-                                    src={post.imageUrl}
-                                    alt="投稿画像"
-                                    style={{width: "10%", marginTop: "10px"}}
-                                />
-                            )}
-                            <div ref={cardContainerRef} style={styles.gridContainer}>
-                                {post.partyDetails && post.partyDetails.map((party, index) => (
-                                    <div key={index} style={{
-                                        ...styles.card,
-                                        background: getTypeColor(party.type) // ここで背景色を適用
-                                    }}>
-                                        <div style={styles.imageContainer2}>
-                                            <div style={styles.imageBox2}>
-                                                <img
-                                                    src={party.imageUrl}
-                                                    alt={`${party.name}の画像`}
-                                                    style={styles.image}
-                                                />
-                                            </div>
-                                            {party.selectedTerastal ? (
-                                                <div style={styles.terastalContainer}>
+                                <p>
+                                    <strong>投稿者:</strong> {post.username}
+                                </p>
+
+                                <p
+                                    style={{
+                                        color: "black",
+                                        cursor: "pointer",
+                                        fontSize: "35px",
+                                    }}
+                                    onClick={() => router.push(`/sns/details/${post.id}`)}
+                                >
+                                    <strong>{post.title}</strong>
+                                </p>
+                                <p>{post.content}</p>
+                                {post.imageUrl && (
+                                    <img
+                                        src={post.imageUrl}
+                                        alt="投稿画像"
+                                        style={{width: "10%", marginTop: "10px"}}
+                                    />
+                                )}
+                                <div ref={cardContainerRef} style={styles.gridContainer}>
+                                    {post.partyDetails && post.partyDetails.map((party, index) => (
+                                        <div key={index} style={{
+                                            ...styles.card,
+                                            background: getTypeColor(party.type) // ここで背景色を適用
+                                        }}>
+                                            <div style={styles.imageContainer2}>
+                                                <div style={styles.imageBox2}>
                                                     <img
-                                                        src={`/images/terastals/${typeMapping[party.selectedTerastal] || "unknown"}.png`}
-                                                        alt={`テラスタル ${party.selectedTerastal}`}
-                                                        style={styles.terastalImage}
+                                                        src={party.imageUrl}
+                                                        alt={`${party.name}の画像`}
+                                                        style={styles.image}
                                                     />
                                                 </div>
-                                            ) : (
-                                                <p>テラスタル未選択</p>
-                                            )}
-                                            <div style={styles.infoContainer}>
-                                                <div style={styles.infoRow}>
-                                                    <span style={styles.label}>性格</span>
-                                                    <span style={styles.value}>{party.selectedNature}</span>
-                                                </div>
-                                                <div style={styles.infoRow}>
-                                                    <span style={styles.label}>持ち物</span>
-                                                    <span style={styles.value}>{party.selectedItem}</span>
-                                                </div>
-                                                <div style={styles.infoRow}>
-                                                    <span style={styles.label}>特性</span>
-                                                    <span style={styles.value}>{party.selectedAbility}</span>
-                                                </div>
-                                                <div style={styles.infoRow}>
-                                                    <span style={styles.label}>努力値</span>
-                                                    <span style={styles.value}>
+                                                {party.selectedTerastal ? (
+                                                    <div style={styles.terastalContainer}>
+                                                        <img
+                                                            src={`/images/terastals/${typeMapping[party.selectedTerastal] || "unknown"}.png`}
+                                                            alt={`テラスタル ${party.selectedTerastal}`}
+                                                            style={styles.terastalImage}
+                                                        />
+                                                    </div>
+                                                ) : (
+                                                    <p>テラスタル未選択</p>
+                                                )}
+                                                <div style={styles.infoContainer}>
+                                                    <div style={styles.infoRow}>
+                                                        <span style={styles.label}>性格</span>
+                                                        <span style={styles.value}>{party.selectedNature}</span>
+                                                    </div>
+                                                    <div style={styles.infoRow}>
+                                                        <span style={styles.label}>持ち物</span>
+                                                        <span style={styles.value}>{party.selectedItem}</span>
+                                                    </div>
+                                                    <div style={styles.infoRow}>
+                                                        <span style={styles.label}>特性</span>
+                                                        <span style={styles.value}>{party.selectedAbility}</span>
+                                                    </div>
+                                                    <div style={styles.infoRow}>
+                                                        <span style={styles.label}>努力値</span>
+                                                        <span style={styles.value}>
                             {Object.entries(party.effortValues || {})
                                 .filter(([_, value]) => value !== 0)
                                 .map(([stat, value]) => `${stat}: ${value}`)
                                 .join(", ")}
                         </span>
-                                                </div>
-                                                {[...Array(4)].map((_, i) => (
-                                                    <div style={styles.infoRow} key={i}>
-                                                        <span style={styles.label}>わざ{i + 1}</span>
-                                                        <span
-                                                            style={styles.value}>{party.selectedMoves?.[i] || "未選択"}</span>
                                                     </div>
-                                                ))}
+                                                    {[...Array(4)].map((_, i) => (
+                                                        <div style={styles.infoRow} key={i}>
+                                                            <span style={styles.label}>わざ{i + 1}</span>
+                                                            <span
+                                                                style={styles.value}>{party.selectedMoves?.[i] || "未選択"}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))}
+                                </div>
+
+
                             </div>
-
-
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
-    );
-};
-const styles = {
-    partyDetailsContainer: {
-        marginBottom: "20px",
-        textAlign: "center",
-    },
-    pokemonDetail: {
-        marginBottom: "10px",
-    },
-    pokemonImage: {
-        width: "120px",
-        height: "120px",
-        objectFit: "contain",
-        border: "1px solid #ccc",
-        borderRadius: "10px",
-        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-    },
-    terastalContainer: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
-        marginTop: "10px",
-    },
-    terastalImage: {
-        width: "40px",
-        height: "40px",
-        objectFit: "contain",
-        marginBottom: "5px",
-    },
-    saveButton: {
-        margin: "20px auto",
-        padding: "10px 20px",
-        backgroundColor: "#4CAF50",
-        color: "white",
-        border: "none",
+            );
+            };
+            const styles = {
+            partyDetailsContainer: {
+            marginBottom: "20px",
+            textAlign: "center",
+        },
+            pokemonDetail: {
+            marginBottom: "10px",
+        },
+            pokemonImage: {
+            width: "120px",
+            height: "120px",
+            objectFit: "contain",
+            border: "1px solid #ccc",
+            borderRadius: "10px",
+            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+        },
+            terastalContainer: {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+            marginTop: "10px",
+        },
+            terastalImage: {
+            width: "40px",
+            height: "40px",
+            objectFit: "contain",
+            marginBottom: "5px",
+        },
+            saveButton: {
+            margin: "20px auto",
+            padding: "10px 20px",
+            backgroundColor: "#4CAF50",
+            color: "white",
+            border: "none",
 
-        borderRadius: "5px",
-        cursor: "pointer",
-        display: "block",
-    },
-    gridContainer: {
-        display: "grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
-        gap: "0px", // 余白を完全になくす
-        padding: "0", // コンテナの内側余白をなくす
-        margin: "center", // 外側余白をなくす
-        width: "fit-content", // コンテンツの幅に合わせる
-        height: "fit-content", // コンテンツの高さに合わせる
-    },
-    container: {
-        margin: "center", // カードの外側余白を削除
-        padding: "10px", // 適切な内側余白を設定
-        border: "1px solid #ccc",
-        backgroundColor: "#f9f9f9",
-        width: "300px", // コンテンツの幅に合わせる
-        height: "fit-content", // コンテンツの高さに合わせる
-    },
-    imageContainer: {
-        flex: "1",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    imageContainer2: {
-        border: "1px solid #ccc",
-        flex: "1",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    imageBox: {
-        width: "100px", // 幅を固定
-        height: "100px", // 高さを固定
-        backgroundColor: "#ddd",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: "10px",
-        margin: "0", // マージンを削除
-    },
-    imageBox2: {
-        width: "100px", // 幅を固定
-        height: "100px", // 高さを固定
-        backgroundColor: "#ddd",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        margin: "0", // マージンを削除
-    },
-    image: {
-        maxWidth: "100%",
-        maxHeight: "100%",
-        borderRadius: "10px",
-    },
-    infoContainer: {
-        flex: "2",
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gap: "2px",
-    },
-    infoRow: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        backgroundColor: "#eee",
-        padding: "2px", // パディングを小さくする
-        margin: "0",   // マージンを削除
-        borderRadius: "3px", // 少しだけ丸みを残す
-        fontSize: "12px", // フォントサイズを調整
-    },
-    label: {
-        fontWeight: "bold",
-        color: "#333",
-    },
-    value: {
-        color: "#555",
-    },
-};
+            borderRadius: "5px",
+            cursor: "pointer",
+            display: "block",
+        },
+            gridContainer: {
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "0px", // 余白を完全になくす
+            padding: "0", // コンテナの内側余白をなくす
+            margin: "center", // 外側余白をなくす
+            width: "fit-content", // コンテンツの幅に合わせる
+            height: "fit-content", // コンテンツの高さに合わせる
+        },
+            container: {
+            margin: "center", // カードの外側余白を削除
+            padding: "10px", // 適切な内側余白を設定
+            border: "1px solid #ccc",
+            backgroundColor: "#f9f9f9",
+            width: "300px", // コンテンツの幅に合わせる
+            height: "fit-content", // コンテンツの高さに合わせる
+        },
+            imageContainer: {
+            flex: "1",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+        },
+            imageContainer2: {
+            border: "1px solid #ccc",
+            flex: "1",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+        },
+            imageBox: {
+            width: "100px", // 幅を固定
+            height: "100px", // 高さを固定
+            backgroundColor: "#ddd",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: "10px",
+            margin: "0", // マージンを削除
+        },
+            imageBox2: {
+            width: "100px", // 幅を固定
+            height: "100px", // 高さを固定
+            backgroundColor: "#ddd",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            margin: "0", // マージンを削除
+        },
+            image: {
+            maxWidth: "100%",
+            maxHeight: "100%",
+            borderRadius: "10px",
+        },
+            infoContainer: {
+            flex: "2",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "2px",
+        },
+            infoRow: {
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            backgroundColor: "#eee",
+            padding: "2px", // パディングを小さくする
+            margin: "0",   // マージンを削除
+            borderRadius: "3px", // 少しだけ丸みを残す
+            fontSize: "12px", // フォントサイズを調整
+        },
+            label: {
+            fontWeight: "bold",
+            color: "#333",
+        },
+            value: {
+            color: "#555",
+        },
+        };
