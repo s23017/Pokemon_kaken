@@ -101,11 +101,11 @@ const SilhouetteQuiz = () => {
         setUserInput(value);
 
         if (value.length === 0) {
-            setInputSuggestions([]);
+            setInputSuggestions([]); // 🔥 入力が空なら予測変換をクリア
             return;
         }
 
-        // ポケモンの名前で前方一致検索
+        // 🔥 ポケモンの名前で前方一致検索（予測変換）
         const filteredSuggestions = pokemonData
             .filter((pokemon) => pokemon.name.jpn.startsWith(value))
             .map((pokemon) => pokemon.name.jpn);
@@ -232,6 +232,16 @@ const SilhouetteQuiz = () => {
                 </div>
                 {showAnswer && currentPokemon && <p>正解: {currentPokemon.name.jpn}</p>}
                 <input type="text" value={userInput} onChange={handleChange} placeholder="ポケモンの名前を入力" />
+                {/* 🔥 予測変換リストを追加 */}
+                {inputSuggestions.length > 0 && (
+                    <ul className="suggestions">
+                        {inputSuggestions.map((suggestion, index) => (
+                            <li key={index} onClick={() => setUserInput(suggestion)}>
+                                {suggestion}
+                            </li>
+                        ))}
+                    </ul>
+                )}
                 <button onClick={checkAnswer}>答える</button>
                 <button onClick={skipQuestion}>スキップ</button>
             </div>
