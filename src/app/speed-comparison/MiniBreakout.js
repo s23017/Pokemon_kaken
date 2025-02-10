@@ -2,19 +2,20 @@
 
 import React, { useRef, useEffect, useState } from "react";
 
-const MiniBreakout = ({ onGameEnd, onClose }) => {
+const MiniBreakout = () => {
     const canvasRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
-    const [showCloseButton, setShowCloseButton] = useState(false);
-    const [timer, setTimer] = useState(10); // 10秒カウントダウン
+    const [gameInitialized, setGameInitialized] = useState(false); // ゲームが開始されたかどうかを管理
     const [bricks, setBricks] = useState([]);
 
     useEffect(() => {
         if (!isPlaying) return;
 
+        setGameInitialized(true); // ゲーム開始フラグをセット
+
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
-        const width = 220, height = 160;
+        const width = 240, height = 180;
         canvas.width = width;
         canvas.height = height;
 
@@ -108,72 +109,39 @@ const MiniBreakout = ({ onGameEnd, onClose }) => {
             if (rightPressed && paddleX < width - paddleWidth) paddleX += 3;
             else if (leftPressed && paddleX > 0) paddleX -= 3;
 
-            if (brickArray.every(b => b.status === 0)) {
-                setTimeout(() => {
-                    setIsPlaying(false);
-                    onGameEnd(true); // 成功
-                }, 500);
-                return;
-            }
-
             requestAnimationFrame(draw);
         }
 
         draw();
 
-        // 10秒後に自動終了
-        const countdown = setInterval(() => {
-            setTimer((prev) => {
-                if (prev === 1) {
-                    clearInterval(countdown);
-                    setIsPlaying(false);
-                    onGameEnd(false); // 失敗
-                }
-                return prev - 1;
-            });
-        }, 1000);
-
-        setTimeout(() => setShowCloseButton(true), 3000); // 3秒後に閉じるボタン表示
-
         return () => {
             document.removeEventListener("keydown", keyDownHandler);
             document.removeEventListener("keyup", keyUpHandler);
-            clearInterval(countdown);
         };
     }, [isPlaying]);
 
     return (
         <div style={{
             position: "fixed",
-            bottom: "10px",
-            left: "10px",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
             background: "#fff",
             border: "2px solid black",
-            padding: "5px",
-            zIndex: 1000,
+            padding: "10px",
+            zIndex: 1002,
             textAlign: "center",
-            width: "240px"
+            width: "260px",
+            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.3)",
+            borderRadius: "10px"
         }}>
-            {showCloseButton && (
-                <button onClick={onClose} style={{
-                    position: "absolute",
-                    top: "-10px",
-                    right: "-10px",
-                    background: "red",
-                    color: "white",
-                    border: "none",
-                    cursor: "pointer",
-                    padding: "2px 6px",
-                    fontSize: "14px",
-                    borderRadius: "50%"
-                }}>
-                    ✖
+            <p>ミニゲームをプレイ！</p>
+            <canvas ref={canvasRef}></canvas>
+            {!gameInitialized && (
+                <button onClick={() => setIsPlaying(true)}>
+                    ゲーム開始
                 </button>
             )}
-            <p>プレイしてライフ回復！</p>
-            <p>残り時間: {timer}秒</p>
-            <canvas ref={canvasRef}></canvas>
-            {!isPlaying && <button onClick={() => setIsPlaying(true)}>ゲーム開始</button>}
         </div>
     );
 };

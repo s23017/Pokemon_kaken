@@ -52,4 +52,62 @@ button {
     background: #bbb;
 }
 
+/* 🔥 ランキングのヘッダーと被らないように修正 */
+.ranking-container {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    margin-top: 140px; /* ヘッダーと被らないように */
+    position: relative;
+}
+
+/* 🔥 ランキング画面をぼやけさせる（モーダルには影響しない） */
+.blur-background {
+    filter: blur(5px);
+}
+
+/* 🔥 モーダル（画面全体を覆う） */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 背景をぼやかす */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* 🔥 ランキング画面より前面に */
+}
+
+/* 🔥 モーダルの中のコンテンツを画面中央に */
+.modal-content {
+    position: relative;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 400px; /* 🔥 ミニゲームのサイズ */
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001; /* 🔥 バツボタンより下に */
+}
+
+/* 🔥 閉じるボタン（バツボタン） */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 20px;
+    border-radius: 5px;
+    z-index: 1002; /* 🔥 バツボタンが最前面 */
+}
+
 

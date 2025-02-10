@@ -15,8 +15,6 @@ const MAX_LIVES = 3;
 const RANKING_LIMIT = 5;
 
 const SilhouetteQuiz = () => {
-    const auth = getAuth();
-    const db = getFirestore(); // ✅ Firestore インスタンス
     const [user, setUser] = useState(null);
     const [username, setUsername] = useState("");
     const [currentPokemon, setCurrentPokemon] = useState(null);
@@ -28,16 +26,20 @@ const SilhouetteQuiz = () => {
     const [gameOver, setGameOver] = useState(false);
     const [ranking, setRanking] = useState([]);
     const [lives, setLives] = useState(MAX_LIVES);
-    const [inputSuggestions, setInputSuggestions] = useState([]);
+    const [showBreakout, setShowBreakout] = useState(false);
+    const [canCloseBreakout, setCanCloseBreakout] = useState(false);
+    const [inputSuggestions, setInputSuggestions] = useState([]); // ✅ 🔥 追加！！
+
+    const auth = getAuth(); // ✅ ここで `auth` を定義
+    const db = getFirestore();
 
     useEffect(() => {
-        // ログイン状態の監視
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setUser(user);
                 setUsername(user.displayName || "ゲスト");
             } else {
-                window.location.href = "/login"; // ログインページへリダイレクト
+                window.location.href = "/login";
             }
         });
 
@@ -47,7 +49,7 @@ const SilhouetteQuiz = () => {
     useEffect(() => {
         if (username) {
             pickRandomPokemon(false);
-            loadRankingFromFirestore(); // ✅ Firestore からランキングを取得
+            loadRankingFromFirestore();
         }
     }, [username]);
 
@@ -70,14 +72,13 @@ const SilhouetteQuiz = () => {
     const pickRandomPokemon = (incrementCount = true) => {
         if (questionCount > TOTAL_QUESTIONS) {
             setGameOver(true);
-            saveScoreToFirestore(username, score); // ✅ Firestore にスコアを保存
+            saveScoreToFirestore(username, score);
             return;
         }
         const randomIndex = Math.floor(Math.random() * pokemonData.length);
         setCurrentPokemon(pokemonData[randomIndex]);
         setShowAnswer(false);
         setUserInput("");
-        setInputSuggestions([]); // ✨ 予測変換リストをクリア
         if (incrementCount) setQuestionCount((prev) => prev + 1);
     };
 
@@ -89,7 +90,7 @@ const SilhouetteQuiz = () => {
                 score: score,
                 timestamp: Date.now()
             });
-            loadRankingFromFirestore(); // スコアを保存したらランキングを更新
+            loadRankingFromFirestore();
         } catch (error) {
             console.error("スコアの保存に失敗しました:", error);
         }
@@ -144,18 +145,24 @@ const SilhouetteQuiz = () => {
     };
 
 
+    // 🔥 「広告を見て回復」を押すとモーダルを表示し、10秒後にライフを回復
     const watchAdToRecoverLife = () => {
+        setShowBreakout(true);
+        setCanCloseBreakout(false);
+
+        // 10秒後にライフ回復＆バツボタン表示
         setTimeout(() => {
+            setCanCloseBreakout(true);
             setLives((prev) => Math.min(prev + 1, MAX_LIVES));
-        }, 5000);
+        }, 10000);
     };
 
     const handleRestart = () => {
         if (lives === 0) {
-            alert("ライフがありません。広告を見て回復してください。");
+            alert("ライフがありません。ミニゲームで回復してください。");
             return;
         }
-        setGameOver(false); // ゲームオーバー状態を解除
+        setGameOver(false);
         setScore(0);
         setStreak(0);
         setQuestionCount(1);
@@ -166,26 +173,41 @@ const SilhouetteQuiz = () => {
 
     if (gameOver) {
         return (
-            <div style={{ paddingTop: "120px" }}>
-                <header style={headerStyle}>
-                    <Link href="/top">
-                        <Image src="/images/gaming.gif" width={50} height={50} alt="ホームに戻る" style={homeButtonStyle} />
-                    </Link>
-                    <h1 className="header-title">ポケモンシルエットクイズ</h1>
-                </header>
-                <div className="quiz-container">
-                    <h1>クイズ終了！</h1>
-                    <p>{username} の最終スコア: {score}</p>
-                    <h2>ランキング</h2>
-                    <ul>
-                        {ranking.map((entry, index) => (
-                            <li key={index}>{index + 1}. {entry.name} - {entry.score}点</li>
-                        ))}
-                    </ul>
-                    <button onClick={handleRestart}>再挑戦</button>
-                    <button onClick={watchAdToRecoverLife}>広告を見て回復</button>
+            <div className="game-over-wrapper">
+                {/* 🔥 ぼやけるランキング画面 */}
+                <div className={`ranking-container ${showBreakout ? "blur-background" : ""}`}>
+                    <header style={headerStyle}>
+                        <Link href="/top">
+                            <Image src="/images/gaming.gif" width={50} height={50} alt="ホームに戻る" style={homeButtonStyle} />
+                        </Link>
+                        <h1 className="header-title">ポケモンシルエットクイズ</h1>
+                    </header>
+                    <div className="quiz-container">
+                        <h1>クイズ終了！</h1>
+                        <p>{username} の最終スコア: {score}</p>
+                        <h2>ランキング</h2>
+                        <ul>
+                            {ranking.map((entry, index) => (
+                                <li key={index}>{index + 1}. {entry.name} - {entry.score}点</li>
+                            ))}
+                        </ul>
+                        <button onClick={handleRestart}>再挑戦</button>
+                        <button onClick={watchAdToRecoverLife}>広告を見て回復</button>
+                    </div>
                 </div>
-                <MiniBreakout onClose={() => {}} />
+
+                {/* 🔥 ブロック崩しモーダル（ランキング画面の上に表示） */}
+                {showBreakout && (
+                    <div className="modal">
+                        <div className="modal-content">
+                            <h2>ブロック崩しをプレイ！</h2>
+                            <MiniBreakout />
+                            {canCloseBreakout && (
+                                <button className="close-button" onClick={() => setShowBreakout(false)}>×</button>
+                            )}
+                        </div>
+                    </div>
+                )}
             </div>
         );
     }
