@@ -8631,6 +8631,14 @@
         "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10045.png"
     },
     {
+        "id": 10171,
+        "name": {
+            "jpn": "ファイヤー(ガラルのすがた)",
+            "eng": "moltres-galar"
+        },
+        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10171.png"
+    },
+    {
         "id": 10253,
         "name": {
             "jpn": "ウパー(パルデア)",
@@ -9982,4 +9990,5 @@
         },
         "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10228.png"
     }
+
 ]

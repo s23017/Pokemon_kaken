@@ -106,148 +106,197 @@ const Pokedex = () => {
         }
     };
     return (
-        <div style={{ paddingTop: "120px" }}>
-            <header
+        <div
+            style={{
+                backgroundImage: 'url("/images/background.webp")',
+                backgroundSize: "auto", // 画像サイズをそのままに
+                backgroundRepeat: "repeat", // 繰り返して表示
+                backgroundPosition: "top left", // 背景の位置を調整
+                minHeight: "100vh",
+                padding: "0",
+                position: "relative", // 背景画像を親要素に合わせて配置
+            }}
+        >
+
+            {/* 背景画像を全体に適用 */}
+            <div
                 style={{
-                    backgroundColor: "#FF0000",
-                    color: "white",
-                    textAlign: "center",
-                    padding: "20px 0",
-                    position: "fixed",
+                    backgroundImage: 'url("/images/background.png")',
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    position: "absolute",
                     top: 0,
                     left: 0,
                     width: "100%",
-                    zIndex: 1000,
+                    height: "100%",
+                    zIndex: -1, // 背景として表示するため
                 }}
-            >
-                <Link href="/top">
-                    <Image
-                        src="/images/gaming.gif"
-                        width={50}
-                        height={50}
-                        alt="ホームに戻る"
-                        style={{ position: "absolute", left: "20px", cursor: "pointer" }}
-                    />
-                </Link>
-                <h1 className="header-title">ポケモン図鑑</h1>
-            </header>
-            <div style={{ textAlign: "center", margin: "20px 0" }}>
-                <input
-                    type="text"
-                    placeholder="ポケモン名を検索"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+            ></div>
+            <div style={{paddingTop: "120px"}}>
+                <header
                     style={{
-                        padding: "10px",
-                        width: "80%",
-                        maxWidth: "400px",
-                        borderRadius: "5px",
-                        border: "1px solid #ccc",
-                    }}
-                />
-            </div>
-            <div style={{ display: "flex", gap: "20px" }}>
-                <div
-                    style={{
-                        flex: 1,
-                        height: "750px",
-                        overflowY: "auto",
-                        border: "1px solid #ccc",
-                        borderRadius: "5px",
-                        padding: "10px",
+                        backgroundColor: "#FF0000",
+                        color: "white",
+                        textAlign: "center",
+                        padding: "20px 0",
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        zIndex: 1000,
                     }}
                 >
-                    {loading ? (
-                        <p>読み込み中...</p>
-                    ) : (
-                        <ul style={{ listStyle: "none", padding: 0 }}>
-                            {pokemonList
-                                .filter((pokemon) =>
-                                    pokemon.name.includes(searchTerm.toLowerCase())
-                                )
-                                .map((pokemon) => (
-                                    <li
-                                        key={pokemon.id}
-                                        style={{
-                                            padding: "10px",
-                                            cursor: "pointer",
-                                            display: "flex",
-                                            alignItems: "center",
-                                            gap: "10px",
-                                        }}
-                                        onClick={() => fetchPokemonDetails(pokemon)}
-                                    >
-                                        <img
-                                            src={pokemon.icon}
-                                            alt={pokemon.name}
-                                            style={{ width: "40px", height: "40px" }}
-                                        />
-                                        <span style={{ fontWeight: "bold" }}>
+                    <Link href="/top">
+                        <Image
+                            src="/images/gaming.gif"
+                            width={50}
+                            height={50}
+                            alt="ホームに戻る"
+                            style={{position: "absolute", left: "20px", cursor: "pointer"}}
+                        />
+                    </Link>
+                    <h1 className="header-title">ポケモン図鑑</h1>
+                </header>
+                <div style={{textAlign: "center", margin: "20px 0"}}>
+                    <input
+                        type="text"
+                        placeholder="ポケモン名を検索"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        style={{
+                            padding: "10px",
+                            width: "80%",
+                            maxWidth: "400px",
+                            borderRadius: "5px",
+                            border: "1px solid #ccc",
+                        }}
+                    />
+                </div>
+                <div style={{display: "flex", gap: "20px"}}>
+                    <div
+                        style={{
+                            flex: 1,
+                            height: "750px",
+                            overflowY: "auto",
+                            border: "1px solid #ccc",
+                            borderRadius: "5px",
+                            padding: "10px",
+                            backgroundColor: "rgba(255, 255, 255, 0.5)",                        }}
+                    >
+                        {loading ? (
+                            <p>読み込み中...</p>
+                        ) : (
+                            <ul style={{listStyle: "none", padding: 0}}>
+                                {pokemonList
+                                    .filter((pokemon) =>
+                                        pokemon.name.includes(searchTerm.toLowerCase())
+                                    )
+                                    .map((pokemon) => (
+                                        <li
+                                            key={pokemon.id}
+                                            style={{
+                                                padding: "10px",
+                                                cursor: "pointer",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                gap: "10px",
+                                                backgroundColor: "rgba(255, 255, 255, 0.5)",                                            }}
+                                            onClick={() => fetchPokemonDetails(pokemon)}
+                                        >
+                                            <img
+                                                src={pokemon.icon}
+                                                alt={pokemon.name}
+                                                style={{width: "40px", height: "40px"}}
+                                            />
+                                            <span style={{fontWeight: "bold"}}>
                                             #{pokemon.id.toString().padStart(3, "0")}
                                         </span>
-                                        <span>{pokemon.name}</span>
-                                    </li>
-                                ))}
-                        </ul>
-                    )}
-                </div>
-                <div style={{ flex: 3 }}>
-                    {selectedPokemon ? (
-                        <div style={{ display: "flex", justifyContent: "space-between", padding: "10px" }}>
-                            <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
-                                <img
-                                    src={selectedPokemon.artwork || ""}
-                                    alt={selectedPokemon.name}
-                                    style={{ width: "350px", height: "350px", marginBottom: "10px" }}
-                                />
-                                <p>図鑑ナンバー: #{selectedPokemon.id}</p>
-                                <p>高さ: {selectedPokemon.height} m</p>
-                                <p>重さ: {selectedPokemon.weight} kg</p>
-                                <p>タイプ:</p>
-                                <ul>
-                                    {selectedPokemon.types.map((type, index) => (
-                                        <p key={index}>{type.name}</p>
+                                            <span>{pokemon.name}</span>
+                                        </li>
                                     ))}
-                                </ul>
-                                <p>説明: {selectedPokemon.description}</p>
-                            </div>
-                            <div style={{ flex: 1 }}>
-                                <Radar
-                                    data={{
-                                        labels: ["HP", "攻撃", "防御", "特攻", "特防", "素早さ"],
-                                        datasets: [
-                                            {
-                                                label: "ステータス",
-                                                data: [
-                                                    selectedPokemon.stats.hp,
-                                                    selectedPokemon.stats.attack,
-                                                    selectedPokemon.stats.defense,
-                                                    selectedPokemon.stats.specialAttack,
-                                                    selectedPokemon.stats.specialDefense,
-                                                    selectedPokemon.stats.speed,
+                            </ul>
+                        )}
+                    </div>
+                    <div style={{flex: 3}}>
+                        {selectedPokemon ? (
+                            <div style={{display: "flex", justifyContent: "space-between", padding: "10px"}}>
+                                <div style={{flex: 1, display: "flex", flexDirection: "column", alignItems: "center"}}>
+                                    <img
+                                        src={selectedPokemon.artwork || ""}
+                                        alt={selectedPokemon.name}
+                                        style={{width: "350px", height: "350px", marginBottom: "10px"}}
+                                    />
+                                    <p>図鑑ナンバー: #{selectedPokemon.id}</p>
+                                    <p>高さ: {selectedPokemon.height} m</p>
+                                    <p>重さ: {selectedPokemon.weight} kg</p>
+                                    <p>タイプ:</p>
+                                    <ul>
+                                        {selectedPokemon.types.map((type, index) => (
+                                            <p key={index}>{type.name}</p>
+                                        ))}
+                                    </ul>
+                                    <p>説明: {selectedPokemon.description}</p>
+                                </div>
+                                <div style={{flex: 1}}>
+                                    <div style={{flex: 1}}>
+                                        <Radar
+                                            data={{
+                                                labels: ["HP", "攻撃", "防御", "特攻", "特防", "素早さ"],
+                                                datasets: [
+                                                    {
+                                                        label: "ステータス",
+                                                        data: [
+                                                            selectedPokemon.stats.hp,
+                                                            selectedPokemon.stats.attack,
+                                                            selectedPokemon.stats.defense,
+                                                            selectedPokemon.stats.specialAttack,
+                                                            selectedPokemon.stats.specialDefense,
+                                                            selectedPokemon.stats.speed,
+                                                        ],
+                                                        backgroundColor: "rgba(255, 99, 132, 0.2)",
+                                                        borderColor: "red",
+                                                        borderWidth: 1,
+                                                    },
                                                 ],
-                                                backgroundColor: "rgba(255, 99, 132, 0.2)",
-                                                borderColor: "rgba(255, 99, 132, 1)",
-                                                borderWidth: 1,
-                                            },
-                                        ],
-                                    }}
-                                    options={{
-                                        scales: {
-                                            r: {
-                                                beginAtZero: true,
-                                                min: 0,
-                                                max: 150,
-                                                ticks: { stepSize: 50 },
-                                            },
-                                        },
-                                    }}
-                                />
+                                            }}
+                                            options={{
+                                                scales: {
+                                                    r: {
+                                                        beginAtZero: true,
+                                                        min: 0,
+                                                        max: 150,
+                                                        ticks: {stepSize: 50},
+                                                        grid: {
+                                                            color: "black", // 六角形（グリッド線）の色（任意）
+                                                        },
+                                                        angleLines: {
+                                                            color: "black", // 角から中心に向かう線（放射線）の色を黒に変更
+                                                        },
+                                                        pointLabels: {
+                                                            color: "black", // 軸ラベル（HP, 攻撃, 防御など）の色を黒に変更
+                                                            font: {
+                                                                size: 14,
+                                                            },
+                                                        },
+                                                    },
+                                                },
+                                                plugins: {
+                                                    legend: {
+                                                        labels: {
+                                                            color: "black", // 凡例の色を黒に変更
+                                                        },
+                                                    },
+                                                },
+                                            }}
+                                        />
+                                    </div>
+
+                                </div>
                             </div>
-                        </div>
-                    ) : (
-                        <p>ポケモンを選択してください。</p>
-                    )}
+                        ) : (
+                            <p>ポケモンを選択してください。</p>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
