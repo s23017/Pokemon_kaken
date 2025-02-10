@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit } from "firebase/firestore";
 import Link from "next/link";
 import Image from "next/image";
 import pokemonData from "../party-builder/data/Pokemon.json";
@@ -15,6 +16,7 @@ const RANKING_LIMIT = 5;
 
 const SilhouetteQuiz = () => {
     const auth = getAuth();
+    const db = getFirestore(); // ✅ Firestore インスタンス
     const [user, setUser] = useState(null);
     const [username, setUsername] = useState("");
     const [currentPokemon, setCurrentPokemon] = useState(null);
@@ -45,19 +47,30 @@ const SilhouetteQuiz = () => {
     useEffect(() => {
         if (username) {
             pickRandomPokemon(false);
-            loadRanking();
+            loadRankingFromFirestore(); // ✅ Firestore からランキングを取得
         }
     }, [username]);
 
-    const loadRanking = () => {
-        const storedRanking = JSON.parse(localStorage.getItem("pokemon_quiz_ranking")) || [];
-        setRanking(storedRanking);
+    // ✅ Firestore からランキングを取得
+    const loadRankingFromFirestore = async () => {
+        try {
+            const rankingQuery = query(
+                collection(db, "pokemon_quiz_ranking"),
+                orderBy("score", "desc"),
+                limit(RANKING_LIMIT)
+            );
+            const querySnapshot = await getDocs(rankingQuery);
+            const rankingData = querySnapshot.docs.map(doc => doc.data());
+            setRanking(rankingData);
+        } catch (error) {
+            console.error("ランキングの取得に失敗しました:", error);
+        }
     };
 
     const pickRandomPokemon = (incrementCount = true) => {
         if (questionCount > TOTAL_QUESTIONS) {
             setGameOver(true);
-            updateRanking();
+            saveScoreToFirestore(username, score); // ✅ Firestore にスコアを保存
             return;
         }
         const randomIndex = Math.floor(Math.random() * pokemonData.length);
@@ -66,6 +79,20 @@ const SilhouetteQuiz = () => {
         setUserInput("");
         setInputSuggestions([]); // ✨ 予測変換リストをクリア
         if (incrementCount) setQuestionCount((prev) => prev + 1);
+    };
+
+    // ✅ Firestore にスコアを保存
+    const saveScoreToFirestore = async (username, score) => {
+        try {
+            await addDoc(collection(db, "pokemon_quiz_ranking"), {
+                name: username,
+                score: score,
+                timestamp: Date.now()
+            });
+            loadRankingFromFirestore(); // スコアを保存したらランキングを更新
+        } catch (error) {
+            console.error("スコアの保存に失敗しました:", error);
+        }
     };
 
     const handleChange = (e) => {
@@ -107,7 +134,6 @@ const SilhouetteQuiz = () => {
         }, 2000);
     };
 
-
     const skipQuestion = () => {
         setShowAnswer(true);
         setStreak(0);
@@ -115,15 +141,6 @@ const SilhouetteQuiz = () => {
             pickRandomPokemon(true);
             setInputSuggestions([]);
         }, 2000);
-    };
-
-    const updateRanking = () => {
-        if (!gameOver) return; // ゲームオーバー時のみランキングを更新
-        const newRanking = [...ranking, { name: username, score }]
-            .sort((a, b) => b.score - a.score)
-            .slice(0, RANKING_LIMIT);
-        setRanking(newRanking);
-        localStorage.setItem("pokemon_quiz_ranking", JSON.stringify(newRanking));
     };
 
 
@@ -168,6 +185,7 @@ const SilhouetteQuiz = () => {
                     <button onClick={handleRestart}>再挑戦</button>
                     <button onClick={watchAdToRecoverLife}>広告を見て回復</button>
                 </div>
+                <MiniBreakout onClose={() => {}} />
             </div>
         );
     }
@@ -195,7 +213,6 @@ const SilhouetteQuiz = () => {
                 <button onClick={checkAnswer}>答える</button>
                 <button onClick={skipQuestion}>スキップ</button>
             </div>
-            <MiniBreakout onClose={() => {}} />
         </div>
     );
 };
