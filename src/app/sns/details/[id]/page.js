@@ -397,7 +397,7 @@ export default function PostDetailPage() {
             gridContainer: {
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-            gap: "10px",
+            gap: "11px",
             marginTop: "20px",
         },
             container: {
@@ -406,6 +406,7 @@ export default function PostDetailPage() {
             borderRadius: "10px",
             backgroundColor: "#f9f9f9",
             textAlign: "center",
+                width: "300px",
         },
             imageContainer: {
             display: "flex",
