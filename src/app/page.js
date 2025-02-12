@@ -133,7 +133,7 @@ export default function LoginPage() {
                         />
                     </Link>
                 </div>
-                <h1 className="header-title">SNSログイン</h1>
+                <h1 className="header-title">POKEWORLD</h1>
             </header>
 
             {/* メインコンテンツ */}
