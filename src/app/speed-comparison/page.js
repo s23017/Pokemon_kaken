@@ -318,7 +318,7 @@ const SilhouetteQuiz = () => {
                         backgroundColor: "#FF0000",
                         color: "white",
                         textAlign: "center",
-                        padding: "20px 0",
+                        padding: "15px 0",
                         position: "fixed",
                         top: 0,
                         left: 0,
