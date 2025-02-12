@@ -81,6 +81,13 @@ const SilhouetteQuiz = () => {
         setUserInput("");
         if (incrementCount) setQuestionCount((prev) => prev + 1);
     };
+    useEffect(() => {
+        if (questionCount > TOTAL_QUESTIONS) {
+            setGameOver(true);
+            saveScoreToFirestore(username, score);
+        }
+    }, [questionCount]);  // questionCount が更新されたらチェック
+
 
     // ✅ Firestore にスコアを保存
     const saveScoreToFirestore = async (username, score) => {
