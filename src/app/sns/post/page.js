@@ -288,22 +288,6 @@ function PostContent() {
                         </Link>
                     </div>
                     <h1 className="header-title">投稿</h1>
-                    {/*<button*/}
-                    {/*    onClick={handleLogout}*/}
-                    {/*    style={{*/}
-                    {/*        position: "absolute",*/}
-                    {/*        right: "20px",*/}
-                    {/*        top: "50%",*/}
-                    {/*        transform: "translateY(-50%)",*/}
-                    {/*        backgroundColor: "transparent",*/}
-                    {/*        border: "none",*/}
-                    {/*        color: "white",*/}
-                    {/*        cursor: "pointer",*/}
-                    {/*        fontSize: "16px",*/}
-                    {/*    }}*/}
-                    {/*>*/}
-                    {/*    ログアウト*/}
-                    {/*</button>*/}
                 </header>
 
                 {/* メインコンテンツ */}
@@ -394,24 +378,21 @@ function PostContent() {
                     </form>
 
                     {/* 投稿一覧 */}
-                    <div style={{marginTop: "20px"}}>
-
+                    <div style={{ marginTop: "20px" }}>
                         <h2>投稿一覧</h2>
                         {posts.map((post) => (
                             <div
                                 key={post.id}
                                 style={{
                                     border: "1px solid #000000",
-                                    marginBottom: "100px",
+                                    marginBottom: "10px",
                                     padding: "10px",
                                     backgroundColor: "rgba(255, 255, 255, 0.5)", // 透明度50%の白
                                 }}
-
                             >
                                 <p>
                                     <strong>投稿者:</strong> {post.username}
                                 </p>
-
                                 <p
                                     style={{
                                         color: "black",
@@ -422,12 +403,13 @@ function PostContent() {
                                 >
                                     <strong>{post.title}</strong>
                                 </p>
-                                <p>{post.content}</p>
+                                {/* 投稿内容を1行に省略表示 */}
+                                <p style={styles.postContent}>{post.content}</p>
                                 {post.imageUrl && (
                                     <img
                                         src={post.imageUrl}
                                         alt="投稿画像"
-                                        style={{width: "10%", marginTop: "10px"}}
+                                        style={{ width: "10%", marginTop: "10px" }}
                                     />
                                 )}
                                 <div ref={cardContainerRef} style={styles.gridContainer}>
@@ -499,7 +481,7 @@ function PostContent() {
         </div>
             );
             };
-            const styles = {
+        const styles = {
             partyDetailsContainer: {
             marginBottom: "20px",
             textAlign: "center",
@@ -616,4 +598,12 @@ function PostContent() {
             value: {
             color: "#555",
         },
+            postContent: {
+                whiteSpace: "nowrap",       // 1行にする
+                overflow: "hidden",         // はみ出した部分を隠す
+                textOverflow: "ellipsis",   // "..." で省略表示
+                maxWidth: "100%",           // 最大幅を調整（親要素の幅に収める）
+                fontSize: "14px",           // 文字サイズを調整
+                color: "#555",              // 文字色を統一
+            },
         };

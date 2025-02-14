@@ -220,8 +220,10 @@ export default function PostDetailPage() {
                 {/* 投稿の詳細情報 */}
                 <div style={{padding: "100px 20px 20px"}}>
                     {post && (
+
                         <>
                         <div style={styles.commentBox2}>
+
                             <h1>{post.title}</h1>
                             <p><strong>投稿者:</strong> {post.username}</p>
                             <p>{post.content}</p>
@@ -360,12 +362,14 @@ export default function PostDetailPage() {
                                     <p>コメントはまだありません。</p>
                                 )}
                             </div>
+
                         </>
                         )}
                         </div>
                         </div>
                         </div>
                         );
+
             }
 
             const styles = {
