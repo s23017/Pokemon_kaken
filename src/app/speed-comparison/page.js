@@ -81,6 +81,13 @@ const SilhouetteQuiz = () => {
         setUserInput("");
         if (incrementCount) setQuestionCount((prev) => prev + 1);
     };
+    useEffect(() => {
+        if (questionCount > TOTAL_QUESTIONS) {
+            setGameOver(true);
+            saveScoreToFirestore(username, score);
+        }
+    }, [questionCount]);  // questionCount が更新されたらチェック
+
 
     // ✅ Firestore にスコアを保存
     const saveScoreToFirestore = async (username, score) => {
@@ -173,98 +180,156 @@ const SilhouetteQuiz = () => {
 
     if (gameOver) {
         return (
-            <div className="game-over-wrapper">
-                {/* 🔥 ぼやけるランキング画面 */}
-                <div className={`ranking-container ${showBreakout ? "blur-background" : ""}`}>
-                    <header style={headerStyle}>
-                        <Link href="/top">
-                            <Image src="/images/gaming.gif" width={50} height={50} alt="ホームに戻る" style={homeButtonStyle} />
-                        </Link>
-                        <h1 className="header-title">ポケモンシルエットクイズ</h1>
-                    </header>
-                    <div className="quiz-container">
-                        <h1>クイズ終了！</h1>
-                        <p>{username} の最終スコア: {score}</p>
-                        <h2>ランキング</h2>
-                        <ul>
-                            {ranking.map((entry, index) => (
-                                <li key={index}>{index + 1}. {entry.name} - {entry.score}点</li>
-                            ))}
-                        </ul>
-                        <button onClick={handleRestart}>再挑戦</button>
-                        <button onClick={watchAdToRecoverLife}>広告を見て回復</button>
-                    </div>
-                </div>
+            <div
+                style={{
+                    backgroundImage: 'url("/images/background.webp")',
+                    backgroundSize: "auto", // 画像サイズをそのままに
+                    backgroundRepeat: "repeat", // 繰り返して表示
+                    backgroundPosition: "top left", // 背景の位置を調整
+                    minHeight: "100vh",
+                    padding: "0",
+                    position: "relative", // 背景画像を親要素に合わせて配置
+                }}
+            >
 
-                {/* 🔥 ブロック崩しモーダル（ランキング画面の上に表示） */}
-                {showBreakout && (
-                    <div className="modal">
-                        <div className="modal-content">
-                            <h2>ブロック崩しをプレイ！</h2>
-                            <MiniBreakout />
-                            {canCloseBreakout && (
-                                <button className="close-button" onClick={() => setShowBreakout(false)}>×</button>
-                            )}
+                {/* 背景画像を全体に適用 */}
+                <div
+                    style={{
+                        backgroundImage: 'url("/images/background.png")',
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        zIndex: -1, // 背景として表示するため
+                    }}
+                ></div>
+                <div className="game-over-wrapper">
+                    {/* 🔥 ぼやけるランキング画面 */}
+                    <div className={`ranking-container ${showBreakout ? "blur-background" : ""}`}>
+                        <header style={headerStyle}>
+                            <Link href="/top">
+                                <Image src="/images/gaming.gif" width={50} height={50} alt="ホームに戻る"
+                                       style={homeButtonStyle}/>
+                            </Link>
+                            <h1 className="header-title">ポケモンシルエットクイズ</h1>
+                        </header>
+                        <div className="quiz-container">
+                            <h1>クイズ終了！</h1>
+                            <p>{username} の最終スコア: {score}</p>
+                            <h2>ランキング</h2>
+                            <ul>
+                                {ranking.map((entry, index) => (
+                                    <li key={index}>{index + 1}. {entry.name} - {entry.score}点</li>
+                                ))}
+                            </ul>
+                            <button onClick={handleRestart}>再挑戦</button>
+                            <button onClick={watchAdToRecoverLife}>広告を見て回復</button>
                         </div>
                     </div>
-                )}
-            </div>
-        );
-    }
 
-    return (
-        <div style={{ paddingTop: "120px" }}>
-            <header style={headerStyle}>
-                <Link href="/top">
-                    <Image src="/images/gaming.gif" width={50} height={50} alt="ホームに戻る" style={homeButtonStyle} />
-                </Link>
-                <h1 className="header-title">ポケモンシルエットクイズ</h1>
-            </header>
-            <div className="quiz-container">
-                <h1>答えろ</h1>
-                <p>{username} のスコア: {score}（連続正解ボーナス: {streak}）</p>
-                <p>ライフ: {lives} / {MAX_LIVES} ❤️</p>
-                <p>問題: {questionCount} / {TOTAL_QUESTIONS}</p>
-                <div className="silhouette-wrapper">
-                    {currentPokemon && (
-                        <img src={currentPokemon.official_artwork} alt="pokemon silhouette" className={`silhouette ${showAnswer ? "reveal" : ""}`} />
+                    {/* 🔥 ブロック崩しモーダル（ランキング画面の上に表示） */}
+                    {showBreakout && (
+                        <div className="modal">
+                            <div className="modal-content">
+                                <h2>ブロック崩しをプレイ！</h2>
+                                <MiniBreakout/>
+                                {canCloseBreakout && (
+                                    <button className="close-button" onClick={() => setShowBreakout(false)}>×</button>
+                                )}
+                            </div>
+                        </div>
                     )}
                 </div>
-                {showAnswer && currentPokemon && <p>正解: {currentPokemon.name.jpn}</p>}
-                <input type="text" value={userInput} onChange={handleChange} placeholder="ポケモンの名前を入力" />
-                {/* 🔥 予測変換リストを追加 */}
-                {inputSuggestions.length > 0 && (
-                    <ul className="suggestions">
-                        {inputSuggestions.map((suggestion, index) => (
-                            <li key={index} onClick={() => setUserInput(suggestion)}>
-                                {suggestion}
-                            </li>
-                        ))}
-                    </ul>
-                )}
-                <button onClick={checkAnswer}>答える</button>
-                <button onClick={skipQuestion}>スキップ</button>
             </div>
-        </div>
-    );
-};
+                );
+                }
 
-const headerStyle = {
-    backgroundColor: "#FF0000",
-    color: "white",
-    textAlign: "center",
-    padding: "20px 0",
-    position: "fixed",
-    top: 0,
-    left: 0,
-    width: "100%",
-    zIndex: 1000,
-};
+                return (
+                    <div
+                        style={{
+                            backgroundImage: 'url("/images/background.webp")',
+                            backgroundSize: "auto", // 画像サイズをそのままに
+                            backgroundRepeat: "repeat", // 繰り返して表示
+                            backgroundPosition: "top left", // 背景の位置を調整
+                            minHeight: "100vh",
+                            padding: "0",
+                            position: "relative", // 背景画像を親要素に合わせて配置
+                        }}
+                    >
 
-const homeButtonStyle = {
-    position: "absolute",
-    left: "20px",
-    cursor: "pointer",
-};
+                        {/* 背景画像を全体に適用 */}
+                        <div
+                            style={{
+                                backgroundImage: 'url("/images/background.png")',
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                width: "100%",
+                                height: "100%",
+                                zIndex: -1, // 背景として表示するため
+                            }}
+                        ></div>
+                        <div style={{paddingTop: "120px"}}>
+                            <header style={headerStyle}>
+                                <Link href="/top">
+                                    <Image src="/images/gaming.gif" width={50} height={50} alt="ホームに戻る"
+                                           style={homeButtonStyle}/>
+                                </Link>
+                                <h1 className="header-title">ポケモンシルエットクイズ</h1>
+                            </header>
+                            <div className="quiz-container">
+                                <h1>答えろ</h1>
+                                <p>{username} のスコア: {score}（連続正解ボーナス: {streak}）</p>
+                                <p>ライフ: {lives} / {MAX_LIVES} ❤️</p>
+                                <p>問題: {questionCount} / {TOTAL_QUESTIONS}</p>
+                                <div className="silhouette-wrapper">
+                                    {currentPokemon && (
+                                        <img src={currentPokemon.official_artwork} alt="pokemon silhouette"
+                                             className={`silhouette ${showAnswer ? "reveal" : ""}`}/>
+                                    )}
+                                </div>
+                                {showAnswer && currentPokemon && <p>正解: {currentPokemon.name.jpn}</p>}
+                                <input type="text" value={userInput} onChange={handleChange}
+                                       placeholder="ポケモンの名前を入力"/>
+                                {/* 🔥 予測変換リストを追加 */}
+                                {inputSuggestions.length > 0 && (
+                                    <ul className="suggestions">
+                                        {inputSuggestions.map((suggestion, index) => (
+                                            <li key={index} onClick={() => setUserInput(suggestion)}>
+                                                {suggestion}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                                <button onClick={checkAnswer}>答える</button>
+                                <button onClick={skipQuestion}>スキップ</button>
+                            </div>
+                        </div>
+                    </div>
+                        );
+                        };
 
-export default SilhouetteQuiz;
+                        const headerStyle = {
+                        backgroundColor: "#FF0000",
+                        color: "white",
+                        textAlign: "center",
+                        padding: "15px 0",
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        zIndex: 1000,
+                    };
+
+                        const homeButtonStyle = {
+                        position: "absolute",
+                        left: "20px",
+                        cursor: "pointer",
+                    };
+
+                        export default SilhouetteQuiz;

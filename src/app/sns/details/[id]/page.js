@@ -220,10 +220,14 @@ export default function PostDetailPage() {
                 {/* 投稿の詳細情報 */}
                 <div style={{padding: "100px 20px 20px"}}>
                     {post && (
-                        <div>
+
+                        <>
+                        <div style={styles.commentBox2}>
+
                             <h1>{post.title}</h1>
                             <p><strong>投稿者:</strong> {post.username}</p>
                             <p>{post.content}</p>
+                        </div>
 
                             {post.imageUrl && (
                                 <img src={post.imageUrl} alt="投稿画像" style={styles.postImage}/>
@@ -358,12 +362,14 @@ export default function PostDetailPage() {
                                     <p>コメントはまだありません。</p>
                                 )}
                             </div>
+
+                        </>
+                        )}
                         </div>
-                    )}
-                </div>
-            </div>
-        </div>
-            );
+                        </div>
+                        </div>
+                        );
+
             }
 
             const styles = {
@@ -397,7 +403,7 @@ export default function PostDetailPage() {
             gridContainer: {
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-            gap: "10px",
+            gap: "11px",
             marginTop: "20px",
         },
             container: {
@@ -406,6 +412,7 @@ export default function PostDetailPage() {
             borderRadius: "10px",
             backgroundColor: "#f9f9f9",
             textAlign: "center",
+                width: "300px",
         },
             imageContainer: {
             display: "flex",
@@ -490,4 +497,11 @@ export default function PostDetailPage() {
             marginBottom: "10px",
                 backgroundColor: "rgba(255, 255, 255, 0.5)", // 透明度50%の白
         },
+                commentBox2: {
+                    border: "1px solid #ccc",
+                    padding: "10px",
+                    borderRadius: "5px",
+                    marginBottom: "10px",
+                    backgroundColor: "white", // 透明度50%の白
+                },
         };

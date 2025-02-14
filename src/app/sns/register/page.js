@@ -33,7 +33,7 @@ export default function RegisterPage() {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             await updateProfile(userCredential.user, { displayName: username });
             alert("新規登録成功！");
-            window.location.href = "/sns"; // 投稿画面にリダイレクト
+            window.location.href = "https://pokemon-kaken.vercel.app/top"; // 投稿画面にリダイレクト
         } catch (err) {
             console.error("登録エラー", err);
             setError("新規登録に失敗しました。もう一度お試しください。");
@@ -144,7 +144,7 @@ export default function RegisterPage() {
                 {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
                 <p style={{ marginTop: "20px", color: "#555" }}>
                     すでにアカウントをお持ちの方は
-                    <Link href="/sns" style={{ color: "red", textDecoration: "underline", marginLeft: "5px" }}>
+                    <Link href="https://pokemon-kaken.vercel.app/" style={{ color: "red", textDecoration: "underline", marginLeft: "5px" }}>
                         ログイン
                     </Link>
                 </p>
