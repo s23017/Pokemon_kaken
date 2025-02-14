@@ -221,9 +221,11 @@ export default function PostDetailPage() {
                 <div style={{padding: "100px 20px 20px"}}>
                     {post && (
                         <>
+                        <div style={styles.commentBox2}>
                             <h1>{post.title}</h1>
                             <p><strong>投稿者:</strong> {post.username}</p>
                             <p>{post.content}</p>
+                        </div>
 
                             {post.imageUrl && (
                                 <img src={post.imageUrl} alt="投稿画像" style={styles.postImage}/>
@@ -359,11 +361,11 @@ export default function PostDetailPage() {
                                 )}
                             </div>
                         </>
-                    )}
-                </div>
-            </div>
-        </div>
-            );
+                        )}
+                        </div>
+                        </div>
+                        </div>
+                        );
             }
 
             const styles = {
@@ -491,4 +493,11 @@ export default function PostDetailPage() {
             marginBottom: "10px",
                 backgroundColor: "rgba(255, 255, 255, 0.5)", // 透明度50%の白
         },
+                commentBox2: {
+                    border: "1px solid #ccc",
+                    padding: "10px",
+                    borderRadius: "5px",
+                    marginBottom: "10px",
+                    backgroundColor: "white", // 透明度50%の白
+                },
         };
