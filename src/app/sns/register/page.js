@@ -144,7 +144,7 @@ export default function RegisterPage() {
                 {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
                 <p style={{ marginTop: "20px", color: "#555" }}>
                     すでにアカウントをお持ちの方は
-                    <Link href="/sns" style={{ color: "red", textDecoration: "underline", marginLeft: "5px" }}>
+                    <Link href="https://pokemon-kaken.vercel.app/" style={{ color: "red", textDecoration: "underline", marginLeft: "5px" }}>
                         ログイン
                     </Link>
                 </p>
