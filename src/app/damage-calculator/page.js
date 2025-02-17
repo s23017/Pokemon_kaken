@@ -616,7 +616,19 @@ const DamageCalculatorPage = () => {
                             </div>
                                 )}
                                 {showMoveModal && (
-                                    <div className="modal">
+                                    <div className="modal" style={{
+                                        position: "fixed",
+                                        top: "50%",
+                                        left: "50%",
+                                        transform: "translate(-50%, -50%)",
+                                        background: "white",
+                                        padding: "20px",
+                                        borderRadius: "10px",
+                                        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                                        zIndex: 1000,
+                                        width: "300px",
+                                        textAlign: "center"
+                                    }}>
                                         <h2>技を選択</h2>
                                         <ul>
                                             {attacker.moves.map((move, index) => (
