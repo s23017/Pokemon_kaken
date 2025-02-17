@@ -626,6 +626,7 @@ const DamageCalculatorPage = () => {
                                         borderRadius: "10px",
                                         boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
                                         zIndex: 1000,
+                                        height:"425px",
                                         width: "300px",
                                         textAlign: "center"
                                     }}>
