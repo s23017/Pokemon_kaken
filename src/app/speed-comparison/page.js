@@ -294,7 +294,9 @@ const SilhouetteQuiz = () => {
                                     )}
                                 </div>
                                 {showAnswer && currentPokemon && <p>正解: {currentPokemon.name.jpn}</p>}
-                                <input type="text" value={userInput} onChange={handleChange}
+                                <input type="text" value={userInput} onChange={handleChange}　style={{
+                                    width: "300px",
+                                }}
                                        placeholder="ポケモンの名前を入力"/>
                                 {/* 🔥 予測変換リストを追加 */}
                                 {inputSuggestions.length > 0 && (
