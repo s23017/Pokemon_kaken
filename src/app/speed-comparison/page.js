@@ -298,7 +298,11 @@ const SilhouetteQuiz = () => {
                                        placeholder="ポケモンの名前を入力"/>
                                 {/* 🔥 予測変換リストを追加 */}
                                 {inputSuggestions.length > 0 && (
-                                    <ul className="suggestions">
+                                    <ul className="suggestions" style={{
+                                        margin: "auto",
+                                        width: "300px",
+                                        backgroundColor: "white",
+                                    }}>
                                         {inputSuggestions.map((suggestion, index) => (
                                             <li key={index} onClick={() => setUserInput(suggestion)}>
                                                 {suggestion}

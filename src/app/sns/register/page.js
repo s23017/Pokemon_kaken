@@ -33,7 +33,7 @@ export default function RegisterPage() {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             await updateProfile(userCredential.user, { displayName: username });
             alert("新規登録成功！");
-            window.location.href = "https://pokemon-kaken.vercel.app/top"; // 投稿画面にリダイレクト
+            window.location.href = "https://pokemon-kaken.vercel.app/"; // 投稿画面にリダイレクト
         } catch (err) {
             console.error("登録エラー", err);
             setError("新規登録に失敗しました。もう一度お試しください。");
