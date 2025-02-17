@@ -104,7 +104,7 @@ const TopPage = () => {
                         </div>
                     </Link>
                 </div>
-                <h1 className="header-title">POKEWORLD</h1>
+                <h1 className="header-title">ポケモンSNSアプリ</h1>
 
                 <button
                     onClick={handleLogout}
@@ -134,7 +134,7 @@ const TopPage = () => {
                     zIndex: 1,
                 }}
             >
-                <p style={{marginBottom: "40px", fontSize: "18px", fontWeight: "bold"}}>
+                <p style={{marginBottom: "40px", fontSize: "30px", fontWeight: "bold"}}>
                     各機能へのリンクを選択してください:
                 </p>
                 <div
@@ -209,12 +209,12 @@ const TopPage = () => {
                 }
 
                 .menu-label {
-                    font-size: 18px;
+                    font-size: 30px;
                 }
 
                 .pokeball {
-                    width: 120px;
-                    height: 120px;
+                    width: 160px;
+                    height: 160px;
                     position: relative;
                     cursor: pointer;
                     transition: transform 0.3s ease;
@@ -252,8 +252,8 @@ const TopPage = () => {
                     position: absolute;
                     top: 50%;
                     left: 50%;
-                    width: 20px;
-                    height: 20px;
+                    width: 30px;
+                    height: 30px;
                     background-color: #fff;
                     border: 3px solid #000;
                     border-radius: 50%;
