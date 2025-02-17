@@ -217,7 +217,18 @@ const Pokedex = () => {
                             </ul>
                         )}
                     </div>
-                    <div style={{flex: 3}}>
+                    <div
+                        style={{
+                            flex: 3,
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            backgroundColor: "rgba(255, 255, 255, 0.8)",  // 背景を白く
+                            padding: "20px",           // 余白を追加
+                            borderRadius: "10px",       // 角を丸く
+                            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)", // 影をつける
+                        }}
+                    >
                         {selectedPokemon ? (
                             <div style={{display: "flex", justifyContent: "space-between", padding: "10px"}}>
                                 <div style={{flex: 1, display: "flex", flexDirection: "column", alignItems: "center"}}>
@@ -226,22 +237,73 @@ const Pokedex = () => {
                                         alt={selectedPokemon.name}
                                         style={{width: "350px", height: "350px", marginBottom: "10px"}}
                                     />
-                                    <p>図鑑ナンバー: #{selectedPokemon.id}</p>
-                                    <p>高さ: {selectedPokemon.height} m</p>
-                                    <p>重さ: {selectedPokemon.weight} kg</p>
-                                    <p>タイプ:</p>
-                                    <ul>
+                                    <p style={{
+                                        fontSize: "20px",
+                                        fontWeight: "bold",
+                                        color: "#222",
+                                        lineHeight: "1.8",
+                                        marginBottom: "5px",
+                                        textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)"
+                                    }}>
+                                        図鑑ナンバー: #{selectedPokemon.id}
+                                    </p>
+                                    <p style={{
+                                        fontSize: "20px",
+                                        fontWeight: "bold",
+                                        color: "#222",
+                                        lineHeight: "1.8",
+                                        marginBottom: "5px",
+                                        textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)"
+                                    }}>
+                                        高さ: {selectedPokemon.height} m
+                                    </p>
+                                    <p style={{
+                                        fontSize: "20px",
+                                        fontWeight: "bold",
+                                        color: "#222",
+                                        lineHeight: "1.8",
+                                        marginBottom: "5px",
+                                        textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)"
+                                    }}>
+                                        重さ: {selectedPokemon.weight} kg
+                                    </p>
+                                    <p style={{
+                                        fontSize: "20px",
+                                        fontWeight: "bold",
+                                        color: "#222",
+                                        lineHeight: "1.8",
+                                        marginBottom: "5px",
+                                        textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)"
+                                    }}>
+                                        タイプ:
+                                    </p>
+                                    <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
                                         {selectedPokemon.types.map((type, index) => (
-                                            <p key={index}>{type.name}</p>
+                                            <p key={index} style={{
+                                                fontSize: "18px",
+                                                fontWeight: "bold",
+                                                color: "#313131",
+                                                lineHeight: "1.6",
+                                                textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)"
+                                            }}>
+                                                {type.name}
+                                            </p>
                                         ))}
-                                    </ul>
-                                    <p>説明: {selectedPokemon.description}</p>
+                                    </div>
+                                    <p style={{     fontSize: "22px",
+                                        fontWeight: "bold",
+                                        lineHeight: "1.8",
+                                        color: "#222",
+                                        textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
+                                        backgroundColor: "rgba(255, 255, 255, 0.85)",
+                                        padding: "10px",
+                                        borderRadius: "10px" }}>{selectedPokemon.description}</p>
                                 </div>
                                 <div style={{flex: 1}}>
                                     <div style={{flex: 1}}>
                                         <Radar
                                             data={{
-                                                labels: ["HP", "攻撃", "防御", "特攻", "特防", "素早さ"],
+                                                labels: ["HP", "攻撃", "防御", "素早さ", "特防", "特攻"], // 素早さと特攻の順番を入れ替え
                                                 datasets: [
                                                     {
                                                         label: "ステータス",
@@ -249,9 +311,9 @@ const Pokedex = () => {
                                                             selectedPokemon.stats.hp,
                                                             selectedPokemon.stats.attack,
                                                             selectedPokemon.stats.defense,
-                                                            selectedPokemon.stats.specialAttack,
+                                                            selectedPokemon.stats.speed, // 素早さを4番目に
                                                             selectedPokemon.stats.specialDefense,
-                                                            selectedPokemon.stats.speed,
+                                                            selectedPokemon.stats.specialAttack, // 特攻を6番目に
                                                         ],
                                                         backgroundColor: "rgba(255, 99, 132, 0.2)",
                                                         borderColor: "red",
@@ -265,30 +327,29 @@ const Pokedex = () => {
                                                         beginAtZero: true,
                                                         min: 0,
                                                         max: 150,
-                                                        ticks: {stepSize: 50},
+                                                        ticks: { stepSize: 50 },
                                                         grid: {
-                                                            color: "black", // 六角形（グリッド線）の色（任意）
+                                                            color: "black",
                                                         },
                                                         angleLines: {
-                                                            color: "black", // 角から中心に向かう線（放射線）の色を黒に変更
+                                                            color: "black",
                                                         },
                                                         pointLabels: {
-                                                            color: "black", // 軸ラベル（HP, 攻撃, 防御など）の色を黒に変更
-                                                            font: {
-                                                                size: 14,
-                                                            },
+                                                            color: "black",
+                                                            font: { size: 14 },
                                                         },
                                                     },
                                                 },
                                                 plugins: {
                                                     legend: {
                                                         labels: {
-                                                            color: "black", // 凡例の色を黒に変更
+                                                            color: "black",
                                                         },
                                                     },
                                                 },
                                             }}
                                         />
+
                                     </div>
 
                                 </div>
