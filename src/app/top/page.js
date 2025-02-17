@@ -104,7 +104,7 @@ const TopPage = () => {
                         </div>
                     </Link>
                 </div>
-                <h1 className="header-title">ポケモンSNSアプリ</h1>
+                <h1 className="header-title">POKEWORLD</h1>
 
                 <button
                     onClick={handleLogout}
