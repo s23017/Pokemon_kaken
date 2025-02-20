@@ -8625,7 +8625,7 @@
     {
         "id": 10045,
         "name": {
-            "jpn": "メガデンリュウー",
+            "jpn": "メガデンリュウ",
             "eng": "ampharos-mega"
         },
         "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10045.png"
@@ -9589,14 +9589,6 @@
             "eng": "lilligant-hisui"
         },
         "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10237.png"
-    },
-    {
-        "id":10239,
-        "name": {
-            "jpn": "ゾロアーク(ヒスイのすがた)",
-            "eng": "zoroark-hisui"
-        },
-        "official_artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10239.png"
     },
     {
         "id":10240,
